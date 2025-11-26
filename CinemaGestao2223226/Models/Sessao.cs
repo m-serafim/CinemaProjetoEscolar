@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace CinemaGestao.Models
+{
+    public class Sessao
+    {
+        public int Id { get; set; }
+
+        [Required]
+        [Display(Name = "Filme")]
+        public int FilmeId { get; set; }
+        public virtual Filme Filme { get; set; }
+
+        [Required]
+        [Display(Name = "Data e Hora")]
+        public DateTime DataHora { get; set; }
+
+        [Required]
+        public string Sala { get; set; }
+
+        [Display(Name = "Preço")]
+        [DataType(DataType.Currency)]
+        public decimal Preco { get; set; }
+
+        [Display(Name = "Lugares Totais")]
+        public int LugaresTotais { get; set; }
+
+        [Display(Name = "Lugares Disponíveis")]
+        public int LugaresDisponiveis { get; set; }
+
+        public virtual ICollection<Reserva> Reservas { get; set; }
+    }
+}
