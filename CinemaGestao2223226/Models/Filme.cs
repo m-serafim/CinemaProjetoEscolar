@@ -11,18 +11,17 @@ namespace CinemaGestao.Models
         [StringLength(100)]
         public string Titulo { get; set; }
 
+        [Required]
         [StringLength(50)]
         public string Genero { get; set; }
 
         [Display(Name = "Duração (minutos)")]
         public int DuracaoMinutos { get; set; }
 
-        [Display(Name = "Descrição")]
+        [Required]
         public string Descricao { get; set; }
 
         [Display(Name = "URL da Capa")]
         public string CapaUrl { get; set; }
-
-        public virtual ICollection<Sessao> Sessoes { get; set; }
     }
 }
