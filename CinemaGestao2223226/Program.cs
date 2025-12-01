@@ -2,9 +2,11 @@ using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using CinemaGestao2223226.Data;
+using CinemaGestao2223226.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,9 +22,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddRoles<IdentityRole>()                                   // <-- add this
+// Configure Identity with email confirmation disabled for easier testing
+builder.Services.AddDefaultIdentity<IdentityUser>(options => {
+    options.SignIn.RequireConfirmedAccount = false; // Set to false
+    options.User.RequireUniqueEmail = true;
+})
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews();
 
 // Configure localization
@@ -92,7 +99,7 @@ static async Task SeedDataAsync(IHost host)
 
     try
     {
-        Console.WriteLine("Seeding started");  // <--- add this
+        Console.WriteLine("Seeding started");
 
         var context = services.GetRequiredService<ApplicationDbContext>();
         await context.Database.MigrateAsync();
@@ -107,12 +114,11 @@ static async Task SeedDataAsync(IHost host)
         {
             if (!await roleManager.RoleExistsAsync(role))
             {
-                Console.WriteLine($"Creating role {role}");  // <---
+                Console.WriteLine($"Creating role {role}");
                 await roleManager.CreateAsync(new IdentityRole(role));
             }
         }
 
-        // Admin user
         // Admin user
         var adminEmail = "admin@cinema.com";
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
@@ -153,15 +159,15 @@ static async Task SeedDataAsync(IHost host)
         }
         else
         {
-            Console.WriteLine("Admin user already exists");  // <---
+            Console.WriteLine("Admin user already exists");
             if (!await userManager.IsInRoleAsync(adminUser, "Administrador"))
             {
                 await userManager.AddToRoleAsync(adminUser, "Administrador");
-                Console.WriteLine("Admin added to role Administrador");  // <---
+                Console.WriteLine("Admin added to role Administrador");
             }
         }
 
-        Console.WriteLine("Seeding finished");  // <---
+        Console.WriteLine("Seeding finished");
     }
     catch (Exception ex)
     {

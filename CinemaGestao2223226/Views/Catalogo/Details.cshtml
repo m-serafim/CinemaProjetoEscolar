@@ -1,5 +1,6 @@
 @model CinemaGestao.Models.Filme
 @using Microsoft.AspNetCore.Localization
+@using CinemaGestao.Helpers
 
 @{
     ViewData["Title"] = Model.Titulo;
@@ -35,7 +36,7 @@
             
             <div class="mb-3">
                 <span class="badge bg-primary me-2">@Model.Genero</span>
-                <span class="badge bg-info text-dark">@Model.DuracaoMinutos @(isEnglish ? "minutes" : "minutos")</span>
+                <span class="badge bg-info text-dark">@DurationHelper.FormatDuration(Model.DuracaoMinutos, isEnglish)</span>
             </div>
 
             <h5>@(isEnglish ? "Synopsis" : "Sinopse")</h5>

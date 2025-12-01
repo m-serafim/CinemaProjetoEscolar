@@ -1,4 +1,5 @@
 ﻿@model CinemaGestao.Models.Filme
+@using CinemaGestao.Helpers
 
 @{
     ViewData["Title"] = "Eliminar Filme";
@@ -48,7 +49,7 @@
                                 <dt class="col-sm-4">Duração:</dt>
                                 <dd class="col-sm-8">
                                     <span class="badge bg-info text-dark">
-                                        <i class="bi bi-clock"></i> @Model.DuracaoMinutos minutos
+                                        <i class="bi bi-clock"></i> @DurationHelper.FormatDuration(Model.DuracaoMinutos, false)
                                     </span>
                                 </dd>
 

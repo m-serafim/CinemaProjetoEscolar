@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<CinemaGestao.Models.Filme>
 @using Microsoft.AspNetCore.Localization
+@using CinemaGestao.Helpers
 
 @{
     ViewData["Title"] = "Catálogo de Filmes";
@@ -28,11 +29,13 @@
                     <div class="card h-100 shadow-sm">
                         @if (!string.IsNullOrEmpty(filme.CapaUrl))
                         {
-                            <img src="@filme.CapaUrl" class="card-img-top" alt="@filme.Titulo" style="height: 400px; object-fit: cover;">
+                            <div style="width: 100%; aspect-ratio: 2/3; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #000;">
+                                <img src="@filme.CapaUrl" class="card-img-top" alt="@filme.Titulo" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
                         }
                         else
                         {
-                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 400px;">
+                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="width: 100%; aspect-ratio: 2/3;">
                                 <i class="bi bi-film" style="font-size: 5rem; color: white;"></i>
                             </div>
                         }
@@ -40,7 +43,7 @@
                             <h5 class="card-title">@filme.Titulo</h5>
                             <p class="card-text">
                                 <span class="badge bg-primary">@filme.Genero</span>
-                                <span class="badge bg-info text-dark">@filme.DuracaoMinutos @(isEnglish ? "min" : "min")</span>
+                                <span class="badge bg-info text-dark">@DurationHelper.FormatDuration(filme.DuracaoMinutos, isEnglish)</span>
                             </p>
                             <p class="card-text text-truncate">@filme.Descricao</p>
                         </div>
