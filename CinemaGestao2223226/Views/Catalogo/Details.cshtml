@@ -1,0 +1,51 @@
+@model CinemaGestao.Models.Filme
+
+@{
+    ViewData["Title"] = Model.Titulo;
+}
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">Catálogo</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Titulo</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-4">
+            @if (!string.IsNullOrEmpty(Model.CapaUrl))
+            {
+                <img src="@Model.CapaUrl" class="img-fluid rounded shadow" alt="@Model.Titulo">
+            }
+            else
+            {
+                <div class="bg-secondary rounded d-flex align-items-center justify-content-center" style="height: 500px;">
+                    <i class="bi bi-film" style="font-size: 8rem; color: white;"></i>
+                </div>
+            }
+        </div>
+        <div class="col-md-8">
+            <h1 class="mb-3">@Model.Titulo</h1>
+            
+            <div class="mb-3">
+                <span class="badge bg-primary me-2">@Model.Genero</span>
+                <span class="badge bg-info text-dark">@Model.DuracaoMinutos minutos</span>
+            </div>
+
+            <h5>Sinopse</h5>
+            <p class="lead">@Model.Descricao</p>
+
+            <hr />
+
+            <div class="d-grid gap-2">
+                <a asp-action="Sessoes" asp-route-id="@Model.Id" class="btn btn-primary btn-lg">
+                    <i class="bi bi-calendar-event"></i> Ver Sessões Disponíveis
+                </a>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Voltar ao Catálogo
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

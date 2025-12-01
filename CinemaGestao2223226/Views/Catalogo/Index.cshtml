@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CinemaGestao.Models.Filme>
+
+@{
+    ViewData["Title"] = "Catálogo de Filmes";
+}
+
+<div class="container">
+    <h1 class="mb-4">🎬 Catálogo de Filmes</h1>
+    <p class="lead">Explore nossos filmes em cartaz</p>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> Não há filmes disponíveis no momento.
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var filme in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        @if (!string.IsNullOrEmpty(filme.CapaUrl))
+                        {
+                            <img src="@filme.CapaUrl" class="card-img-top" alt="@filme.Titulo" style="height: 400px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 400px;">
+                                <i class="bi bi-film" style="font-size: 5rem; color: white;"></i>
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@filme.Titulo</h5>
+                            <p class="card-text">
+                                <span class="badge bg-primary">@filme.Genero</span>
+                                <span class="badge bg-info text-dark">@filme.DuracaoMinutos min</span>
+                            </p>
+                            <p class="card-text text-truncate">@filme.Descricao</p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a asp-action="Details" asp-route-id="@filme.Id" class="btn btn-outline-primary w-100">
+                                Ver Detalhes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
