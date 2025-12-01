@@ -1,8 +1,108 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">🎬 Bem-vindo ao Cinema Gestão</h1>
+    <p class="lead">Sistema de gestão e reservas de cinema</p>
 </div>
+
+<div class="row mt-5">
+    @if (User.IsInRole("Administrador"))
+    {
+        <div class="col-md-3 mb-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <i class="bi bi-film" style="font-size: 3rem; color: #0d6efd;"></i>
+                    <h5 class="card-title mt-3">Gerir Filmes</h5>
+                    <p class="card-text">Adicionar, editar e remover filmes</p>
+                    <a asp-controller="Filmes" asp-action="Index" class="btn btn-primary">Aceder</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <i class="bi bi-calendar-event" style="font-size: 3rem; color: #198754;"></i>
+                    <h5 class="card-title mt-3">Gerir Sessões</h5>
+                    <p class="card-text">Gerir horários e salas</p>
+                    <a asp-controller="Sessoes" asp-action="Index" class="btn btn-success">Aceder</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <i class="bi bi-ticket-perforated" style="font-size: 3rem; color: #ffc107;"></i>
+                    <h5 class="card-title mt-3">Ver Reservas</h5>
+                    <p class="card-text">Todas as reservas do sistema</p>
+                    <a asp-controller="Reservas" asp-action="Index" class="btn btn-warning">Aceder</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <i class="bi bi-people" style="font-size: 3rem; color: #dc3545;"></i>
+                    <h5 class="card-title mt-3">Utilizadores</h5>
+                    <p class="card-text">Ver utilizadores registados</p>
+                    <a asp-controller="Utilizadores" asp-action="Index" class="btn btn-danger">Aceder</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="col-md-6 mb-4">
+        <div class="card text-center shadow">
+            <div class="card-body">
+                <i class="bi bi-film" style="font-size: 3rem; color: #0d6efd;"></i>
+                <h5 class="card-title mt-3">Catálogo de Filmes</h5>
+                <p class="card-text">Explore os filmes em cartaz</p>
+                <a asp-controller="Catalogo" asp-action="Index" class="btn btn-primary btn-lg">Ver Catálogo</a>
+            </div>
+        </div>
+    </div>
+
+    @if (User.IsInRole("Cliente"))
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <i class="bi bi-ticket-perforated" style="font-size: 3rem; color: #198754;"></i>
+                    <h5 class="card-title mt-3">Minhas Reservas</h5>
+                    <p class="card-text">Veja seu histórico de reservas</p>
+                    <a asp-controller="Reservas" asp-action="Index" class="btn btn-success btn-lg">Ver Reservas</a>
+                </div>
+            </div>
+        </div>
+    }
+    else if (!User.Identity.IsAuthenticated)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <i class="bi bi-box-arrow-in-right" style="font-size: 3rem; color: #198754;"></i>
+                    <h5 class="card-title mt-3">Faça Login</h5>
+                    <p class="card-text">Entre para fazer reservas</p>
+                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-success btn-lg">Login</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="alert alert-info text-center">
+                <h4>Novo por aqui?</h4>
+                <p>Crie uma conta para poder fazer reservas de bilhetes!</p>
+                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary">Registar-se</a>
+            </div>
+        </div>
+    </div>
+}
