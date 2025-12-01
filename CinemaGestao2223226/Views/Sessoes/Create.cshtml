@@ -1,59 +1,113 @@
 ﻿@model CinemaGestao.Models.Sessao
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Session";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<h4>Sessao</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FilmeId" class="control-label"></label>
-                <select asp-for="FilmeId" class="form-control" asp-items="ViewBag.FilmeId"></select>
-                <span asp-validation-for="FilmeId" class="text-danger"></span>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="mb-4"><i class="bi bi-plus-circle"></i> Create New Session</h1>
+
+            <div class="card shadow">
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="FilmeId" class="form-label">
+                                <i class="bi bi-film"></i> <strong>Movie</strong>
+                            </label>
+                            <select asp-for="FilmeId" class="form-select" asp-items="ViewBag.FilmeId">
+                                <option value="">-- Select a Movie --</option>
+                            </select>
+                            <span asp-validation-for="FilmeId" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DataHora" class="form-label">
+                                    <i class="bi bi-calendar-event"></i> <strong>Date and Time</strong>
+                                </label>
+                                <input asp-for="DataHora" type="datetime-local" class="form-control" />
+                                <span asp-validation-for="DataHora" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Sala" class="form-label">
+                                    <i class="bi bi-door-open"></i> <strong>Room</strong>
+                                </label>
+                                <input asp-for="Sala" class="form-control" placeholder="Ex: Room 1" />
+                                <span asp-validation-for="Sala" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Preco" class="form-label">
+                                    <i class="bi bi-currency-euro"></i> <strong>Price (€)</strong>
+                                </label>
+                                <input asp-for="Preco" type="text" class="form-control" placeholder="7.50" />
+                                <span asp-validation-for="Preco" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="LugaresTotais" class="form-label">
+                                    <i class="bi bi-people"></i> <strong>Total Seats</strong>
+                                </label>
+                                <input asp-for="LugaresTotais" type="number" class="form-control" placeholder="100" />
+                                <span asp-validation-for="LugaresTotais" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="LugaresDisponiveis" class="form-label">
+                                    <i class="bi bi-check-circle"></i> <strong>Available Seats</strong>
+                                </label>
+                                <input asp-for="LugaresDisponiveis" type="number" class="form-control" placeholder="100" />
+                                <span asp-validation-for="LugaresDisponiveis" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-check-circle"></i> Create Session
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="DataHora" class="control-label"></label>
-                <input asp-for="DataHora" class="form-control" />
-                <span asp-validation-for="DataHora" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Sala" class="control-label"></label>
-                <input asp-for="Sala" class="form-control" />
-                <span asp-validation-for="Sala" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Preco" class="control-label"></label>
-                <input asp-for="Preco" class="form-control" />
-                <span asp-validation-for="Preco" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LugaresTotais" class="control-label"></label>
-                <input asp-for="LugaresTotais" class="form-control" />
-                <span asp-validation-for="LugaresTotais" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LugaresDisponiveis" class="control-label"></label>
-                <input asp-for="LugaresDisponiveis" class="form-control" />
-                <span asp-validation-for="LugaresDisponiveis" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Auto-fill available seats when total seats change
+        const lugaresTotaisInput = document.querySelector('input[name="LugaresTotais"]');
+        const lugaresDisponiveisInput = document.querySelector('input[name="LugaresDisponiveis"]');
+        
+        if (lugaresTotaisInput && lugaresDisponiveisInput) {
+            lugaresTotaisInput.addEventListener('input', function() {
+                if (!lugaresDisponiveisInput.value) {
+                    lugaresDisponiveisInput.value = this.value;
+                }
+            });
+        }
+
+        // Handle decimal separator for price
+        const precoInput = document.querySelector('input[name="Preco"]');
+        if (precoInput) {
+            precoInput.addEventListener('blur', function() {
+                // Normalize to use period as decimal separator
+                this.value = this.value.replace(',', '.');
+            });
+        }
+    </script>
 }

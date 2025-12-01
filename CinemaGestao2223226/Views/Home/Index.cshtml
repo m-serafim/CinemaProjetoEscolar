@@ -245,26 +245,32 @@
     </div>
 }
 
-<!-- Project Info Section -->
-<div class="row mt-5 pt-4 border-top">
+<!-- Project Info Section - WITH BETTER CONTRAST -->
+<div class="row mt-5 pt-4 border-top" style="background: rgba(0,0,0,0.2); padding: 2rem; border-radius: 12px; margin-left: 0; margin-right: 0;">
     <div class="col-md-4 mb-4">
-        <h5><i class="bi bi-code-square text-danger"></i> @(isEnglish ? "School Project" : "Projeto Escolar")</h5>
-        <p class="text-muted">
-            @(isEnglish ? "System developed as an academic project" : "Sistema desenvolvido como projeto académico")<br>
+        <h5 style="color: #38BDF8;"><i class="bi bi-code-square"></i> @(isEnglish ? "School Project" : "Projeto Escolar")</h5>
+        <p style="color: #FFFFFF; font-size: 1rem;">
+            @(isEnglish ? "System developed as an academic project" : "Sistema desenvolvido como projeto académico")
+        </p>
+        <p style="color: #C0C0C0;">
             <small>ASP.NET Core MVC @(isEnglish ? "with" : "com") Entity Framework</small>
         </p>
     </div>
     <div class="col-md-4 mb-4">
-        <h5><i class="bi bi-list-check text-primary"></i> @(isEnglish ? "Features" : "Funcionalidades")</h5>
-        <p class="text-muted">
-            @(isEnglish ? "Complete CRUD and authentication system" : "CRUD completo e sistema de autenticação")<br>
+        <h5 style="color: #38BDF8;"><i class="bi bi-list-check"></i> @(isEnglish ? "Features" : "Funcionalidades")</h5>
+        <p style="color: #FFFFFF; font-size: 1rem;">
+            @(isEnglish ? "Complete CRUD and authentication system" : "CRUD completo e sistema de autenticação")
+        </p>
+        <p style="color: #C0C0C0;">
             <small>@(isEnglish ? "Management of movies, sessions and reservations" : "Gestão de filmes, sessões e reservas")</small>
         </p>
     </div>
     <div class="col-md-4 mb-4">
-        <h5><i class="bi bi-database-fill text-success"></i> @(isEnglish ? "Database" : "Base de Dados")</h5>
-        <p class="text-muted">
-            SQL Server @(isEnglish ? "with" : "com") Identity Framework<br>
+        <h5 style="color: #38BDF8;"><i class="bi bi-database-fill"></i> @(isEnglish ? "Database" : "Base de Dados")</h5>
+        <p style="color: #FFFFFF; font-size: 1rem;">
+            SQL Server @(isEnglish ? "with" : "com") Identity Framework
+        </p>
+        <p style="color: #C0C0C0;">
             <small>@(isEnglish ? "User and role control" : "Controlo de utilizadores e roles")</small>
         </p>
     </div>

@@ -35,8 +35,8 @@ html {
 body {
   /* Enhanced animated background with multiple gradient layers */
   background: 
-    radial-gradient(ellipse at 20% 0%, rgba(56, 189, 248, 0.25) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(14, 165, 233, 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 0%, rgba(56, 189, 248, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(14, 165, 233, 0.25) 0%, transparent 50%),
     radial-gradient(ellipse at 50% 50%, rgba(2, 6, 23, 0.95) 0%, rgba(10, 10, 20, 1) 100%),
     linear-gradient(135deg, #020617 0%, #0a0a14 50%, #020617 100%);
   background-attachment: fixed;
@@ -50,40 +50,49 @@ body {
   overflow-x: hidden;
 }
 
-/* Highly visible animated glow effect */
+/* HIGHLY VISIBLE animated rotating glow effect - Layer 1 */
 body::before {
   content: '';
   position: fixed;
-  top: -100%;
-  left: -100%;
-  width: 300%;
-  height: 300%;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
   background: 
-    radial-gradient(circle at 30% 20%, rgba(56, 189, 248, 0.15) 0%, transparent 20%),
-    radial-gradient(circle at 70% 80%, rgba(14, 165, 233, 0.12) 0%, transparent 20%),
-    radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 30%);
-  animation: rotateGlow 15s ease-in-out infinite;
+    radial-gradient(circle at 30% 20%, rgba(56, 189, 248, 0.35) 0%, rgba(56, 189, 248, 0.15) 15%, transparent 25%),
+    radial-gradient(circle at 70% 80%, rgba(14, 165, 233, 0.3) 0%, rgba(14, 165, 233, 0.12) 15%, transparent 25%),
+    radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.2) 0%, rgba(56, 189, 248, 0.08) 20%, transparent 35%);
+  animation: rotateGlow 12s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
   opacity: 1;
+  will-change: transform;
 }
 
 @keyframes rotateGlow {
   0% {
     transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 1;
   }
-  33% {
-    transform: translate(-10%, 10%) rotate(120deg) scale(1.1);
+  25% {
+    transform: translate(-8%, 8%) rotate(90deg) scale(1.15);
+    opacity: 0.85;
   }
-  66% {
-    transform: translate(10%, -10%) rotate(240deg) scale(0.9);
+  50% {
+    transform: translate(-15%, 15%) rotate(180deg) scale(1.05);
+    opacity: 0.95;
+  }
+  75% {
+    transform: translate(8%, -8%) rotate(270deg) scale(1.2);
+    opacity: 0.8;
   }
   100% {
     transform: translate(0, 0) rotate(360deg) scale(1);
+    opacity: 1;
   }
 }
 
-/* Additional animated gradient overlay for more visibility */
+/* HIGHLY VISIBLE animated gradient wave - Layer 2 */
 body::after {
   content: '';
   position: fixed;
@@ -91,32 +100,59 @@ body::after {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    45deg,
-    rgba(56, 189, 248, 0.1) 0%,
-    transparent 20%,
-    transparent 40%,
-    rgba(14, 165, 233, 0.08) 50%,
-    transparent 60%,
-    transparent 80%,
-    rgba(56, 189, 248, 0.1) 100%
-  );
+  background: 
+    linear-gradient(
+      -45deg,
+      rgba(56, 189, 248, 0.18) 0%,
+      rgba(14, 165, 233, 0.15) 15%,
+      transparent 30%,
+      transparent 50%,
+      rgba(56, 189, 248, 0.12) 65%,
+      rgba(14, 165, 233, 0.18) 80%,
+      transparent 95%
+    );
   background-size: 400% 400%;
-  animation: gradientShift 10s ease infinite;
+  animation: gradientWave 8s ease infinite;
   pointer-events: none;
   z-index: 0;
+  opacity: 1;
+  will-change: background-position;
 }
 
-@keyframes gradientShift {
+@keyframes gradientWave {
   0% {
     background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 75%;
   }
   50% {
     background-position: 100% 50%;
   }
+  75% {
+    background-position: 50% 25%;
+  }
   100% {
     background-position: 0% 50%;
   }
+}
+
+/* Additional pulsing ambient light effect - Layer 3 */
+@keyframes ambientPulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+/* Add subtle blur for smoother effect */
+body::before,
+body::after {
+  filter: blur(60px);
 }
 
 /* Ensure content stays above the animated backgrounds */
@@ -366,12 +402,17 @@ header {
   margin-bottom: 0.5rem;
 }
 
+/* Enhanced Form Select Styling for Better Visibility */
 .form-select {
   background-color: rgba(255, 255, 255, 0.05);
-  color: var(--text-body);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2338BDF8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  color: var(--text-heading);
   border-radius: 8px;
   border: 2px solid rgba(56, 189, 248, 0.2);
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
   transition: all 0.3s ease;
 }
 
@@ -382,319 +423,57 @@ header {
   box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.25);
 }
 
-/* Tables */
-.table {
-  color: var(--text-body);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.table thead {
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(56, 189, 248, 0.1) 100%);
+.form-select option {
+  background-color: var(--bg-secondary);
   color: var(--text-heading);
-  border-bottom: 2px solid var(--accent-cyan);
+  padding: 0.75rem;
 }
 
-.table thead th {
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border: none;
-  padding: 1rem;
+.form-select option:hover,
+.form-select option:focus {
+  background-color: rgba(56, 189, 248, 0.2);
+}
+
+/* Ensure datetime-local inputs are visible */
+input[type="datetime-local"],
+input[type="date"],
+input[type="time"] {
+  background-color: rgba(255, 255, 255, 0.05);
   color: var(--text-heading);
+  border: 2px solid rgba(56, 189, 248, 0.2);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  color-scheme: dark;
 }
 
-.table tbody tr {
-  border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.25);
 }
 
-.table-hover tbody tr {
-  transition: all 0.3s ease;
+/* Webkit calendar icon styling */
+input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
 }
 
-.table-hover tbody tr:hover {
-  background-color: rgba(56, 189, 248, 0.05);
-  transform: scale(1.01);
+/* Better table styling for admin pages */
+.table-secondary {
+  --bs-table-bg: rgba(108, 117, 125, 0.1);
+  opacity: 0.7;
 }
 
-/* Badges */
+/* Improved badge sizing */
 .badge {
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  font-size: 0.85rem;
 }
 
-.bg-primary {
-  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-cyan-hover) 100%) !important;
-  color: var(--bg-primary) !important;
-}
-
-.bg-danger {
-  background: linear-gradient(135deg, var(--accent-danger) 0%, #dc2626 100%) !important;
-  color: var(--text-heading) !important;
-}
-
-.bg-success {
-  background: linear-gradient(135deg, var(--accent-success) 0%, #16a34a 100%) !important;
-  color: var(--text-heading) !important;
-}
-
-.bg-warning {
-  background: linear-gradient(135deg, var(--accent-warning) 0%, #ca8a04 100%) !important;
-  color: var(--bg-primary) !important;
-}
-
-.bg-info {
-  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-cyan-hover) 100%) !important;
-  color: var(--bg-primary) !important;
-}
-
-/* Alerts */
-.alert {
-  border-radius: 12px;
-  border: none;
-  padding: 1rem 1.5rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-
-.alert-info {
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(56, 189, 248, 0.1) 100%);
-  color: var(--text-heading);
-  border-left: 4px solid var(--accent-cyan);
-}
-
-.alert-danger {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);
-  color: var(--text-heading);
-  border-left: 4px solid var(--accent-danger);
-}
-
-.alert-success {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%);
-  color: var(--text-heading);
-  border-left: 4px solid var(--accent-success);
-}
-
-.alert-warning {
-  background: linear-gradient(135deg, rgba(234, 179, 8, 0.2) 0%, rgba(234, 179, 8, 0.1) 100%);
-  color: var(--text-heading);
-  border-left: 4px solid var(--accent-warning);
-}
-
-.alert a, .alert .alert-link {
-  color: var(--accent-cyan);
-  text-decoration: underline;
-}
-
-.alert a:hover, .alert .alert-link:hover {
-  color: var(--text-heading);
-}
-
-/* Footer */
-.footer {
-  background: var(--bg-secondary);
-  color: var(--text-body);
-  padding: 1.5rem 0;
-  width: 100%;
-  text-align: center;
-  flex-shrink: 0;
-  border-top: 1px solid rgba(56, 189, 248, 0.2);
-}
-
-.footer a {
-  color: var(--accent-cyan);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.footer a:hover {
-  color: var(--text-heading);
-}
-
-/* Hero Section */
-.bg-dark {
-  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%) !important;
-  color: var(--text-heading) !important;
-}
-
-/* Links */
-a {
-  color: var(--accent-cyan);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-a:hover {
-  color: var(--text-heading);
-}
-
-/* Breadcrumb */
-.breadcrumb {
-  background-color: transparent;
-  padding: 0;
-}
-
-.breadcrumb-item {
-  color: var(--text-body);
-}
-
-.breadcrumb-item + .breadcrumb-item::before {
-  color: var(--accent-cyan);
-}
-
-.breadcrumb-item a {
-  color: var(--accent-cyan);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.breadcrumb-item a:hover {
-  color: var(--text-heading);
-}
-
-.breadcrumb-item.active {
-  color: var(--text-heading);
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.card, .alert {
-  animation: fadeIn 0.5s ease-out;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-primary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-cyan-hover) 100%);
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, var(--accent-cyan-hover) 0%, #0284c7 100%);
-}
-
-/* Movie Cards Special Styling */
-.card-img-top {
-  transition: transform 0.3s ease;
-}
-
-.card:hover .card-img-top {
-  transform: scale(1.05);
-}
-
-/* Bootstrap Icons Coloring */
-.bi {
-  color: var(--accent-cyan);
-}
-
-/* Shadow Utilities */
-.shadow-sm {
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3) !important;
-}
-
-.shadow {
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
-}
-
-.shadow-lg {
-  box-shadow: 0 8px 30px rgba(56, 189, 248, 0.2) !important;
-}
-
-/* Text Colors */
-.text-muted {
-  color: var(--text-body) !important;
-}
-
-.text-white {
-  color: var(--text-heading) !important;
-}
-
-/* Lead Text */
-.lead {
-  color: var(--text-secondary);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .display-3 {
-    font-size: 2.5rem;
-  }
-  
-  .display-4 {
-    font-size: 2rem;
-  }
-  
-  .card {
-    margin-bottom: 1rem;
-  }
-}
-
-/* Form Floating Label Fixes */
-.form-floating > .form-control-plaintext::placeholder, 
-.form-floating > .form-control::placeholder {
-  color: rgba(161, 161, 170, 0.5);
-  text-align: end;
-}
-
-.form-floating > .form-control-plaintext:focus::placeholder, 
-.form-floating > .form-control:focus::placeholder {
-  text-align: start;
-}
-
-.form-floating > label {
-  color: var(--text-body);
-}
-
-.form-floating > .form-control:focus ~ label {
-  color: var(--accent-cyan);
-}
-
-/* Loading Animation */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-.loading {
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-/* Flexbox utilities for sticky footer */
-.min-vh-100 {
-  min-height: 100vh;
-}
-
-.flex-grow-1 {
-  flex-grow: 1;
-}
-
-/* Border utilities */
-.border-top {
-  border-top: 1px solid rgba(56, 189, 248, 0.2) !important;
-}
-
-.border-bottom {
-  border-bottom: 1px solid rgba(56, 189, 248, 0.2) !important;
+/* Statistics cards */
+.card .display-4 {
+  margin-bottom: 0.5rem;
 }

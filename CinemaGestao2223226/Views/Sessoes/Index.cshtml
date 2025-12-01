@@ -1,68 +1,82 @@
 ﻿@model IEnumerable<CinemaGestao.Models.Sessao>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Manage Sessions";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<p>
-    <a asp-controller="Sessoes" asp-action="Create" class="btn btn-primary">
-        Criar nova sessão
-    </a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Filme)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataHora)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sala)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Preco)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LugaresTotais)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LugaresDisponiveis)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Filme.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataHora)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sala)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Preco)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LugaresTotais)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LugaresDisponiveis)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-calendar-event"></i> Manage Sessions</h1>
+        <a asp-controller="Sessoes" asp-action="Create" class="btn btn-success btn-lg">
+            <i class="bi bi-plus-circle"></i> Create New Session
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle"></i> No sessions registered in the system.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Movie</th>
+                                <th>Date & Time</th>
+                                <th>Room</th>
+                                <th>Price</th>
+                                <th>Total Seats</th>
+                                <th>Available</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderBy(s => s.DataHora))
+                            {
+                                <tr>
+                                    <td><strong>@item.Filme.Titulo</strong></td>
+                                    <td>@item.DataHora.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        <span class="badge bg-info text-dark">@item.Sala</span>
+                                    </td>
+                                    <td>@item.Preco.ToString("C")</td>
+                                    <td>@item.LugaresTotais</td>
+                                    <td>
+                                        <span class="badge @(item.LugaresDisponiveis > 10 ? "bg-success" : item.LugaresDisponiveis > 0 ? "bg-warning text-dark" : "bg-danger")">
+                                            @item.LugaresDisponiveis
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning" title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info" title="Details">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="alert alert-info mt-3">
+                    <strong>Total Sessions:</strong> @Model.Count()
+                </div>
+            </div>
+        </div>
+    }
+</div>
