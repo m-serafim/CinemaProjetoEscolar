@@ -1,17 +1,22 @@
 ﻿@model IEnumerable<CinemaGestao.Models.Filme>
+@using Microsoft.AspNetCore.Localization
 
 @{
     ViewData["Title"] = "Catálogo de Filmes";
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var isEnglish = (requestCulture?.RequestCulture.UICulture.Name ?? "pt-PT") == "en-US";
 }
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
 <div class="container">
-    <h1 class="mb-4">🎬 Catálogo de Filmes</h1>
-    <p class="lead">Explore nossos filmes em cartaz</p>
+    <h1 class="mb-4">🎬 @(isEnglish ? "Movie Catalog" : "Catálogo de Filmes")</h1>
+    <p class="lead">@(isEnglish ? "Explore our movies in theaters" : "Explore nossos filmes em cartaz")</p>
 
     @if (!Model.Any())
     {
         <div class="alert alert-info">
-            <i class="bi bi-info-circle"></i> Não há filmes disponíveis no momento.
+            <i class="bi bi-info-circle"></i> @(isEnglish ? "There are no movies available at the moment." : "Não há filmes disponíveis no momento.")
         </div>
     }
     else
@@ -35,13 +40,13 @@
                             <h5 class="card-title">@filme.Titulo</h5>
                             <p class="card-text">
                                 <span class="badge bg-primary">@filme.Genero</span>
-                                <span class="badge bg-info text-dark">@filme.DuracaoMinutos min</span>
+                                <span class="badge bg-info text-dark">@filme.DuracaoMinutos @(isEnglish ? "min" : "min")</span>
                             </p>
                             <p class="card-text text-truncate">@filme.Descricao</p>
                         </div>
                         <div class="card-footer bg-transparent">
                             <a asp-action="Details" asp-route-id="@filme.Id" class="btn btn-outline-primary w-100">
-                                Ver Detalhes
+                                <i class="bi bi-info-circle"></i> @(isEnglish ? "View Details" : "Ver Detalhes")
                             </a>
                         </div>
                     </div>

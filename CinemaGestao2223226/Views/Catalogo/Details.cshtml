@@ -1,13 +1,18 @@
 @model CinemaGestao.Models.Filme
+@using Microsoft.AspNetCore.Localization
 
 @{
     ViewData["Title"] = Model.Titulo;
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var isEnglish = (requestCulture?.RequestCulture.UICulture.Name ?? "pt-PT") == "en-US";
 }
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a asp-action="Index">Catálogo</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">@(isEnglish ? "Catalog" : "Catálogo")</a></li>
             <li class="breadcrumb-item active" aria-current="page">@Model.Titulo</li>
         </ol>
     </nav>
@@ -30,20 +35,20 @@
             
             <div class="mb-3">
                 <span class="badge bg-primary me-2">@Model.Genero</span>
-                <span class="badge bg-info text-dark">@Model.DuracaoMinutos minutos</span>
+                <span class="badge bg-info text-dark">@Model.DuracaoMinutos @(isEnglish ? "minutes" : "minutos")</span>
             </div>
 
-            <h5>Sinopse</h5>
+            <h5>@(isEnglish ? "Synopsis" : "Sinopse")</h5>
             <p class="lead">@Model.Descricao</p>
 
             <hr />
 
             <div class="d-grid gap-2">
                 <a asp-action="Sessoes" asp-route-id="@Model.Id" class="btn btn-primary btn-lg">
-                    <i class="bi bi-calendar-event"></i> Ver Sessões Disponíveis
+                    <i class="bi bi-calendar-event"></i> @(isEnglish ? "View Available Sessions" : "Ver Sessões Disponíveis")
                 </a>
                 <a asp-action="Index" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left"></i> Voltar ao Catálogo
+                    <i class="bi bi-arrow-left"></i> @(isEnglish ? "Back to Catalog" : "Voltar ao Catálogo")
                 </a>
             </div>
         </div>
