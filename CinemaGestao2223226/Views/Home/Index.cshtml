@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<CinemaGestao.Models.Filme>
+
+@{
     ViewData["Title"] = "Home";
 }
 
@@ -6,20 +8,64 @@
 
 <!-- Hero Section -->
 <div class="text-center py-5 bg-dark text-white rounded mb-5" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/cinema-hero.jpg'); background-size: cover;">
-    <h1 class="display-3 fw-bold">🎬 Bem-vindo ao Cinema Gestão</h1>
+    <h1 class="display-3 fw-bold">🎬 Bem-vindo ao Nexor Cinema</h1>
     <p class="lead fs-4">Sistema de Gestão de Cinema - Projeto Escolar</p>
     <a asp-controller="Catalogo" asp-action="Index" class="btn btn-danger btn-lg mt-3 px-5">
         <i class="bi bi-ticket-perforated"></i> Ver Filmes Disponíveis
     </a>
 </div>
 
-<!-- Now Showing / Coming Soon Section -->
+<!-- Now Showing Section with Movie Cards -->
 <div class="row mb-5">
     <div class="col-12">
         <h2 class="mb-4"><i class="bi bi-film"></i> Em Cartaz</h2>
-        <div class="alert alert-info">
-            <i class="bi bi-info-circle"></i> Consulte o nosso <a asp-controller="Catalogo" asp-action="Index" class="alert-link">catálogo completo</a> para ver todos os filmes em exibição
-        </div>
+        
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> Não há filmes em exibição no momento. Consulte o nosso <a asp-controller="Catalogo" asp-action="Index" class="alert-link">catálogo completo</a>
+            </div>
+        }
+        else
+        {
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+                @foreach (var filme in Model)
+                {
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            @if (!string.IsNullOrEmpty(filme.CapaUrl))
+                            {
+                                <img src="@filme.CapaUrl" class="card-img-top" alt="@filme.Titulo" style="height: 400px; object-fit: cover;">
+                            }
+                            else
+                            {
+                                <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 400px;">
+                                    <i class="bi bi-film" style="font-size: 5rem; color: white;"></i>
+                                </div>
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@filme.Titulo</h5>
+                                <p class="card-text">
+                                    <span class="badge bg-primary">@filme.Genero</span>
+                                    <span class="badge bg-info text-dark">@filme.DuracaoMinutos min</span>
+                                </p>
+                                <p class="card-text text-truncate">@filme.Descricao</p>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <a asp-controller="Catalogo" asp-action="Details" asp-route-id="@filme.Id" class="btn btn-primary w-100">
+                                    <i class="bi bi-info-circle"></i> Ver Detalhes
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="text-center">
+                <a asp-controller="Catalogo" asp-action="Index" class="btn btn-outline-primary btn-lg">
+                    <i class="bi bi-arrow-right-circle"></i> Ver Todos os Filmes
+                </a>
+            </div>
+        }
     </div>
 </div>
 
@@ -194,6 +240,6 @@
 
 @section Scripts {
     <script>
-        console.log('Cinema Gestão - Sistema de Gestão de Cinema');
+        console.log('Nexor Cinema - Sistema de Gestão de Cinema');
     </script>
 }
