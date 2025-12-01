@@ -4,14 +4,63 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<div class="text-center">
-    <h1 class="display-4">🎬 Bem-vindo ao Cinema Gestão</h1>
-    <p class="lead">Sistema de gestão e reservas de cinema</p>
+<!-- Hero Section -->
+<div class="text-center py-5 bg-dark text-white rounded mb-5" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/cinema-hero.jpg'); background-size: cover;">
+    <h1 class="display-3 fw-bold">🎬 Bem-vindo ao Cinema Gestão</h1>
+    <p class="lead fs-4">Sistema de Gestão de Cinema - Projeto Escolar</p>
+    <a asp-controller="Catalogo" asp-action="Index" class="btn btn-danger btn-lg mt-3 px-5">
+        <i class="bi bi-ticket-perforated"></i> Ver Filmes Disponíveis
+    </a>
 </div>
 
+<!-- Now Showing / Coming Soon Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <h2 class="mb-4"><i class="bi bi-film"></i> Em Cartaz</h2>
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> Consulte o nosso <a asp-controller="Catalogo" asp-action="Index" class="alert-link">catálogo completo</a> para ver todos os filmes em exibição
+        </div>
+    </div>
+</div>
+
+<!-- Quick Info Cards -->
+<div class="row mb-5">
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="bi bi-clock-history" style="font-size: 3rem; color: #0d6efd;"></i>
+                <h5 class="card-title mt-3">Horários Flexíveis</h5>
+                <p class="card-text">Sessões disponíveis de manhã à noite, todos os dias da semana</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="bi bi-database" style="font-size: 3rem; color: #198754;"></i>
+                <h5 class="card-title mt-3">Gestão Completa</h5>
+                <p class="card-text">Sistema integrado para gestão de filmes, sessões e reservas</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="bi bi-person-check" style="font-size: 3rem; color: #ffc107;"></i>
+                <h5 class="card-title mt-3">Sistema de Utilizadores</h5>
+                <p class="card-text">Controlo de acesso com perfis de administrador e cliente</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Action Cards -->
 <div class="row mt-5">
     @if (User.IsInRole("Administrador"))
     {
+        <div class="col-12 mb-4">
+            <h3 class="mb-3"><i class="bi bi-gear-fill"></i> Painel de Administração</h3>
+        </div>
         <div class="col-md-3 mb-4">
             <div class="card text-center shadow">
                 <div class="card-body">
@@ -57,12 +106,19 @@
         </div>
     }
 
+    @if (!User.IsInRole("Administrador"))
+    {
+        <div class="col-12 mb-4">
+            <h3 class="mb-3"><i class="bi bi-star-fill"></i> Acesso Rápido</h3>
+        </div>
+    }
+
     <div class="col-md-6 mb-4">
-        <div class="card text-center shadow">
+        <div class="card text-center shadow h-100">
             <div class="card-body">
                 <i class="bi bi-film" style="font-size: 3rem; color: #0d6efd;"></i>
                 <h5 class="card-title mt-3">Catálogo de Filmes</h5>
-                <p class="card-text">Explore os filmes em cartaz</p>
+                <p class="card-text">Explore os filmes em cartaz e escolha a sua próxima sessão</p>
                 <a asp-controller="Catalogo" asp-action="Index" class="btn btn-primary btn-lg">Ver Catálogo</a>
             </div>
         </div>
@@ -71,11 +127,11 @@
     @if (User.IsInRole("Cliente"))
     {
         <div class="col-md-6 mb-4">
-            <div class="card text-center shadow">
+            <div class="card text-center shadow h-100">
                 <div class="card-body">
                     <i class="bi bi-ticket-perforated" style="font-size: 3rem; color: #198754;"></i>
                     <h5 class="card-title mt-3">Minhas Reservas</h5>
-                    <p class="card-text">Veja seu histórico de reservas</p>
+                    <p class="card-text">Veja e gerencie o seu histórico de reservas</p>
                     <a asp-controller="Reservas" asp-action="Index" class="btn btn-success btn-lg">Ver Reservas</a>
                 </div>
             </div>
@@ -84,11 +140,11 @@
     else if (!User.Identity.IsAuthenticated)
     {
         <div class="col-md-6 mb-4">
-            <div class="card text-center shadow">
+            <div class="card text-center shadow h-100">
                 <div class="card-body">
                     <i class="bi bi-box-arrow-in-right" style="font-size: 3rem; color: #198754;"></i>
                     <h5 class="card-title mt-3">Faça Login</h5>
-                    <p class="card-text">Entre para fazer reservas</p>
+                    <p class="card-text">Entre na sua conta para fazer reservas e acessar o sistema</p>
                     <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-success btn-lg">Login</a>
                 </div>
             </div>
@@ -100,11 +156,44 @@
 {
     <div class="row mt-4">
         <div class="col-md-12">
-            <div class="alert alert-info text-center">
-                <h4>Novo por aqui?</h4>
-                <p>Crie uma conta para poder fazer reservas de bilhetes!</p>
-                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary">Registar-se</a>
+            <div class="alert alert-info text-center shadow-sm">
+                <h4><i class="bi bi-person-plus-fill"></i> Novo por aqui?</h4>
+                <p class="mb-3">Crie uma conta para poder fazer reservas de bilhetes e testar todas as funcionalidades!</p>
+                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary btn-lg">
+                    <i class="bi bi-person-plus"></i> Registar-se Agora
+                </a>
             </div>
         </div>
     </div>
+}
+
+<!-- Project Info Section -->
+<div class="row mt-5 pt-4 border-top">
+    <div class="col-md-4 mb-4">
+        <h5><i class="bi bi-code-square text-danger"></i> Projeto Escolar</h5>
+        <p class="text-muted">
+            Sistema desenvolvido como projeto académico<br>
+            <small>ASP.NET Core MVC com Entity Framework</small>
+        </p>
+    </div>
+    <div class="col-md-4 mb-4">
+        <h5><i class="bi bi-list-check text-primary"></i> Funcionalidades</h5>
+        <p class="text-muted">
+            CRUD completo e sistema de autenticação<br>
+            <small>Gestão de filmes, sessões e reservas</small>
+        </p>
+    </div>
+    <div class="col-md-4 mb-4">
+        <h5><i class="bi bi-database-fill text-success"></i> Base de Dados</h5>
+        <p class="text-muted">
+            SQL Server com Identity Framework<br>
+            <small>Controlo de utilizadores e roles</small>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        console.log('Cinema Gestão - Sistema de Gestão de Cinema');
+    </script>
 }

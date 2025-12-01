@@ -1,53 +1,85 @@
 ﻿@model CinemaGestao.Models.Filme
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Filme";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<h4>Filme</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Titulo" class="control-label"></label>
-                <input asp-for="Titulo" class="form-control" />
-                <span asp-validation-for="Titulo" class="text-danger"></span>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="mb-4"><i class="bi bi-pencil"></i> Editar Filme</h1>
+
+            <div class="card shadow">
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="mb-3">
+                            <label asp-for="Titulo" class="form-label">
+                                <i class="bi bi-file-text"></i> <strong>Título</strong>
+                            </label>
+                            <input asp-for="Titulo" class="form-control form-control-lg" />
+                            <span asp-validation-for="Titulo" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Genero" class="form-label">
+                                    <i class="bi bi-tag"></i> <strong>Género</strong>
+                                </label>
+                                <input asp-for="Genero" class="form-control" />
+                                <span asp-validation-for="Genero" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DuracaoMinutos" class="form-label">
+                                    <i class="bi bi-clock"></i> <strong>Duração (minutos)</strong>
+                                </label>
+                                <input asp-for="DuracaoMinutos" type="number" class="form-control" />
+                                <span asp-validation-for="DuracaoMinutos" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Descricao" class="form-label">
+                                <i class="bi bi-card-text"></i> <strong>Descrição / Sinopse</strong>
+                            </label>
+                            <textarea asp-for="Descricao" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Descricao" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="CapaUrl" class="form-label">
+                                <i class="bi bi-image"></i> <strong>URL da Capa</strong>
+                            </label>
+                            <input asp-for="CapaUrl" class="form-control" />
+                            <span asp-validation-for="CapaUrl" class="text-danger"></span>
+                            @if (!string.IsNullOrEmpty(Model.CapaUrl))
+                            {
+                                <div class="mt-2">
+                                    <small class="text-muted">Pré-visualização:</small><br>
+                                    <img src="@Model.CapaUrl" alt="Capa atual" class="img-thumbnail mt-1" style="max-width: 200px;">
+                                </div>
+                            }
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-save"></i> Guardar Alterações
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Genero" class="control-label"></label>
-                <input asp-for="Genero" class="form-control" />
-                <span asp-validation-for="Genero" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DuracaoMinutos" class="control-label"></label>
-                <input asp-for="DuracaoMinutos" class="form-control" />
-                <span asp-validation-for="DuracaoMinutos" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" class="form-control" />
-                <span asp-validation-for="Descricao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CapaUrl" class="control-label"></label>
-                <input asp-for="CapaUrl" class="form-control" />
-                <span asp-validation-for="CapaUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
