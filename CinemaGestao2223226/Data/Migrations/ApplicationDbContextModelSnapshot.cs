@@ -17,7 +17,7 @@ namespace CinemaGestao2223226.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "10.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -334,7 +334,7 @@ namespace CinemaGestao2223226.Data.Migrations
             modelBuilder.Entity("CinemaGestao.Models.Sessao", b =>
                 {
                     b.HasOne("CinemaGestao.Models.Filme", "Filme")
-                        .WithMany()
+                        .WithMany("Sessoes")
                         .HasForeignKey("FilmeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -391,6 +391,11 @@ namespace CinemaGestao2223226.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CinemaGestao.Models.Filme", b =>
+                {
+                    b.Navigation("Sessoes");
                 });
 
             modelBuilder.Entity("CinemaGestao.Models.Sessao", b =>
