@@ -69,6 +69,7 @@ else
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 // Add localization middleware
 app.UseRequestLocalization();
@@ -79,15 +80,11 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
 app.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+        pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapRazorPages()
-   .WithStaticAssets();
+app.MapRazorPages();
 
 await SeedDataAsync(app);
 app.Run();
