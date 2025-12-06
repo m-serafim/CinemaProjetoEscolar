@@ -2530,3 +2530,13 @@ details summary:hover {
 .movie-poster img {
   loading: lazy;
 }
+
+/* Search results scrollbar */
+.search-results::-webkit-scrollbar {
+  width: 8px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.4);
+  border-radius: 4px;
+}
