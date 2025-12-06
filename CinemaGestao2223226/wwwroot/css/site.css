@@ -1350,3 +1350,8 @@ html {
   background: var(--accent-cyan);
   color: var(--bg-primary);
 }
+
+/* Section spacing consistency */
+section {
+  position: relative;
+}
