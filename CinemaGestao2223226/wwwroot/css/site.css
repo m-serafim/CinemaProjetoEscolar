@@ -2383,3 +2383,8 @@ details summary:hover {
 .rotating-movie-card {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(56, 189, 248, 0.2);
 }
+
+/* Search result thumbnail border */
+.search-result-thumbnail {
+  border: 2px solid rgba(56, 189, 248, 0.3);
+}
