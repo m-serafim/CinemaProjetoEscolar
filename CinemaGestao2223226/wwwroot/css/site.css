@@ -2428,3 +2428,8 @@ details summary:hover {
 .movie-title {
   font-size: 21px;
 }
+
+/* Quick access card description */
+.quick-access-card .card-description {
+  font-size: 14px;
+}
