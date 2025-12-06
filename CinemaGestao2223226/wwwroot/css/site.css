@@ -2303,3 +2303,8 @@ details summary:hover {
 .genre-tag {
   font-size: 11px;
 }
+
+/* Duration tag icon spacing */
+.duration-tag {
+  letter-spacing: 0.3px;
+}
