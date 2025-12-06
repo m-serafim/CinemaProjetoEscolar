@@ -158,228 +158,46 @@
     </div>
 </section>
 
-<!-- Quick Info Cards -->
-<div class="row mb-5">
-    <div class="col-md-4 mb-3">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
-                <i class="bi bi-clock-history" style="font-size: 3rem; color: #38BDF8;"></i>
-                <h5 class="card-title mt-3">Flexible Schedule</h5>
-                <p class="card-text">
-                    Sessions available from morning to night, every day of the week
-                </p>
+<!-- About This Project Section -->
+<section class="about-section" id="about-section">
+    <div class="container">
+        <h2 class="section-title">
+            <i class="bi bi-info-circle-fill"></i> About This Project
+        </h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="about-card">
+                    <div class="card-icon-large">
+                        <i class="bi bi-code-square"></i>
+                    </div>
+                    <h3 class="card-title">School Project</h3>
+                    <p class="card-description">System developed as an academic project</p>
+                    <p class="card-detail">ASP.NET Core MVC with Entity Framework</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="about-card">
+                    <div class="card-icon-large">
+                        <i class="bi bi-list-check"></i>
+                    </div>
+                    <h3 class="card-title">Features</h3>
+                    <p class="card-description">Complete CRUD and authentication system</p>
+                    <p class="card-detail">Management of movies, sessions and reservations</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="about-card">
+                    <div class="card-icon-large">
+                        <i class="bi bi-database-fill"></i>
+                    </div>
+                    <h3 class="card-title">Database</h3>
+                    <p class="card-description">SQL Server with Identity Framework</p>
+                    <p class="card-detail">User and role control</p>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
-                <i class="bi bi-database" style="font-size: 3rem; color: #22c55e;"></i>
-                <h5 class="card-title mt-3">Complete Management</h5>
-                <p class="card-text">
-                    Integrated system for managing movies, sessions and reservations
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-3">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
-                <i class="bi bi-person-check" style="font-size: 3rem; color: #eab308;"></i>
-                <h5 class="card-title mt-3">User System</h5>
-                <p class="card-text">
-                    Access control with administrator and client profiles
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- User Action Cards -->
-<div class="row mt-5">
-    @if (User.IsInRole("Administrador"))
-    {
-        <div class="col-12 mb-4">
-            <h3 class="mb-3"><i class="bi bi-gear-fill"></i> Administration Panel</h3>
-        </div>
-        <div class="col-md-3 mb-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <i class="bi bi-film" style="font-size: 3rem; color: #38BDF8;"></i>
-                    <h5 class="card-title mt-3">Manage Movies</h5>
-                    <p class="card-text">Add, edit and remove movies</p>
-                    <a asp-controller="Filmes" asp-action="Index" class="btn btn-primary">Access</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <i class="bi bi-calendar-event" style="font-size: 3rem; color: #22c55e;"></i>
-                    <h5 class="card-title mt-3">Manage Sessions</h5>
-                    <p class="card-text">Manage schedules and rooms</p>
-                    <a asp-controller="Sessoes" asp-action="Index" class="btn btn-success">Access</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <i class="bi bi-ticket-perforated" style="font-size: 3rem; color: #eab308;"></i>
-                    <h5 class="card-title mt-3">View Reservations</h5>
-                    <p class="card-text">All system reservations</p>
-                    <a asp-controller="Reservas" asp-action="Index" class="btn btn-warning">Access</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <i class="bi bi-people" style="font-size: 3rem; color: #ef4444;"></i>
-                    <h5 class="card-title mt-3">Users</h5>
-                    <p class="card-text">View registered users</p>
-                    <a asp-controller="Utilizadores" asp-action="Index" class="btn btn-danger">Access</a>
-                </div>
-            </div>
-        </div>
-    }
-
-    @if (!User.IsInRole("Administrador"))
-    {
-        <div class="col-12 mb-4">
-            <h3 class="mb-3"><i class="bi bi-star-fill"></i> Quick Access</h3>
-        </div>
-    }
-
-    <div class="col-md-6 mb-4">
-        <div class="card text-center shadow h-100">
-            <div class="card-body">
-                <i class="bi bi-film" style="font-size: 3rem; color: #38BDF8;"></i>
-                <h5 class="card-title mt-3">Movie Catalog</h5>
-                <p class="card-text">
-                    Explore the movies on show and choose your next session
-                </p>
-                <a asp-controller="Catalogo" asp-action="Index" class="btn btn-primary btn-lg">
-                    View Catalog
-                </a>
-            </div>
-        </div>
-    </div>
-
-    @if (User.IsInRole("Cliente"))
-    {
-        <div class="col-md-6 mb-4">
-            <div class="card text-center shadow h-100">
-                <div class="card-body">
-                    <i class="bi bi-ticket-perforated" style="font-size: 3rem; color: #22c55e;"></i>
-                    <h5 class="card-title mt-3">My Reservations</h5>
-                    <p class="card-text">
-                        View and manage your reservation history
-                    </p>
-                    <a asp-controller="Reservas" asp-action="Index" class="btn btn-success btn-lg">
-                        View Reservations
-                    </a>
-                </div>
-            </div>
-        </div>
-    }
-    else if (!User.Identity.IsAuthenticated)
-    {
-        <div class="col-md-6 mb-4">
-            <div class="card text-center shadow h-100">
-                <div class="card-body">
-                    <i class="bi bi-box-arrow-in-right" style="font-size: 3rem; color: #22c55e;"></i>
-                    <h5 class="card-title mt-3">Log In</h5>
-                    <p class="card-text">
-                        Sign in to your account to make reservations and access the system
-                    </p>
-                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-success btn-lg">Login</a>
-                </div>
-            </div>
-        </div>
-    }
-</div>
-
-@if (!User.Identity.IsAuthenticated)
-{
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="alert alert-info text-center shadow-sm">
-                <h4><i class="bi bi-person-plus-fill"></i> New here?</h4>
-                <p class="mb-3">
-                    Create an account to book tickets and test all features!
-                </p>
-                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary btn-lg">
-                    <i class="bi bi-person-plus"></i> Register Now
-                </a>
-            </div>
-        </div>
-    </div>
-}
-
-<!-- REDESIGNED Project Info Section with Modern Card Design -->
-<div class="project-info-section">
-    <h4>
-        <i class="bi bi-info-circle-fill"></i> 
-        About This Project
-    </h4>
-    
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="info-card">
-                <div class="info-icon">
-                    <i class="bi bi-code-square"></i>
-                </div>
-                <h5 class="info-title">
-                    School Project
-                </h5>
-                <p class="info-description">
-                    System developed as an academic project
-                </p>
-                <p class="info-detail">
-                    ASP.NET Core MVC with Entity Framework
-                </p>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="info-card">
-                <div class="info-icon">
-                    <i class="bi bi-list-check"></i>
-                </div>
-                <h5 class="info-title">
-                    Features
-                </h5>
-                <p class="info-description">
-                    Complete CRUD and authentication system
-                </p>
-                <p class="info-detail">
-                    Management of movies, sessions and reservations
-                </p>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="info-card">
-                <div class="info-icon">
-                    <i class="bi bi-database-fill"></i>
-                </div>
-                <h5 class="info-title">
-                    Database
-                </h5>
-                <p class="info-description">
-                    SQL Server with Identity Framework
-                </p>
-                <p class="info-detail">
-                    User and role control
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
+</section>
 
 @section Scripts {
     <script>
