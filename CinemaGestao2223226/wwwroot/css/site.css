@@ -2247,3 +2247,8 @@ details summary:hover {
 .site-header {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 2px 10px rgba(56, 189, 248, 0.1);
 }
+
+/* Footer content spacing */
+.footer-content {
+  padding: 1rem 0;
+}
