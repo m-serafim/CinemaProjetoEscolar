@@ -1285,6 +1285,11 @@ footer a:hover {
 .quick-access-card .card-icon i {
   font-size: 32px;
   color: var(--accent-cyan);
+  transition: transform 0.3s ease;
+}
+
+.quick-access-card:hover .card-icon i {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .quick-access-card .card-title {
