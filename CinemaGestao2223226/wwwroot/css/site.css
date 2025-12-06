@@ -1527,3 +1527,11 @@ abbr[title] {
   text-decoration-color: var(--accent-cyan);
   cursor: help;
 }
+
+/* Figure caption styling */
+figcaption {
+  color: var(--text-body);
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
