@@ -1542,6 +1542,7 @@ footer a:hover {
   overflow: hidden;
   background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
   position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .movie-poster img {
