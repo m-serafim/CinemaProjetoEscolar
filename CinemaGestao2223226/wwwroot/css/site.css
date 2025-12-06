@@ -2525,3 +2525,8 @@ details summary:hover {
 .quick-access-card .card-icon {
   border-radius: 14px;
 }
+
+/* Movie poster loading */
+.movie-poster img {
+  loading: lazy;
+}
