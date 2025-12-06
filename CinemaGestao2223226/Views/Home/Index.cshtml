@@ -1,33 +1,33 @@
-﻿@*
-    Static Prototype Homepage
-    This page implements a static UI prototype matching the provided design specifications.
-    For dynamic movie content, see the original Index.cshtml.backup file.
-*@
+﻿@model IEnumerable<CinemaGestao.Models.Filme>
 @{
     ViewData["Title"] = "Home";
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<!-- Hero Section -->
+<!-- Hero Section with Rotating Movie Display -->
 <section class="hero-banner">
     <div class="container-fluid">
         <div class="row align-items-center">
-            <div class="col-lg-6">
-                <div class="hero-image-wrapper">
-                    <img src="~/images/hero/avengers-hero.svg" alt="Avengers" class="hero-image" />
-                    <div class="play-button-overlay">
-                        <img src="~/images/icons/play-button.svg" alt="Play" class="play-icon" />
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
+            <div class="col-lg-5">
                 <div class="hero-content">
                     <h1 class="hero-title">Welcome to Nexor Cinema</h1>
                     <p class="hero-subtitle">Discover amazing movies and book your seats for an unforgettable experience</p>
                     <a asp-controller="Catalogo" asp-action="Index" class="btn-cta">
                         VIEW AVAILABLE MOVIES
                     </a>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="hero-rotating-section">
+                    <div id="rotatingMovieDisplay" class="rotating-movie-container">
+                        <!-- Movies will be loaded dynamically via JavaScript -->
+                        <div class="rotating-movie-loading">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,69 +96,58 @@
     </div>
 </section>
 
-<!-- Now Showing Section -->
+<!-- Now Showing Section - Dynamic -->
 <section class="now-showing-section">
     <div class="container">
         <h2 class="section-title">
             <i class="bi bi-film"></i> Now Showing
         </h2>
         <div class="row g-4">
-            <!-- John Wick Movie Card -->
-            <div class="col-md-4">
-                <div class="movie-card">
-                    <div class="movie-poster">
-                        <img src="~/images/movies/john-wick.svg" alt="John Wick" />
-                    </div>
-                    <div class="movie-info">
-                        <h3 class="movie-title">John Wick</h3>
-                        <div class="movie-tags">
-                            <span class="tag age-tag">16+</span>
-                            <span class="tag genre-tag">Action</span>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var filme in Model.Take(6))
+                {
+                    <div class="col-md-4">
+                        <div class="movie-card">
+                            <div class="movie-poster">
+                                @if (!string.IsNullOrEmpty(filme.CapaUrl))
+                                {
+                                    <img src="@filme.CapaUrl" alt="@filme.Titulo" onerror="this.src='/images/movies/placeholder.svg'" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/movies/placeholder.svg" alt="@filme.Titulo" />
+                                }
+                            </div>
+                            <div class="movie-info">
+                                <h3 class="movie-title">@filme.Titulo</h3>
+                                <div class="movie-tags">
+                                    <span class="tag genre-tag">@filme.Genero</span>
+                                    @if (filme.DuracaoMinutos > 0)
+                                    {
+                                        <span class="tag duration-tag">@filme.DuracaoMinutos min</span>
+                                    }
+                                </div>
+                                <p class="movie-description">
+                                    @(filme.Descricao.Length > 120 ? filme.Descricao.Substring(0, 120) + "..." : filme.Descricao)
+                                </p>
+                                <a asp-controller="Catalogo" asp-action="Details" asp-route-id="@filme.Id" class="btn-view-details">
+                                    <i class="bi bi-eye"></i> View Details
+                                </a>
+                            </div>
                         </div>
-                        <p class="movie-description">
-                            An ex-hitman comes out of retirement to track down the gangsters that took everything from him.
-                        </p>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="no-movies-message">
+                        <i class="bi bi-film"></i>
+                        <p>No movies available at the moment. Check back soon!</p>
                     </div>
                 </div>
-            </div>
-
-            <!-- Vingadores Movie Card -->
-            <div class="col-md-4">
-                <div class="movie-card">
-                    <div class="movie-poster">
-                        <img src="~/images/movies/vingadores.svg" alt="Vingadores" />
-                    </div>
-                    <div class="movie-info">
-                        <h3 class="movie-title">Vingadores</h3>
-                        <div class="movie-tags">
-                            <span class="tag age-tag">12+</span>
-                            <span class="tag genre-tag">Adventure</span>
-                        </div>
-                        <p class="movie-description">
-                            Earth's mightiest heroes must come together to stop an intergalactic threat.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Smallville Movie Card -->
-            <div class="col-md-4">
-                <div class="movie-card">
-                    <div class="movie-poster">
-                        <img src="~/images/movies/smallville.svg" alt="Smallville" />
-                    </div>
-                    <div class="movie-info">
-                        <h3 class="movie-title">Smallville</h3>
-                        <div class="movie-tags">
-                            <span class="tag age-tag">10+</span>
-                            <span class="tag genre-tag">Drama</span>
-                        </div>
-                        <p class="movie-description">
-                            The early years of Clark Kent before he became Superman.
-                        </p>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </div>
 </section>
