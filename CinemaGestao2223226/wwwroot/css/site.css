@@ -1673,6 +1673,7 @@ footer a:hover {
 .about-section {
   padding: 3rem 0;
   margin-bottom: 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .about-card {
