@@ -2500,3 +2500,8 @@ details summary:hover {
 .movie-tags {
   margin-bottom: 1.25rem;
 }
+
+/* Search input font size */
+.search-input {
+  font-size: 15px;
+}
