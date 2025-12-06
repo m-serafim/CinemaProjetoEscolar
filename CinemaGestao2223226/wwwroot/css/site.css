@@ -1343,6 +1343,7 @@ footer a:hover {
   font-weight: 700;
   color: var(--text-heading);
   background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(14, 165, 233, 0.05) 100%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .rotating-movie-loading {
