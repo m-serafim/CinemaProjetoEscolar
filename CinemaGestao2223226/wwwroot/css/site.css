@@ -1563,6 +1563,7 @@ footer a:hover {
   font-weight: 700;
   color: var(--text-heading);
   margin-bottom: 0.75rem;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .movie-tags {
