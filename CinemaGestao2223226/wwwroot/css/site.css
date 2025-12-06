@@ -2298,3 +2298,8 @@ details summary:hover {
 .hero-subtitle {
   max-width: 500px;
 }
+
+/* Genre tag font size */
+.genre-tag {
+  font-size: 11px;
+}
