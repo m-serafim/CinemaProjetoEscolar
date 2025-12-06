@@ -2495,3 +2495,8 @@ details summary:hover {
   width: 72px;
   height: 72px;
 }
+
+/* Movie tags margin bottom */
+.movie-tags {
+  margin-bottom: 1.25rem;
+}
