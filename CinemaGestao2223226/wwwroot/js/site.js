@@ -135,59 +135,93 @@
     }
 })();
 
-// Rotating Movie Display
+// Rotating Movie Display - NO ANIMATIONS (instant switching)
 (function() {
     const rotatingContainer = document.getElementById('rotatingMovieDisplay');
-    if (!rotatingContainer) return;
+    if (!rotatingContainer) {
+        console.log('Rotating container not found!');
+        return;
+    }
 
+    console.log('🎬 Initializing movie rotation (instant switching - no animations)...');
     let movies = [];
     let currentIndex = 0;
     let rotationInterval;
 
     // Fetch movies
     fetch('/Home/GetRandomMovies')
-        .then(response => response.json())
+        .then(response => {
+            console.log('📡 Fetch response:', response);
+            return response.json();
+        })
         .then(data => {
+            console.log('🎥 Movies data:', data);
             movies = data.movies;
             if (movies && movies.length > 0) {
-                displayMovie(0);
+                console.log(`✅ Found ${movies.length} movies, initializing slideshow...`);
+                initializeSlideshow();
                 startRotation();
             } else {
+                console.log('⚠️ No movies found');
                 rotatingContainer.innerHTML = '<div class="no-movies-message">No movies available</div>';
             }
         })
         .catch(error => {
-            console.error('Error fetching movies:', error);
+            console.error('❌ Error fetching movies:', error);
             rotatingContainer.innerHTML = '<div class="no-movies-message">Unable to load movies</div>';
         });
 
-    function displayMovie(index) {
-        if (!movies || movies.length === 0) return;
+    function initializeSlideshow() {
+        if (!movies || movies.length === 0) {
+            console.log('⚠️ No movies to initialize');
+            return;
+        }
 
-        const movie = movies[index];
-        const thumbnail = escapeHtml(movie.thumbnail || '/images/movies/placeholder.svg');
-
-        rotatingContainer.innerHTML = `
-            <div class="rotating-movie-card fade-in">
-                <a href="/Catalogo/Details/${movie.id}">
-                    <img src="${thumbnail}" alt="${escapeHtml(movie.title)}" class="rotating-movie-image" onerror="this.src='/images/movies/placeholder.svg'">
-                    <div class="rotating-movie-title">${escapeHtml(movie.title)}</div>
-                </a>
-            </div>
-        `;
+        console.log('🎨 Creating movie slides...');
+        
+        // Create all movie slides
+        rotatingContainer.innerHTML = '';
+        movies.forEach((movie, index) => {
+            const thumbnail = escapeHtml(movie.thumbnail || '/images/movies/placeholder.svg');
+            const slideDiv = document.createElement('div');
+            slideDiv.className = `rotating-movie-slide${index === 0 ? ' active' : ''}`;
+            slideDiv.innerHTML = `
+                <div class="rotating-movie-card">
+                    <a href="/Catalogo/Details/${movie.id}">
+                        <img src="${thumbnail}" alt="${escapeHtml(movie.title)}" class="rotating-movie-image" onerror="this.src='/images/movies/placeholder.svg'" loading="lazy">
+                        <div class="rotating-movie-title">${escapeHtml(movie.title)}</div>
+                    </a>
+                </div>
+            `;
+            rotatingContainer.appendChild(slideDiv);
+            console.log(`✔️ Created slide ${index}: "${movie.title}"`);
+        });
+        console.log('🎉 All slides created!');
     }
 
     function startRotation() {
+        if (movies.length <= 1) {
+            console.log('⚠️ Only one or no movies, skipping rotation');
+            return;
+        }
+        
+        console.log(`🔄 Starting instant rotation with ${movies.length} movies`);
+        
         rotationInterval = setInterval(() => {
-            // Fade out
-            rotatingContainer.classList.add('fade-out');
+            const slides = rotatingContainer.querySelectorAll('.rotating-movie-slide');
+            const currentSlide = slides[currentIndex];
+            const nextIndex = (currentIndex + 1) % movies.length;
+            const nextSlide = slides[nextIndex];
 
-            setTimeout(() => {
-                currentIndex = (currentIndex + 1) % movies.length;
-                displayMovie(currentIndex);
-                rotatingContainer.classList.remove('fade-out');
-            }, 500);
-        }, 2500);
+            console.log(`➡️ Switching from "${movies[currentIndex].title}" to "${movies[nextIndex].title}"`);
+
+            // Instant switch - no animation
+            currentSlide.classList.remove('active');
+            nextSlide.classList.add('active');
+            
+            currentIndex = nextIndex;
+            console.log(`✅ Now showing: ${movies[nextIndex].title}`);
+        }, 4500); // 4.5 seconds per movie
     }
 
     function escapeHtml(text) {
@@ -195,6 +229,8 @@
         div.textContent = text;
         return div.innerHTML;
     }
+
+    console.log('✅ Movie rotation ready - instant switching enabled');
 })();
 
 // Fade-in sections on scroll

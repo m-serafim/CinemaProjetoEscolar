@@ -36,14 +36,16 @@ html {
 }
 
 body {
-  /* Enhanced animated background with multiple gradient layers */
+  /* HIGHLY VISIBLE Enhanced animated background with multiple gradient layers */
   background: 
-    radial-gradient(ellipse at 20% 0%, rgba(56, 189, 248, 0.3) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(14, 165, 233, 0.25) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 0%, rgba(56, 189, 248, 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(14, 165, 233, 0.45) 0%, transparent 50%),
     radial-gradient(ellipse at 50% 50%, rgba(2, 6, 23, 0.95) 0%, rgba(10, 10, 20, 1) 100%),
     linear-gradient(135deg, #020617 0%, #0a0a14 50%, #020617 100%);
   background-attachment: fixed;
-  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  background-size: 300% 300%, 300% 300%, 100% 100%, 400% 400%;
+  background-position: 0% 50%, 100% 50%, 50% 50%, 0% 50%;
+  animation: moveGradient 6s ease-in-out infinite;
   color: var(--text-body);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 15px;
@@ -55,7 +57,25 @@ body {
   overflow-x: hidden;
 }
 
-/* HIGHLY VISIBLE animated rotating glow effect - Layer 1 */
+@keyframes moveGradient {
+  0% {
+    background-position: 0% 50%, 100% 50%, 50% 50%, 0% 50%;
+  }
+  25% {
+    background-position: 70% 20%, 30% 80%, 50% 50%, 60% 20%;
+  }
+  50% {
+    background-position: 100% 0%, 0% 100%, 50% 50%, 100% 0%;
+  }
+  75% {
+    background-position: 30% 80%, 70% 20%, 50% 50%, 40% 80%;
+  }
+  100% {
+    background-position: 0% 50%, 100% 50%, 50% 50%, 0% 50%;
+  }
+}
+
+/* HIGHLY VISIBLE animated rotating glow effect - Layer 1 - ENHANCED */
 body::before {
   content: '';
   position: fixed;
@@ -64,10 +84,10 @@ body::before {
   width: 200%;
   height: 200%;
   background: 
-    radial-gradient(circle at 30% 20%, rgba(56, 189, 248, 0.35) 0%, rgba(56, 189, 248, 0.15) 15%, transparent 25%),
-    radial-gradient(circle at 70% 80%, rgba(14, 165, 233, 0.3) 0%, rgba(14, 165, 233, 0.12) 15%, transparent 25%),
-    radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.2) 0%, rgba(56, 189, 248, 0.08) 20%, transparent 35%);
-  animation: rotateGlow 12s ease-in-out infinite;
+    radial-gradient(circle at 30% 20%, rgba(56, 189, 248, 0.55) 0%, rgba(56, 189, 248, 0.25) 15%, transparent 30%),
+    radial-gradient(circle at 70% 80%, rgba(14, 165, 233, 0.5) 0%, rgba(14, 165, 233, 0.22) 15%, transparent 30%),
+    radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.35) 0%, rgba(56, 189, 248, 0.15) 20%, transparent 40%);
+  animation: rotateGlow 5s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
   opacity: 1;
@@ -80,16 +100,16 @@ body::before {
     opacity: 1;
   }
   25% {
-    transform: translate(-8%, 8%) rotate(90deg) scale(1.15);
-    opacity: 0.85;
+    transform: translate(-15%, 15%) rotate(90deg) scale(1.25);
+    opacity: 0.9;
   }
   50% {
-    transform: translate(-15%, 15%) rotate(180deg) scale(1.05);
-    opacity: 0.95;
+    transform: translate(-25%, 25%) rotate(180deg) scale(1.15);
+    opacity: 1;
   }
   75% {
-    transform: translate(8%, -8%) rotate(270deg) scale(1.2);
-    opacity: 0.8;
+    transform: translate(15%, -15%) rotate(270deg) scale(1.3);
+    opacity: 0.85;
   }
   100% {
     transform: translate(0, 0) rotate(360deg) scale(1);
@@ -97,7 +117,7 @@ body::before {
   }
 }
 
-/* HIGHLY VISIBLE animated gradient wave - Layer 2 */
+/* HIGHLY VISIBLE animated gradient wave - Layer 2 - ENHANCED */
 body::after {
   content: '';
   position: fixed;
@@ -108,16 +128,16 @@ body::after {
   background: 
     linear-gradient(
       -45deg,
-      rgba(56, 189, 248, 0.18) 0%,
-      rgba(14, 165, 233, 0.15) 15%,
+      rgba(56, 189, 248, 0.35) 0%,
+      rgba(14, 165, 233, 0.3) 15%,
       transparent 30%,
       transparent 50%,
-      rgba(56, 189, 248, 0.12) 65%,
-      rgba(14, 165, 233, 0.18) 80%,
+      rgba(56, 189, 248, 0.25) 65%,
+      rgba(14, 165, 233, 0.35) 80%,
       transparent 95%
     );
-  background-size: 400% 400%;
-  animation: gradientWave 8s ease infinite;
+  background-size: 600% 600%;
+  animation: gradientWave 4s ease infinite;
   pointer-events: none;
   z-index: 0;
   opacity: 1;
@@ -129,13 +149,13 @@ body::after {
     background-position: 0% 50%;
   }
   25% {
-    background-position: 50% 75%;
+    background-position: 80% 100%;
   }
   50% {
-    background-position: 100% 50%;
+    background-position: 100% 0%;
   }
   75% {
-    background-position: 50% 25%;
+    background-position: 20% 100%;
   }
   100% {
     background-position: 0% 50%;
@@ -753,23 +773,22 @@ footer a:hover {
   border: none;
 }
 
-/* Desktop Header Grid Layout */
-.header-desktop-grid {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 450px) minmax(0, 1fr);
+/* Desktop Header Flex Layout - Left and Right */
+.header-desktop-flex {
+  display: flex !important;
+  justify-content: space-between;
   align-items: center;
-  gap: 2rem;
   width: 100%;
+  gap: 2rem;
 }
 
-/* Left Section: Logo + Navigation */
+/* Left Section: Logo + Navigation + User Actions */
 .navbar-left-section {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  justify-self: start;
   flex-wrap: nowrap;
-  justify-content: flex-start;
+  flex: 0 1 auto;
 }
 
 .navbar-left-section .navbar-nav {
@@ -783,26 +802,19 @@ footer a:hover {
   flex-wrap: nowrap;
 }
 
-/* Center Section: Search Box */
-.navbar-center-section {
+.navbar-user-section {
   display: flex;
-  justify-content: center;
   align-items: center;
-  justify-self: center;
-  min-width: 250px;
-  max-width: 450px;
-  width: 100%;
+  margin-left: 1rem;
 }
 
-/* Right Section: User Actions */
+/* Right Section: Search Box */
 .navbar-right-section {
   display: flex;
   align-items: center;
-  gap: 12px;
-  justify-self: end;
-  white-space: nowrap;
-  flex-wrap: nowrap;
   justify-content: flex-end;
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .site-header .navbar-brand {
@@ -864,7 +876,7 @@ footer a:hover {
   border-radius: 24px;
   padding: 8px 16px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 100%;
+  width: 350px;
   min-width: 300px;
 }
 
@@ -1026,6 +1038,22 @@ footer a:hover {
   transform: translateY(-2px) scale(1.03);
 }
 
+/* Active Navigation Link */
+.site-header .nav-link.active {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(14, 165, 233, 0.1) 100%) !important;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--accent-cyan) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+}
+
+.site-header .nav-link.active:hover {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.25) 0%, rgba(14, 165, 233, 0.2) 100%) !important;
+  color: var(--text-heading) !important;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+  transform: translateY(-2px);
+}
+
 .navbar-left-section .navbar-nav {
   align-items: center;
 }
@@ -1034,7 +1062,7 @@ footer a:hover {
   list-style: none;
 }
 
-/* Movie Catalog Highlighting */
+/* Movie Catalog Special Highlighting (when active) */
 .nav-link-highlighted {
   background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(14, 165, 233, 0.15) 100%) !important;
   border: 1px solid rgba(56, 189, 248, 0.4);
@@ -1049,6 +1077,13 @@ footer a:hover {
   color: var(--text-heading) !important;
   box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
   transform: translateY(-2px);
+}
+
+/* Active Dropdown Items */
+.dropdown-item.active {
+  background-color: rgba(56, 189, 248, 0.2);
+  color: var(--accent-cyan);
+  font-weight: 600;
 }
 
 @keyframes highlightPulse {
@@ -1277,28 +1312,41 @@ footer a:hover {
   box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5);
 }
 
-/* Rotating Movie Display */
+/* Rotating Movie Display - NO ANIMATIONS (instant switching) */
 .hero-rotating-section {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .rotating-movie-container {
   max-width: 500px;
   width: 100%;
-  min-height: 400px;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 400px;
 }
 
-.rotating-movie-container.fade-out {
+/* Simple slide styles - NO TRANSITIONS */
+.rotating-movie-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   opacity: 0;
-  transform: scale(0.98);
+  display: none;
+  pointer-events: none;
+}
+
+/* Active slide - instant display */
+.rotating-movie-slide.active {
+  opacity: 1;
+  display: block;
+  position: relative;
+  pointer-events: auto;
 }
 
 .rotating-movie-card {
@@ -1307,15 +1355,32 @@ footer a:hover {
   border: 2px solid rgba(56, 189, 248, 0.3);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(56, 189, 248, 0.1) inset;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.rotating-movie-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.2), transparent);
+  transition: left 0.6s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.rotating-movie-card:hover::before {
+  left: 100%;
 }
 
 .rotating-movie-card:hover {
-  transform: translateY(-10px) scale(1.02);
   border-color: rgba(56, 189, 248, 0.6);
-  box-shadow: 0 20px 60px rgba(56, 189, 248, 0.4);
+  box-shadow: 0 20px 60px rgba(56, 189, 248, 0.4), 0 0 20px rgba(56, 189, 248, 0.2) inset;
+  transform: translateY(-8px) scale(1.02);
 }
 
 .rotating-movie-card a {
@@ -1326,14 +1391,17 @@ footer a:hover {
 
 .rotating-movie-image {
   width: 100%;
-  height: 400px;
+  aspect-ratio: 2/3;
   object-fit: cover;
   display: block;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 0;
 }
 
 .rotating-movie-card:hover .rotating-movie-image {
   transform: scale(1.05);
+  filter: brightness(1.1) contrast(1.1);
 }
 
 .rotating-movie-title {
@@ -1344,6 +1412,24 @@ footer a:hover {
   color: var(--text-heading);
   background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(14, 165, 233, 0.05) 100%);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.rotating-movie-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rotating-movie-card:hover .rotating-movie-title::after {
+  width: 80%;
 }
 
 .rotating-movie-loading {
@@ -1387,14 +1473,6 @@ footer a:hover {
   
   .hero-subtitle {
     font-size: 16px;
-  }
-  
-  .rotating-movie-container {
-    min-height: 300px;
-  }
-  
-  .rotating-movie-image {
-    height: 300px;
   }
 }
 
@@ -2497,6 +2575,8 @@ details summary:hover {
 .rotating-movie-card {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(56, 189, 248, 0.2);
 }
+
+/* Removed all animation code for simplicity */
 
 /* Search result thumbnail border */
 .search-result-thumbnail {

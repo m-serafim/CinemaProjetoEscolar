@@ -1,47 +1,67 @@
 <header class="site-header">
     <nav class="navbar navbar-expand-lg">
-        <!-- Desktop: Three-column grid layout -->
-        <div class="container-fluid d-none d-lg-grid header-desktop-grid">
-            <!-- Left: Logo + Nav Links -->
+        <!-- Desktop: Two-column layout - Everything left, Search right -->
+        <div class="container-fluid d-none d-lg-flex header-desktop-flex">
+            <!-- Left: Logo + Nav Links + User Actions -->
             <div class="navbar-left-section">
                 <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/images/nexor-icon.ico" alt="NExor Cinema" class="logo-icon" />
                     <span class="logo-text">NExor Cinema</span>
                 </a>
 
+                @{
+                    var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+                    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+                }
+
                 <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link @(currentController == "Home" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-highlighted" asp-controller="Catalogo" asp-action="Index">
+                        <a class="nav-link @(currentController == "Catalogo" ? "active nav-link-highlighted" : "")" asp-controller="Catalogo" asp-action="Index">
                             <i class="bi bi-film"></i> Movie Catalog
                         </a>
                     </li>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Cliente"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Reservas" asp-action="Index">My Reservations</a>
+                            <a class="nav-link @(currentController == "Reservas" ? "active" : "")" asp-controller="Reservas" asp-action="Index">My Reservations</a>
                         </li>
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
                     {
+                        var isAdminPage = currentController == "Filmes" || currentController == "Sessoes" || currentController == "Utilizadores";
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle @(isAdminPage ? "active" : "")" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-shield-fill-check"></i> Admin
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                <li><a class="dropdown-item" asp-controller="Filmes" asp-action="Index"><i class="bi bi-film"></i> Manage Movies</a></li>
-                                <li><a class="dropdown-item" asp-controller="Sessoes" asp-action="Index"><i class="bi bi-calendar-event"></i> Manage Sessions</a></li>
-                                <li><a class="dropdown-item" asp-controller="Utilizadores" asp-action="Index"><i class="bi bi-people"></i> Manage Users</a></li>
+                                <li><a class="dropdown-item @(currentController == "Filmes" ? "active" : "")" asp-controller="Filmes" asp-action="Index"><i class="bi bi-film"></i> Manage Movies</a></li>
+                                <li><a class="dropdown-item @(currentController == "Sessoes" ? "active" : "")" asp-controller="Sessoes" asp-action="Index"><i class="bi bi-calendar-event"></i> Manage Sessions</a></li>
+                                <li><a class="dropdown-item @(currentController == "Utilizadores" ? "active" : "")" asp-controller="Utilizadores" asp-action="Index"><i class="bi bi-people"></i> Manage Users</a></li>
                             </ul>
                         </li>
                     }
                 </ul>
+
+                <div class="navbar-user-section">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <partial name="_LoginPartial" />
+                    }
+                    else
+                    {
+                        <a class="action-btn btn-login" asp-area="Identity" asp-page="/Account/Login">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            <span>Login</span>
+                        </a>
+                    }
+                </div>
             </div>
 
-            <!-- Center: Search Box -->
-            <div class="navbar-center-section">
+            <!-- Right: Search Box -->
+            <div class="navbar-right-section">
                 <div class="search-box" role="search">
                     <img src="~/images/icons/search.svg" alt="Search" class="search-icon" aria-hidden="true" />
                     <input type="text" id="liveSearchInput" class="search-input" placeholder="Search movies..." 
@@ -51,21 +71,6 @@
                     </button>
                     <div id="searchResults" class="search-results" style="display: none;" role="listbox" aria-live="polite"></div>
                 </div>
-            </div>
-
-            <!-- Right: User Actions -->
-            <div class="navbar-right-section">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <partial name="_LoginPartial" />
-                }
-                else
-                {
-                    <a class="action-btn btn-login" asp-area="Identity" asp-page="/Account/Login">
-                        <i class="bi bi-box-arrow-in-right"></i>
-                        <span>Login</span>
-                    </a>
-                }
             </div>
         </div>
 
@@ -84,33 +89,33 @@
             <div class="collapse navbar-collapse w-100" id="navbarContent">
                 <ul class="navbar-nav mb-3 mt-3">
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link @(currentController == "Home" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-highlighted" asp-controller="Catalogo" asp-action="Index">
+                        <a class="nav-link @(currentController == "Catalogo" ? "active nav-link-highlighted" : "")" asp-controller="Catalogo" asp-action="Index">
                             <i class="bi bi-film"></i> Movie Catalog
                         </a>
                     </li>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Cliente"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Reservas" asp-action="Index">My Reservations</a>
+                            <a class="nav-link @(currentController == "Reservas" ? "active" : "")" asp-controller="Reservas" asp-action="Index">My Reservations</a>
                         </li>
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Filmes" asp-action="Index">
+                            <a class="nav-link @(currentController == "Filmes" ? "active" : "")" asp-controller="Filmes" asp-action="Index">
                                 <i class="bi bi-film"></i> Manage Movies
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Sessoes" asp-action="Index">
+                            <a class="nav-link @(currentController == "Sessoes" ? "active" : "")" asp-controller="Sessoes" asp-action="Index">
                                 <i class="bi bi-calendar-event"></i> Manage Sessions
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Utilizadores" asp-action="Index">
+                            <a class="nav-link @(currentController == "Utilizadores" ? "active" : "")" asp-controller="Utilizadores" asp-action="Index">
                                 <i class="bi bi-people"></i> Manage Users
                             </a>
                         </li>

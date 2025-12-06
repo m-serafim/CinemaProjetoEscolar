@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Movie Rotation Animations - Demo</title>
+    <style>
+        :root {
+            --accent-cyan: #38BDF8;
+            --accent-cyan-hover: #0EA5E9;
+            --bg-primary: #020617;
+            --bg-secondary: #0a0a14;
+            --text-heading: #FFFFFF;
+            --text-body: #A1A1AA;
+        }
+
+        body {
+            background: linear-gradient(135deg, #020617 0%, #0a0a14 50%, #020617 100%);
+            color: white;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            margin: 30px 0;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--text-heading));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .controls {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 12px;
+            border: 2px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .controls h2 {
+            color: var(--accent-cyan);
+            margin-top: 0;
+            font-size: 24px;
+        }
+
+        .animation-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .anim-btn {
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-cyan-hover));
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .anim-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 24px rgba(56, 189, 248, 0.5);
+        }
+
+        .anim-btn.active {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.5);
+        }
+
+        .rotating-movie-container {
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 450px;
+            margin: 50px auto;
+            overflow: visible;
+            perspective: 2000px;
+            transform-style: preserve-3d;
+        }
+
+        .rotating-movie-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            transform: translateX(100%) scale(0.9);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            filter: blur(8px);
+            z-index: 0;
+        }
+
+        .rotating-movie-slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            position: relative;
+            pointer-events: auto;
+            z-index: 2;
+            filter: blur(0);
+        }
+
+        .rotating-movie-slide.slide-out {
+            opacity: 0;
+            transform: translateX(-100%) scale(0.9);
+            z-index: 1;
+            filter: blur(8px);
+        }
+
+        /* Animation Styles */
+        .rotating-movie-container.anim-slide .rotating-movie-slide {
+            transform: translateX(100%) scale(0.85);
+            filter: blur(10px) brightness(0.7);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .rotating-movie-container.anim-slide .rotating-movie-slide.active {
+            transform: translateX(0) scale(1);
+            filter: blur(0) brightness(1);
+        }
+
+        .rotating-movie-container.anim-slide .rotating-movie-slide.slide-out {
+            transform: translateX(-100%) scale(0.85);
+            filter: blur(10px) brightness(0.7);
+        }
+
+        .rotating-movie-container.anim-zoom .rotating-movie-slide {
+            transform: scale(0.5) translateY(50px);
+            filter: blur(15px);
+            opacity: 0;
+            transition: all 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .rotating-movie-container.anim-zoom .rotating-movie-slide.active {
+            transform: scale(1) translateY(0);
+            filter: blur(0);
+            opacity: 1;
+        }
+
+        .rotating-movie-container.anim-zoom .rotating-movie-slide.slide-out {
+            transform: scale(1.2) translateY(-50px);
+            filter: blur(15px);
+            opacity: 0;
+        }
+
+        .rotating-movie-container.anim-flip .rotating-movie-slide {
+            transform: rotateY(90deg) scale(0.8);
+            transform-origin: right center;
+            filter: brightness(0.5);
+            opacity: 0;
+            transition: all 0.85s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .rotating-movie-container.anim-flip .rotating-movie-slide.active {
+            transform: rotateY(0deg) scale(1);
+            filter: brightness(1);
+            opacity: 1;
+        }
+
+        .rotating-movie-container.anim-flip .rotating-movie-slide.slide-out {
+            transform: rotateY(-90deg) scale(0.8);
+            transform-origin: left center;
+            filter: brightness(0.5);
+            opacity: 0;
+        }
+
+        .rotating-movie-container.anim-rotate .rotating-movie-slide {
+            transform: rotate(15deg) scale(0.6) translateX(100px);
+            filter: blur(12px);
+            opacity: 0;
+            transition: all 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .rotating-movie-container.anim-rotate .rotating-movie-slide.active {
+            transform: rotate(0deg) scale(1) translateX(0);
+            filter: blur(0);
+            opacity: 1;
+        }
+
+        .rotating-movie-container.anim-rotate .rotating-movie-slide.slide-out {
+            transform: rotate(-15deg) scale(0.6) translateX(-100px);
+            filter: blur(12px);
+            opacity: 0;
+        }
+
+        .rotating-movie-container.anim-wave .rotating-movie-slide {
+            transform: translateX(100%) translateY(30px) scale(0.9);
+            filter: blur(10px);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .rotating-movie-container.anim-wave .rotating-movie-slide.active {
+            transform: translateX(0) translateY(0) scale(1);
+            filter: blur(0);
+            opacity: 1;
+        }
+
+        .rotating-movie-container.anim-wave .rotating-movie-slide.slide-out {
+            transform: translateX(-100%) translateY(-30px) scale(0.9);
+            filter: blur(10px);
+            opacity: 0;
+        }
+
+        .rotating-movie-card {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(10, 10, 20, 0.9), rgba(2, 6, 23, 0.95));
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(56, 189, 248, 0.1) inset;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .rotating-movie-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.2), transparent);
+            transition: left 0.6s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .rotating-movie-card:hover::before {
+            left: 100%;
+        }
+
+        .rotating-movie-card:hover {
+            border-color: rgba(56, 189, 248, 0.6);
+            box-shadow: 0 20px 60px rgba(56, 189, 248, 0.4);
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        .rotating-movie-image {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            display: block;
+            background: #1a1a2e;
+            transition: all 0.5s ease;
+        }
+
+        .rotating-movie-card:hover .rotating-movie-image {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .rotating-movie-title {
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-heading);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(14, 165, 233, 0.05));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rotating-movie-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            transition: width 0.4s ease;
+        }
+
+        .rotating-movie-card:hover .rotating-movie-title::after {
+            width: 80%;
+        }
+
+        .status {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            font-family: 'Consolas', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+
+        .info {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 12px;
+            border: 2px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .info ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .info li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .current-anim {
+            text-align: center;
+            font-size: 20px;
+            color: var(--accent-cyan);
+            margin: 20px 0;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <h1>?? Advanced Movie Rotation Animations</h1>
+    
+    <div class="info">
+        <h2 style="color: #22c55e; margin-top: 0;">? 5 Beautiful Animation Styles</h2>
+        <ul>
+            <li><strong>Slide + Scale + Blur:</strong> Smooth horizontal sliding with scaling and blur effects</li>
+            <li><strong>Zoom Fade:</strong> Dynamic zoom in/out with fade transitions</li>
+            <li><strong>3D Flip:</strong> Stunning 3D rotation effect with perspective</li>
+            <li><strong>Rotate Scale:</strong> Combined rotation and scaling animation</li>
+            <li><strong>Wave Effect:</strong> Flowing wave-like motion with vertical movement</li>
+        </ul>
+        <p>?? <strong>Click any button below to instantly change the animation style!</strong></p>
+    </div>
+
+    <div class="controls">
+        <h2>?? Choose Animation Style</h2>
+        <div class="animation-buttons">
+            <button class="anim-btn active" data-anim="anim-slide">
+                ?? Slide + Blur
+            </button>
+            <button class="anim-btn" data-anim="anim-zoom">
+                ?? Zoom Fade
+            </button>
+            <button class="anim-btn" data-anim="anim-flip">
+                ?? 3D Flip
+            </button>
+            <button class="anim-btn" data-anim="anim-rotate">
+                ?? Rotate Scale
+            </button>
+            <button class="anim-btn" data-anim="anim-wave">
+                ?? Wave Effect
+            </button>
+        </div>
+    </div>
+
+    <div class="current-anim" id="currentAnim">Current: Slide + Scale + Blur</div>
+
+    <div class="rotating-movie-container anim-slide" id="rotatingMovieDisplay">
+        <!-- Test movies will be inserted here -->
+    </div>
+
+    <div class="status" id="status">Initializing demo...</div>
+
+    <script>
+        const testMovies = [
+            { id: 1, title: 'The Matrix', thumbnail: 'https://via.placeholder.com/300x450/FF6B6B/fff?text=The+Matrix' },
+            { id: 2, title: 'Inception', thumbnail: 'https://via.placeholder.com/300x450/4ECDC4/fff?text=Inception' },
+            { id: 3, title: 'Interstellar', thumbnail: 'https://via.placeholder.com/300x450/45B7D1/fff?text=Interstellar' },
+            { id: 4, title: 'The Dark Knight', thumbnail: 'https://via.placeholder.com/300x450/F7B731/fff?text=Dark+Knight' },
+            { id: 5, title: 'Pulp Fiction', thumbnail: 'https://via.placeholder.com/300x450/5F27CD/fff?text=Pulp+Fiction' }
+        ];
+
+        const rotatingContainer = document.getElementById('rotatingMovieDisplay');
+        const statusDiv = document.getElementById('status');
+        const currentAnimDiv = document.getElementById('currentAnim');
+        let currentIndex = 0;
+        let interval;
+
+        const animNames = {
+            'anim-slide': 'Slide + Scale + Blur',
+            'anim-zoom': 'Zoom Fade',
+            'anim-flip': '3D Flip',
+            'anim-rotate': 'Rotate Scale',
+            'anim-wave': 'Wave Effect'
+        };
+
+        function updateStatus(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            console.log(message);
+            statusDiv.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            statusDiv.scrollTop = statusDiv.scrollHeight;
+        }
+
+        function initializeSlideshow() {
+            updateStatus('?? Creating movie slides...');
+            rotatingContainer.innerHTML = '';
+            
+            testMovies.forEach((movie, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = `rotating-movie-slide${index === 0 ? ' active' : ''}`;
+                slideDiv.innerHTML = `
+                    <div class="rotating-movie-card">
+                        <img src="${movie.thumbnail}" alt="${movie.title}" class="rotating-movie-image">
+                        <div class="rotating-movie-title">${movie.title}</div>
+                    </div>
+                `;
+                rotatingContainer.appendChild(slideDiv);
+                updateStatus(`?? Created: "${movie.title}"`);
+            });
+            
+            updateStatus('? All slides ready!');
+        }
+
+        function startRotation() {
+            if (interval) clearInterval(interval);
+            
+            updateStatus(`?? Starting auto-rotation (4.5s per movie)...`);
+            
+            interval = setInterval(() => {
+                const slides = rotatingContainer.querySelectorAll('.rotating-movie-slide');
+                const currentSlide = slides[currentIndex];
+                const nextIndex = (currentIndex + 1) % testMovies.length;
+                const nextSlide = slides[nextIndex];
+
+                updateStatus(`?? ${testMovies[currentIndex].title} ? ${testMovies[nextIndex].title}`);
+
+                currentSlide.classList.add('slide-out');
+                nextSlide.classList.add('active');
+
+                setTimeout(() => {
+                    currentSlide.classList.remove('active', 'slide-out');
+                    currentIndex = nextIndex;
+                    updateStatus(`? Now showing: ${testMovies[nextIndex].title}`);
+                }, 800);
+            }, 4500);
+        }
+
+        // Animation button handlers
+        document.querySelectorAll('.anim-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const animClass = this.dataset.anim;
+                
+                // Update button states
+                document.querySelectorAll('.anim-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update container class
+                rotatingContainer.className = 'rotating-movie-container ' + animClass;
+                
+                // Update display
+                currentAnimDiv.textContent = `Current: ${animNames[animClass]}`;
+                updateStatus(`?? Animation changed to: ${animNames[animClass]}`);
+            });
+        });
+
+        // Initialize
+        updateStatus('?? Initializing Advanced Animation Demo...');
+        initializeSlideshow();
+        startRotation();
+        updateStatus('? First transition in 4.5 seconds...');
+    </script>
+</body>
+</html>
