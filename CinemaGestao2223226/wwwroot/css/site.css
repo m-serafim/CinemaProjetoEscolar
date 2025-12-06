@@ -1407,3 +1407,10 @@ a:not(.btn):not(.nav-link):hover {
 li {
   margin-bottom: 0.5rem;
 }
+
+/* Image loading optimization */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
