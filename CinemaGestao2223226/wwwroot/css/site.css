@@ -1419,3 +1419,8 @@ img {
 .btn + .btn {
   margin-left: 0.5rem;
 }
+
+/* Alert padding */
+.alert {
+  padding: 1.25rem;
+}
