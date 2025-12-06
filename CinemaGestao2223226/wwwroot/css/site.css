@@ -1688,3 +1688,9 @@ details summary:hover {
 .rounded-md { border-radius: 0.5rem; }
 .rounded-lg { border-radius: 0.75rem; }
 .rounded-full { border-radius: 9999px; }
+
+/* Opacity utilities */
+.opacity-0 { opacity: 0; }
+.opacity-50 { opacity: 0.5; }
+.opacity-75 { opacity: 0.75; }
+.opacity-100 { opacity: 1; }
