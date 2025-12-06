@@ -2353,3 +2353,8 @@ details summary:hover {
 .section-title {
   margin-bottom: 2.5rem;
 }
+
+/* Movie info flex grow */
+.movie-info {
+  flex-grow: 1;
+}
