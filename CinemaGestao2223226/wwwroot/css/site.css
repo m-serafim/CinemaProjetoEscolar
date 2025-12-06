@@ -2318,3 +2318,8 @@ details summary:hover {
 .about-card .card-title {
   margin-bottom: 1.25rem;
 }
+
+/* Search results max height */
+.search-results {
+  max-height: 450px;
+}
