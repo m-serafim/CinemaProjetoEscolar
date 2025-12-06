@@ -197,12 +197,13 @@ header {
   font-weight: bold;
   font-size: 1.5rem;
   color: var(--accent-cyan) !important;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .navbar-brand:hover {
   transform: scale(1.05);
   color: var(--text-heading) !important;
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
 }
 
 .navbar-light .navbar-nav .nav-link,
