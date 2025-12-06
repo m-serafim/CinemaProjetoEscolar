@@ -2474,3 +2474,8 @@ details summary:hover {
 .search-result-title {
   font-weight: 700;
 }
+
+/* Action button font size */
+.action-btn {
+  font-size: 13px;
+}
