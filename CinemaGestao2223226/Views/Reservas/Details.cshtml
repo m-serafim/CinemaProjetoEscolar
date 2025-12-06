@@ -1,48 +1,46 @@
 ﻿@model CinemaGestao.Models.Reserva
 @using CinemaGestao.Helpers
-@using Microsoft.AspNetCore.Localization
+
 
 @{
-    ViewData["Title"] = "Detalhes da Reserva";
-    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
-    var isEnglish = (requestCulture?.RequestCulture.UICulture.Name ?? "pt-PT") == "en-US";
+    ViewData["Title"] = "Reservation Details";
 }
 
 <div class="container">
-    <h1 class="mb-4">📄 @(isEnglish ? "Reservation Details" : "Detalhes da Reserva")</h1>
+    <h1 class="mb-4">📄 Reservation Details</h1>
 
     <div class="card shadow">
         <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">@(isEnglish ? "Reservation" : "Reserva") #@Model.Id</h5>
+            <h5 class="mb-0">Reservation #@Model.Id</h5>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <h6 class="text-muted">@(isEnglish ? "Movie Information" : "Informações do Filme")</h6>
+                    <h6 class="text-muted">Movie Information</h6>
                     <dl class="row">
-                        <dt class="col-sm-4">@(isEnglish ? "Movie:" : "Filme:")</dt>
+                        <dt class="col-sm-4">Movie:</dt>
                         <dd class="col-sm-8">@Model.Sessao.Filme.Titulo</dd>
 
-                        <dt class="col-sm-4">@(isEnglish ? "Genre:" : "Género:")</dt>
+                        <dt class="col-sm-4">Genre:</dt>
                         <dd class="col-sm-8">
                             <span class="badge bg-primary">@Model.Sessao.Filme.Genero</span>
                         </dd>
 
-                        <dt class="col-sm-4">@(isEnglish ? "Duration:" : "Duração:")</dt>
-                        <dd class="col-sm-8">@DurationHelper.FormatDuration(Model.Sessao.Filme.DuracaoMinutos, isEnglish)</dd>
+                        <dt class="col-sm-4">Duration:</dt>
+                        <dd class="col-sm-8">@DurationHelper.FormatDuration(Model.Sessao.Filme.DuracaoMinutos)</dd>
                     </dl>
                 </div>
 
                 <div class="col-md-6">
-                    <h6 class="text-muted">@(isEnglish ? "Session Information" : "Informações da Sessão")</h6>
+                    <h6 class="text-muted">Session Information</h6>
                     <dl class="row">
-                        <dt class="col-sm-4">@(isEnglish ? "Date:" : "Data:")</dt>
+                        <dt class="col-sm-4">Date:</dt>
                         <dd class="col-sm-8">@Model.Sessao.DataHora.ToString("dd/MM/yyyy")</dd>
 
-                        <dt class="col-sm-4">@(isEnglish ? "Time:" : "Horário:")</dt>
+                        <dt class="col-sm-4">Time:</dt>
                         <dd class="col-sm-8">@Model.Sessao.DataHora.ToString("HH:mm")</dd>
 
-                        <dt class="col-sm-4">@(isEnglish ? "Room:" : "Sala:")</dt>
+                        <dt class="col-sm-4">Room:</dt>
                         <dd class="col-sm-8">@Model.Sessao.Sala</dd>
                     </dl>
                 </div>
@@ -52,27 +50,27 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h6 class="text-muted">@(isEnglish ? "Reservation Information" : "Informações da Reserva")</h6>
+                    <h6 class="text-muted">Reservation Information</h6>
                     <dl class="row">
-                        <dt class="col-sm-3">@(isEnglish ? "Number of Tickets:" : "Número de Bilhetes:")</dt>
+                        <dt class="col-sm-3">Number of Tickets:</dt>
                         <dd class="col-sm-9">
                             <span class="badge bg-success fs-6">@Model.NumeroBilhetes</span>
                         </dd>
 
-                        <dt class="col-sm-3">@(isEnglish ? "Unit Price:" : "Preço Unitário:")</dt>
+                        <dt class="col-sm-3">Unit Price:</dt>
                         <dd class="col-sm-9">@Model.Sessao.Preco.ToString("C")</dd>
 
-                        <dt class="col-sm-3">@(isEnglish ? "Total:" : "Total:")</dt>
+                        <dt class="col-sm-3">Total:</dt>
                         <dd class="col-sm-9">
                             <strong class="text-success fs-5">@((Model.Sessao.Preco * Model.NumeroBilhetes).ToString("C"))</strong>
                         </dd>
 
-                        <dt class="col-sm-3">@(isEnglish ? "Reservation Date:" : "Data da Reserva:")</dt>
+                        <dt class="col-sm-3">Reservation Date:</dt>
                         <dd class="col-sm-9">@Model.DataReserva.ToString("dd/MM/yyyy HH:mm")</dd>
 
                         @if (User.IsInRole("Administrador"))
                         {
-                            <dt class="col-sm-3">@(isEnglish ? "Client ID:" : "ID do Cliente:")</dt>
+                            <dt class="col-sm-3">Client ID:</dt>
                             <dd class="col-sm-9">@Model.UtilizadorId</dd>
                         }
                     </dl>
@@ -82,10 +80,10 @@
         <div class="card-footer">
             <div class="d-flex gap-2">
                 <a asp-action="Index" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i> @(isEnglish ? "Back" : "Voltar")
+                    <i class="bi bi-arrow-left"></i> Back
                 </a>
                 <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
-                    <i class="bi bi-trash"></i> @(isEnglish ? "Cancel Reservation" : "Cancelar Reserva")
+                    <i class="bi bi-trash"></i> Cancel Reservation
                 </a>
             </div>
         </div>

@@ -1,35 +1,32 @@
 ﻿@model CinemaGestao.Models.Reserva
-@using Microsoft.AspNetCore.Localization
 
 @{
     var sessao = ViewBag.Sessao as CinemaGestao.Models.Sessao;
-    ViewData["Title"] = "Nova Reserva";
-    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
-    var isEnglish = (requestCulture?.RequestCulture.UICulture.Name ?? "pt-PT") == "en-US";
+    ViewData["Title"] = "New Reservation";
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
 <div class="container">
-    <h1 class="mb-4">🎟️ @(isEnglish ? "New Reservation" : "Nova Reserva")</h1>
+    <h1 class="mb-4">🎟️ New Reservation</h1>
 
     @if (sessao != null)
     {
         <div class="card mb-4 shadow">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">@(isEnglish ? "Session Details" : "Detalhes da Sessão")</h5>
+                <h5 class="mb-0">Session Details</h5>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>@(isEnglish ? "Movie:" : "Filme:")</strong> @sessao.Filme.Titulo</p>
-                        <p><strong>@(isEnglish ? "Date:" : "Data:")</strong> @sessao.DataHora.ToString("dd/MM/yyyy")</p>
-                        <p><strong>@(isEnglish ? "Time:" : "Horário:")</strong> @sessao.DataHora.ToString("HH:mm")</p>
+                        <p><strong>Movie:</strong> @sessao.Filme.Titulo</p>
+                        <p><strong>Date:</strong> @sessao.DataHora.ToString("dd/MM/yyyy")</p>
+                        <p><strong>Time:</strong> @sessao.DataHora.ToString("HH:mm")</p>
                     </div>
                     <div class="col-md-6">
-                        <p><strong>@(isEnglish ? "Room:" : "Sala:")</strong> @sessao.Sala</p>
-                        <p><strong>@(isEnglish ? "Price per Ticket:" : "Preço por Bilhete:")</strong> @sessao.Preco.ToString("C")</p>
-                        <p><strong>@(isEnglish ? "Available Seats:" : "Lugares Disponíveis:")</strong> 
+                        <p><strong>Room:</strong> @sessao.Sala</p>
+                        <p><strong>Price per Ticket:</strong> @sessao.Preco.ToString("C")</p>
+                        <p><strong>Available Seats:</strong> 
                             <span class="badge bg-success">@sessao.LugaresDisponiveis</span>
                         </p>
                     </div>
@@ -49,11 +46,11 @@
                         
                         <div class="mb-3">
                             <label asp-for="NumeroBilhetes" class="form-label">
-                                <i class="bi bi-ticket-perforated"></i> @(isEnglish ? "Number of Tickets" : "Número de Bilhetes")
+                                <i class="bi bi-ticket-perforated"></i> Number of Tickets
                             </label>
                             <input asp-for="NumeroBilhetes" class="form-control" type="number" 
                                    min="1" max="@(sessao?.LugaresDisponiveis ?? 20)" 
-                                   value="1" id="numeroBilhetes" />
+                                   value="1" id="numberOfTickets" />
                             <span asp-validation-for="NumeroBilhetes" class="text-danger"></span>
                         </div>
 
@@ -61,23 +58,23 @@
                         {
                             <div class="alert alert-info">
                                 <h5 class="mb-2">
-                                    <i class="bi bi-calculator"></i> @(isEnglish ? "Total Amount:" : "Valor Total:")
+                                    <i class="bi bi-calculator"></i> Total Amount:
                                 </h5>
                                 <h3 class="mb-0 text-primary">
                                     <strong id="total">@sessao.Preco.ToString("C")</strong>
                                 </h3>
                                 <small class="text-muted">
-                                    @(isEnglish ? "Price updates automatically when you change the number of tickets" : "O preço atualiza automaticamente ao mudar o número de bilhetes")
+                                    Price updates automatically when you change the number of tickets
                                 </small>
                             </div>
                         }
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-success btn-lg">
-                                <i class="bi bi-check-circle"></i> @(isEnglish ? "Confirm Reservation" : "Confirmar Reserva")
+                                <i class="bi bi-check-circle"></i> Confirm Reservation
                             </button>
                             <a asp-controller="Catalogo" asp-action="Sessoes" asp-route-id="@sessao?.FilmeId" class="btn btn-secondary">
-                                <i class="bi bi-x-circle"></i> @(isEnglish ? "Cancel" : "Cancelar")
+                                <i class="bi bi-x-circle"></i> Cancel
                             </a>
                         </div>
                     </form>
@@ -92,10 +89,10 @@
     @if (sessao != null)
     {
         <script>
-            const numeroBilhetesInput = document.getElementById('numeroBilhetes');
+            const numberOfTicketsInput = document.getElementById('numberOfTickets');
             const totalElement = document.getElementById('total');
             const precoPorBilhete = @sessao.Preco;
-            const isEnglish = @(isEnglish ? "true" : "false");
+            const isEnglish = true;
 
             // Function to format currency
             function formatCurrency(value) {
@@ -114,14 +111,14 @@
 
             // Update total when number of tickets changes
             function updateTotal() {
-                const quantidade = parseInt(numeroBilhetesInput.value) || 1;
+                const quantidade = parseInt(numberOfTicketsInput.value) || 1;
                 const total = quantidade * precoPorBilhete;
                 totalElement.textContent = formatCurrency(total);
             }
 
             // Add event listener
-            numeroBilhetesInput.addEventListener('input', updateTotal);
-            numeroBilhetesInput.addEventListener('change', updateTotal);
+            numberOfTicketsInput.addEventListener('input', updateTotal);
+            numberOfTicketsInput.addEventListener('change', updateTotal);
 
             // Initialize on page load
             updateTotal();

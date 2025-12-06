@@ -1,23 +1,20 @@
 ﻿@model IEnumerable<CinemaGestao.Models.Filme>
-@using Microsoft.AspNetCore.Localization
 @using CinemaGestao.Helpers
 
 @{
-    ViewData["Title"] = "Catálogo de Filmes";
-    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
-    var isEnglish = (requestCulture?.RequestCulture.UICulture.Name ?? "pt-PT") == "en-US";
+    ViewData["Title"] = "Movie Catalog";
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
 <div class="container">
-    <h1 class="mb-4">🎬 @(isEnglish ? "Movie Catalog" : "Catálogo de Filmes")</h1>
-    <p class="lead">@(isEnglish ? "Explore our movies in theaters" : "Explore nossos filmes em cartaz")</p>
+    <h1 class="mb-4">🎬 Movie Catalog</h1>
+    <p class="lead">Explore our movies in theaters</p>
 
     @if (!Model.Any())
     {
         <div class="alert alert-info">
-            <i class="bi bi-info-circle"></i> @(isEnglish ? "There are no movies available at the moment." : "Não há filmes disponíveis no momento.")
+            <i class="bi bi-info-circle"></i> There are no movies available at the moment.
         </div>
     }
     else
@@ -43,13 +40,13 @@
                             <h5 class="card-title">@filme.Titulo</h5>
                             <p class="card-text">
                                 <span class="badge bg-primary">@filme.Genero</span>
-                                <span class="badge bg-info text-dark">@DurationHelper.FormatDuration(filme.DuracaoMinutos, isEnglish)</span>
+                                <span class="badge bg-info text-dark">@DurationHelper.FormatDuration(filme.DuracaoMinutos)</span>
                             </p>
                             <p class="card-text text-truncate">@filme.Descricao</p>
                         </div>
                         <div class="card-footer bg-transparent">
                             <a asp-action="Details" asp-route-id="@filme.Id" class="btn btn-outline-primary w-100">
-                                <i class="bi bi-info-circle"></i> @(isEnglish ? "View Details" : "Ver Detalhes")
+                                <i class="bi bi-info-circle"></i> View Details
                             </a>
                         </div>
                     </div>

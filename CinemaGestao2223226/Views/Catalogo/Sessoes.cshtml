@@ -1,11 +1,10 @@
 ﻿@model IEnumerable<CinemaGestao.Models.Sessao>
-@using Microsoft.AspNetCore.Localization
 
 @{
     var filme = ViewBag.Filme as CinemaGestao.Models.Filme;
-    ViewData["Title"] = $"Sessões - {filme.Titulo}";
-    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
-    var isEnglish = (requestCulture?.RequestCulture.UICulture.Name ?? "pt-PT") == "en-US";
+    ViewData["Title"] = $"Sessions - {filme.Titulo}";
+    
+    
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -13,26 +12,26 @@
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a asp-action="Index">@(isEnglish ? "Catalog" : "Catálogo")</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Catalog</a></li>
             <li class="breadcrumb-item"><a asp-action="Details" asp-route-id="@filme.Id">@filme.Titulo</a></li>
-            <li class="breadcrumb-item active" aria-current="page">@(isEnglish ? "Sessions" : "Sessões")</li>
+            <li class="breadcrumb-item active" aria-current="page">Sessions</li>
         </ol>
     </nav>
 
     <div class="row mb-4">
         <div class="col-md-12">
             <h1>🎬 @filme.Titulo</h1>
-            <p class="lead">@(isEnglish ? "Available Sessions" : "Sessões Disponíveis")</p>
+            <p class="lead">Available Sessions</p>
         </div>
     </div>
 
     @if (!Model.Any())
     {
         <div class="alert alert-warning">
-            <i class="bi bi-exclamation-triangle"></i> @(isEnglish ? "There are no available sessions for this movie at the moment." : "Não há sessões disponíveis para este filme no momento.")
+            <i class="bi bi-exclamation-triangle"></i> There are no available sessions for this movie at the moment.
         </div>
         <a asp-action="Index" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> @(isEnglish ? "Back to Catalog" : "Voltar ao Catálogo")
+            <i class="bi bi-arrow-left"></i> Back to Catalog
         </a>
     }
     else
@@ -53,9 +52,9 @@
                             </h6>
                             <hr />
                             <p class="card-text">
-                                <strong>@(isEnglish ? "Room:" : "Sala:")</strong> @sessao.Sala<br />
-                                <strong>@(isEnglish ? "Price:" : "Preço:")</strong> @sessao.Preco.ToString("C")<br />
-                                <strong>@(isEnglish ? "Available Seats:" : "Lugares Disponíveis:")</strong> 
+                                <strong>Room:</strong> @sessao.Sala<br />
+                                <strong>Price:</strong> @sessao.Preco.ToString("C")<br />
+                                <strong>Available Seats:</strong> 
                                 <span class="badge @(sessao.LugaresDisponiveis > 10 ? "bg-success" : sessao.LugaresDisponiveis > 0 ? "bg-warning" : "bg-danger")">
                                     @sessao.LugaresDisponiveis / @sessao.LugaresTotais
                                 </span>
@@ -65,18 +64,18 @@
                                 @if (sessao.LugaresDisponiveis > 0)
                                 {
                                     <a asp-controller="Reservas" asp-action="Create" asp-route-sessaoId="@sessao.Id" class="btn btn-primary w-100">
-                                        <i class="bi bi-ticket-perforated"></i> @(isEnglish ? "Reserve" : "Reservar")
+                                        <i class="bi bi-ticket-perforated"></i> Reserve
                                     </a>
                                 }
                                 else
                                 {
-                                    <button class="btn btn-secondary w-100" disabled>@(isEnglish ? "Sold Out" : "Esgotado")</button>
+                                    <button class="btn btn-secondary w-100" disabled>Sold Out</button>
                                 }
                             }
                             else if (!User.Identity.IsAuthenticated)
                             {
                                 <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-primary w-100">
-                                    <i class="bi bi-box-arrow-in-right"></i> @(isEnglish ? "Login to Reserve" : "Login para Reservar")
+                                    <i class="bi bi-box-arrow-in-right"></i> Login to Reserve
                                 </a>
                             }
                         </div>
@@ -86,7 +85,7 @@
         </div>
         <div class="mt-3">
             <a asp-action="Details" asp-route-id="@filme.Id" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> @(isEnglish ? "Back" : "Voltar")
+                <i class="bi bi-arrow-left"></i> Back
             </a>
         </div>
     }

@@ -116,7 +116,7 @@ namespace CinemaGestao2223226.Controllers
             _context.Update(sessao);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Reserva criada com sucesso!";
+            TempData["SuccessMessage"] = "Reservation created successfully!";
             return RedirectToAction(nameof(Index));
         }
 
@@ -176,7 +176,7 @@ namespace CinemaGestao2223226.Controllers
             _context.Reservas.Remove(reserva);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Reserva cancelada com sucesso!";
+            TempData["SuccessMessage"] = "Reservation cancelled successfully!";
             return RedirectToAction(nameof(Index));
         }
     }
