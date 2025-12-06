@@ -1339,3 +1339,8 @@ a {
   outline: 2px solid var(--accent-cyan);
   outline-offset: 2px;
 }
+
+/* Smooth scroll padding for anchor links */
+html {
+  scroll-padding-top: 80px;
+}
