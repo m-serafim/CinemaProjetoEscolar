@@ -1804,3 +1804,9 @@ details summary:hover {
     font-size: 42px;
   }
 }
+
+/* Hover scale effect */
+.hover-scale:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
