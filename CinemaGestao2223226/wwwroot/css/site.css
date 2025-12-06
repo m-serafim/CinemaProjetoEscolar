@@ -1611,3 +1611,9 @@ details summary:hover {
 .responsive-container {
   container-type: inline-size;
 }
+
+/* Loading state */
+.loading {
+  pointer-events: none;
+  opacity: 0.6;
+}
