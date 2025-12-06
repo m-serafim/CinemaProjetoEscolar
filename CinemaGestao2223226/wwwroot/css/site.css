@@ -2368,3 +2368,8 @@ details summary:hover {
 .btn {
   text-decoration: none;
 }
+
+/* Card description color */
+.about-card .card-description {
+  color: var(--text-heading);
+}
