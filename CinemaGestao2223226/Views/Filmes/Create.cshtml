@@ -1,7 +1,7 @@
 ﻿@model CinemaGestao.Models.Filme
 
 @{
-    ViewData["Title"] = "Adicionar Filme";
+    ViewData["Title"] = "Adicionar Movie";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -36,7 +36,7 @@
 
                             <div class="col-md-6 mb-3">
                                 <label asp-for="DuracaoMinutos" class="form-label">
-                                    <i class="bi bi-clock"></i> <strong>Duration (minutos)</strong>
+                                    <i class="bi bi-clock"></i> <strong>Duration (minutes)</strong>
                                 </label>
                                 <input asp-for="DuracaoMinutos" type="number" class="form-control" placeholder="Ex: 120" />
                                 <span asp-validation-for="DuracaoMinutos" class="text-danger"></span>
@@ -76,7 +76,7 @@
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-success btn-lg">
-                                <i class="bi bi-check-circle"></i> Save Filme
+                                <i class="bi bi-check-circle"></i> Save Movie
                             </button>
                             <a asp-action="Index" class="btn btn-secondary">
                                 <i class="bi bi-x-circle"></i> Cancel
