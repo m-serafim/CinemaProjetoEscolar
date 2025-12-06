@@ -109,7 +109,7 @@
                 {
                     <div class="col-md-4">
                         <div class="movie-card">
-                            <div class="movie-poster">
+                            <div class="movie-poster" style="aspect-ratio: 2/3;">
                                 @if (!string.IsNullOrEmpty(filme.CapaUrl))
                                 {
                                     <img src="@filme.CapaUrl" alt="@filme.Titulo" onerror="this.src='/images/movies/placeholder.svg'" />
