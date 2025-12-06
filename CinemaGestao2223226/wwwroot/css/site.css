@@ -2453,3 +2453,9 @@ details summary:hover {
 .site-header .logo-text {
   transition: color 0.3s ease, text-shadow 0.3s ease;
 }
+
+/* Card icon large size */
+.card-icon-large {
+  width: 90px;
+  height: 90px;
+}
