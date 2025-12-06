@@ -1572,3 +1572,8 @@ details summary:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(56, 189, 248, 0.5);
 }
+
+/* Enhanced placeholder styling */
+::placeholder {
+  opacity: 0.6;
+}
