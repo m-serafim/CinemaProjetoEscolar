@@ -2443,3 +2443,8 @@ details summary:hover {
 .search-box {
   border-radius: 28px;
 }
+
+/* Navbar toggler color */
+.navbar-toggler-icon {
+  filter: invert(1);
+}
