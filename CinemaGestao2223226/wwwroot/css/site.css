@@ -2288,3 +2288,8 @@ details summary:hover {
 .site-header .logo-icon {
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
+
+/* Card link arrow transition */
+.quick-access-card .card-link i {
+  transition: transform 0.3s ease;
+}
