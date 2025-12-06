@@ -725,3 +725,149 @@ footer a:hover {
   border-color: rgba(234, 179, 8, 0.3);
   color: var(--text-heading);
 }
+
+/* ========================================
+   HEADER & NAVIGATION STYLES
+   ======================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, rgba(2, 6, 23, 0.95) 0%, rgba(10, 10, 20, 0.95) 100%);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.site-header .navbar {
+  padding: 1rem 0;
+  background: transparent !important;
+  border: none;
+}
+
+.site-header .logo-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 12px;
+}
+
+.site-header .logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  letter-spacing: -0.5px;
+}
+
+.site-header .navbar-brand:hover .logo-text {
+  color: var(--text-heading);
+}
+
+/* Search Box */
+.navbar-search {
+  max-width: 400px;
+  width: 100%;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(56, 189, 248, 0.2);
+  border-radius: 24px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+}
+
+.search-box:focus-within {
+  border-color: var(--accent-cyan);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-heading);
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: var(--text-body);
+}
+
+/* Navigation Links */
+.site-header .nav-link {
+  color: var(--text-body);
+  font-weight: 500;
+  font-size: 14px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+}
+
+.site-header .nav-link:hover {
+  color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.1);
+}
+
+/* Action Buttons */
+.navbar-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 6px;
+  color: var(--accent-cyan);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  color: var(--text-heading);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+}
+
+.btn-login {
+  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-cyan-hover) 100%);
+  color: var(--bg-primary);
+  border: none;
+}
+
+.btn-login:hover {
+  color: var(--text-heading);
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .navbar-search {
+    margin: 1rem 0;
+    max-width: 100%;
+  }
+  
+  .navbar-actions {
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+}
