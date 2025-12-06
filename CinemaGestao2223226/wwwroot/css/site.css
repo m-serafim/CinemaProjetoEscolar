@@ -1396,3 +1396,9 @@ a:not(.btn):not(.nav-link) {
 a:not(.btn):not(.nav-link):hover {
   text-decoration-color: currentColor;
 }
+
+/* Badge refinements */
+.badge {
+  font-weight: 600;
+  padding: 0.35em 0.65em;
+}
