@@ -1485,3 +1485,11 @@ pre {
   border-radius: 8px;
   border: 1px solid rgba(56, 189, 248, 0.2);
 }
+
+/* Blockquote styling */
+blockquote {
+  border-left: 4px solid var(--accent-cyan);
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--text-body);
+}
