@@ -2464,3 +2464,8 @@ details summary:hover {
 .hero-title {
   line-height: 1.1;
 }
+
+/* Movie description letter spacing */
+.movie-description {
+  letter-spacing: 0.2px;
+}
