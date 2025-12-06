@@ -2257,3 +2257,9 @@ details summary:hover {
 .movie-tags {
   gap: 10px;
 }
+
+/* Search box focus ring */
+.search-box:focus-within {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
