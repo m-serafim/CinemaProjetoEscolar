@@ -1444,3 +1444,8 @@ img {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Tooltip arrow color */
+.tooltip .tooltip-arrow {
+  border-top-color: var(--bg-secondary);
+}
