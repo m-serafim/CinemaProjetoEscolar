@@ -2222,3 +2222,8 @@ details summary:hover {
 .movie-description {
   line-height: 1.7;
 }
+
+/* Movie info padding adjustment */
+.movie-info {
+  padding: 1.75rem;
+}
