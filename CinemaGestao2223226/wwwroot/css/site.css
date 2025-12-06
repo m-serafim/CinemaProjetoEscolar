@@ -2358,3 +2358,8 @@ details summary:hover {
 .movie-info {
   flex-grow: 1;
 }
+
+/* Nav link font weight */
+.site-header .nav-link {
+  font-weight: 600;
+}
