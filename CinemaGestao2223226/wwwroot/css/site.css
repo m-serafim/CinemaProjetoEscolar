@@ -1671,3 +1671,8 @@ details summary:hover {
 .select-none { user-select: none; }
 .select-text { user-select: text; }
 .select-all { user-select: all; }
+
+/* Cursor utilities */
+.cursor-pointer { cursor: pointer; }
+.cursor-wait { cursor: wait; }
+.cursor-not-allowed { cursor: not-allowed; }
