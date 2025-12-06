@@ -1459,3 +1459,8 @@ img {
 .spinner-border {
   color: var(--accent-cyan);
 }
+
+/* Progress bar styling */
+.progress-bar {
+  background-color: var(--accent-cyan);
+}
