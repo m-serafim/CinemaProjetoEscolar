@@ -2273,3 +2273,8 @@ details summary:hover {
 .movie-poster {
   aspect-ratio: 2/3;
 }
+
+/* Hero content max width */
+.hero-content {
+  max-width: 600px;
+}
