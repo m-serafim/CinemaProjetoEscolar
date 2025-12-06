@@ -2423,3 +2423,8 @@ details summary:hover {
 .section-title {
   font-weight: 800;
 }
+
+/* Movie title font size */
+.movie-title {
+  font-size: 21px;
+}
