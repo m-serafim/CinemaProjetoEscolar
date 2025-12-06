@@ -35,5 +35,50 @@ namespace CinemaGestao2223226.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        // API endpoint for live movie search
+        [HttpGet]
+        public async Task<IActionResult> SearchMovies(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return Json(new { results = new List<object>() });
+            }
+
+            var movies = await _context.Filmes
+                .Where(f => f.Titulo.Contains(query))
+                .Take(3)
+                .Select(f => new
+                {
+                    id = f.Id,
+                    title = f.Titulo,
+                    genre = f.Genero,
+                    thumbnail = f.CapaUrl
+                })
+                .ToListAsync();
+
+            return Json(new { results = movies });
+        }
+
+        // API endpoint for rotating movie display
+        [HttpGet]
+        public async Task<IActionResult> GetRandomMovies()
+        {
+            // Fetch all movies and randomize client-side for better performance
+            var allMovies = await _context.Filmes
+                .Select(f => new
+                {
+                    id = f.Id,
+                    title = f.Titulo,
+                    thumbnail = f.CapaUrl
+                })
+                .ToListAsync();
+
+            // Randomize and take 5
+            var random = new Random();
+            var movies = allMovies.OrderBy(x => random.Next()).Take(5).ToList();
+
+            return Json(new { movies = movies });
+        }
     }
 }

@@ -1,6 +1,6 @@
 <header class="site-header">
     <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
+        <div class="container-fluid navbar-container-spread">
             <!-- Logo -->
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="~/images/icons/logo-white.svg" alt="Nexor Cinema" class="logo-icon" />
@@ -15,21 +15,15 @@
 
             <!-- Navigation Content -->
             <div class="collapse navbar-collapse" id="navbarContent">
-                <!-- Center: Search Box -->
-                <div class="navbar-search mx-auto">
-                    <div class="search-box">
-                        <img src="~/images/icons/search.svg" alt="Search" class="search-icon" />
-                        <input type="text" class="search-input" placeholder="Search movies..." />
-                    </div>
-                </div>
-
                 <!-- Left: Navigation Links -->
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav navbar-links-left">
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Catalogo" asp-action="Index">Movie Catalog</a>
+                        <a class="nav-link nav-link-highlighted" asp-controller="Catalogo" asp-action="Index">
+                            <i class="bi bi-film"></i> Movie Catalog
+                        </a>
                     </li>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Cliente"))
                     {
@@ -39,12 +33,21 @@
                     }
                 </ul>
 
+                <!-- Center: Search Box -->
+                <div class="navbar-search mx-auto">
+                    <div class="search-box" role="search">
+                        <img src="~/images/icons/search.svg" alt="Search" class="search-icon" aria-hidden="true" />
+                        <input type="text" id="liveSearchInput" class="search-input" placeholder="Search movies..." 
+                               autocomplete="off" aria-label="Search movies" aria-describedby="searchResults" />
+                        <button type="button" id="clearSearchBtn" class="search-clear-btn" aria-label="Clear search" style="display: none;">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </button>
+                        <div id="searchResults" class="search-results" style="display: none;" role="listbox" aria-live="polite"></div>
+                    </div>
+                </div>
+
                 <!-- Right: Action Buttons -->
-                <div class="navbar-actions">
-                    <a class="action-btn" asp-controller="Catalogo" asp-action="Index">
-                        <img src="~/images/icons/cartaz.svg" alt="Cartaz" style="width: 20px; height: 20px;" />
-                        <span>Cartaz</span>
-                    </a>
+                <div class="navbar-actions ms-auto">
                     @if (User.Identity.IsAuthenticated)
                     {
                         <partial name="_LoginPartial" />
