@@ -1569,6 +1569,11 @@ footer a:hover {
 .card-icon-large i {
   font-size: 40px;
   color: var(--accent-cyan);
+  transition: transform 0.3s ease;
+}
+
+.about-card:hover .card-icon-large i {
+  transform: scale(1.1);
 }
 
 .about-card .card-title {
