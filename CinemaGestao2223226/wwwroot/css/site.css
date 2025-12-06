@@ -2333,3 +2333,8 @@ details summary:hover {
 .movie-card {
   min-height: 500px;
 }
+
+/* Quick access card min height */
+.quick-access-card {
+  min-height: 280px;
+}
