@@ -1344,3 +1344,9 @@ a {
 html {
   scroll-padding-top: 80px;
 }
+
+/* Custom text selection color */
+::selection {
+  background: var(--accent-cyan);
+  color: var(--bg-primary);
+}
