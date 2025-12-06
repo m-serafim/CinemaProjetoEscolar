@@ -1449,3 +1449,8 @@ img {
 .tooltip .tooltip-arrow {
   border-top-color: var(--bg-secondary);
 }
+
+/* Breadcrumb separator color */
+.breadcrumb-item + .breadcrumb-item::before {
+  color: var(--text-body);
+}
