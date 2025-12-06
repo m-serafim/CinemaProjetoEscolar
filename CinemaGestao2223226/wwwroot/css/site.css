@@ -2363,3 +2363,8 @@ details summary:hover {
 .site-header .nav-link {
   font-weight: 600;
 }
+
+/* Button text decoration */
+.btn {
+  text-decoration: none;
+}
