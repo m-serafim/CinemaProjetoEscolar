@@ -217,7 +217,7 @@ header {
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar .nav-link:hover {
   color: var(--accent-cyan) !important;
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.05);
 }
 
 .dropdown-menu {
