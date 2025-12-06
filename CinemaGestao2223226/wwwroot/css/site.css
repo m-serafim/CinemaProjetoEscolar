@@ -1035,6 +1035,15 @@ footer a:hover {
 .footer-link:hover {
   color: var(--text-heading);
   text-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+  transform: translateY(-1px);
+}
+
+.footer-link i {
+  transition: transform 0.3s ease;
+}
+
+.footer-link:hover i {
+  transform: scale(1.2);
 }
 
 /* ========================================
