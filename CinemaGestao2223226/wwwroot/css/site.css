@@ -763,9 +763,10 @@ footer a:hover {
 .navbar-left-section {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   justify-self: start;
   flex-wrap: nowrap;
+  justify-content: flex-start;
 }
 
 .navbar-left-section .navbar-nav {
