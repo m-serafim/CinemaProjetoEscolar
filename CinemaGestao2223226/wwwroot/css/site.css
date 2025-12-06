@@ -1216,6 +1216,7 @@ footer a:hover {
 
 .hero-content {
   padding: 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-title {
