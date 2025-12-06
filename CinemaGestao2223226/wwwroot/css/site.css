@@ -1630,3 +1630,12 @@ details summary:hover {
   white-space: nowrap;
   border-width: 0;
 }
+
+/* Aspect ratio utilities */
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
