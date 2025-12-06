@@ -2232,3 +2232,8 @@ details summary:hover {
 .section-title {
   letter-spacing: 1px;
 }
+
+/* Hero title enhanced shadow */
+.hero-title {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(56, 189, 248, 0.2);
+}
