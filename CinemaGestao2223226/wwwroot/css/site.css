@@ -2323,3 +2323,8 @@ details summary:hover {
 .search-results {
   max-height: 450px;
 }
+
+/* Navbar link padding */
+.navbar-nav .nav-link {
+  padding: 10px 18px !important;
+}
