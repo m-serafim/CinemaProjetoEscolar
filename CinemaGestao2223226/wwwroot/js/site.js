@@ -187,7 +187,7 @@
                 displayMovie(currentIndex);
                 rotatingContainer.classList.remove('fade-out');
             }, 500);
-        }, 5000);
+        }, 2500);
     }
 
     function escapeHtml(text) {

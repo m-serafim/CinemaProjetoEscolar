@@ -11,7 +11,7 @@
         <div class="row align-items-center">
             <div class="col-lg-5">
                 <div class="hero-content">
-                    <h1 class="hero-title">Welcome to NExor Cinema</h1>
+                    <h1 class="hero-title">Welcome to Nexor Cinema</h1>
                     <p class="hero-subtitle">Discover amazing movies and book your seats for an unforgettable experience</p>
                     <a asp-controller="Catalogo" asp-action="Index" class="btn-cta">
                         VIEW AVAILABLE MOVIES
@@ -30,6 +30,67 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- Now Showing Section - Dynamic -->
+<section class="now-showing-section fade-in-section">
+    <div class="container">
+        <h2 class="section-title">
+            <i class="bi bi-film"></i> Now Showing
+        </h2>
+        <div class="row g-4">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var filme in Model.Take(3))
+                {
+                    <div class="col-md-4">
+                        <div class="movie-card">
+                            <div class="movie-poster" style="aspect-ratio: 2/3;">
+                                @if (!string.IsNullOrEmpty(filme.CapaUrl))
+                                {
+                                    <img src="@filme.CapaUrl" alt="@filme.Titulo" onerror="this.src='/images/movies/placeholder.svg'" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/movies/placeholder.svg" alt="@filme.Titulo" />
+                                }
+                            </div>
+                            <div class="movie-info">
+                                <h3 class="movie-title">@filme.Titulo</h3>
+                                <div class="movie-tags">
+                                    <span class="tag genre-tag">@filme.Genero</span>
+                                    @if (filme.DuracaoMinutos > 0)
+                                    {
+                                        <span class="tag duration-tag">@filme.DuracaoMinutos min</span>
+                                    }
+                                </div>
+                                <p class="movie-description">
+                                    @(filme.Descricao.Length > 120 ? filme.Descricao.Substring(0, 120) + "..." : filme.Descricao)
+                                </p>
+                                <a asp-controller="Catalogo" asp-action="Details" asp-route-id="@filme.Id" class="btn-view-details">
+                                    <i class="bi bi-eye"></i> View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="no-movies-message">
+                        <i class="bi bi-film"></i>
+                        <p>No movies available at the moment. Check back soon!</p>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="text-center mt-4">
+            <a href="https://localhost:7207/Catalogo" class="btn btn-primary btn-lg">
+                <i class="bi bi-film"></i> View All Movies
+            </a>
         </div>
     </div>
 </section>
@@ -96,62 +157,6 @@
     </div>
 </section>
 
-<!-- Now Showing Section - Dynamic -->
-<section class="now-showing-section fade-in-section">
-    <div class="container">
-        <h2 class="section-title">
-            <i class="bi bi-film"></i> Now Showing
-        </h2>
-        <div class="row g-4">
-            @if (Model != null && Model.Any())
-            {
-                @foreach (var filme in Model.Take(6))
-                {
-                    <div class="col-md-4">
-                        <div class="movie-card">
-                            <div class="movie-poster">
-                                @if (!string.IsNullOrEmpty(filme.CapaUrl))
-                                {
-                                    <img src="@filme.CapaUrl" alt="@filme.Titulo" onerror="this.src='/images/movies/placeholder.svg'" />
-                                }
-                                else
-                                {
-                                    <img src="~/images/movies/placeholder.svg" alt="@filme.Titulo" />
-                                }
-                            </div>
-                            <div class="movie-info">
-                                <h3 class="movie-title">@filme.Titulo</h3>
-                                <div class="movie-tags">
-                                    <span class="tag genre-tag">@filme.Genero</span>
-                                    @if (filme.DuracaoMinutos > 0)
-                                    {
-                                        <span class="tag duration-tag">@filme.DuracaoMinutos min</span>
-                                    }
-                                </div>
-                                <p class="movie-description">
-                                    @(filme.Descricao.Length > 120 ? filme.Descricao.Substring(0, 120) + "..." : filme.Descricao)
-                                </p>
-                                <a asp-controller="Catalogo" asp-action="Details" asp-route-id="@filme.Id" class="btn-view-details">
-                                    <i class="bi bi-eye"></i> View Details
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="col-12">
-                    <div class="no-movies-message">
-                        <i class="bi bi-film"></i>
-                        <p>No movies available at the moment. Check back soon!</p>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-</section>
-
 <!-- About This Project Section -->
 <section class="about-section fade-in-section" id="about-section">
     <div class="container">
@@ -195,6 +200,6 @@
 
 @section Scripts {
     <script>
-        console.log('NExor Cinema - Cinema Management System');
+        console.log('Nexor Cinema - Cinema Management System');
     </script>
 }
