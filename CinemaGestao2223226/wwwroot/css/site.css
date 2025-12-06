@@ -1375,3 +1375,8 @@ h1, h2, h3, h4, h5, h6 {
 .btn:active {
   transform: translateY(1px);
 }
+
+/* Input hover state */
+.form-control:hover {
+  border-color: rgba(56, 189, 248, 0.3);
+}
