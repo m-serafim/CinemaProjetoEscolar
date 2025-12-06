@@ -2489,3 +2489,9 @@ details summary:hover {
 .footer-text {
   font-size: 14px;
 }
+
+/* Quick access card icon size */
+.quick-access-card .card-icon {
+  width: 72px;
+  height: 72px;
+}
