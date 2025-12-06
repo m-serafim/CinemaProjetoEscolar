@@ -1554,7 +1554,7 @@ details summary:hover {
   cursor: not-allowed;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - WebKit browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -1571,6 +1571,12 @@ details summary:hover {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(56, 189, 248, 0.5);
+}
+
+/* Scrollbar fallback for Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56, 189, 248, 0.3) var(--bg-secondary);
 }
 
 /* Enhanced placeholder styling */
