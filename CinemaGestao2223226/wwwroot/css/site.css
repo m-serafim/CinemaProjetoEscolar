@@ -707,6 +707,7 @@ footer a:hover {
   border-radius: 12px;
   border: 1px solid;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .alert-info {
