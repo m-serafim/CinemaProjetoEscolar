@@ -2515,3 +2515,8 @@ details summary:hover {
 .container {
   max-width: 1320px;
 }
+
+/* Hero subtitle color */
+.hero-subtitle {
+  color: var(--text-secondary);
+}
