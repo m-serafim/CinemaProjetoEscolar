@@ -1520,3 +1520,10 @@ small {
   font-size: 0.875em;
   color: var(--text-body);
 }
+
+/* Abbreviation styling */
+abbr[title] {
+  text-decoration: underline dotted;
+  text-decoration-color: var(--accent-cyan);
+  cursor: help;
+}
