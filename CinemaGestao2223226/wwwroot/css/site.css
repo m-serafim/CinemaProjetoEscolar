@@ -2469,3 +2469,8 @@ details summary:hover {
 .movie-description {
   letter-spacing: 0.2px;
 }
+
+/* Search result title font weight */
+.search-result-title {
+  font-weight: 700;
+}
