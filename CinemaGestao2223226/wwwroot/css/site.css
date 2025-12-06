@@ -2520,3 +2520,8 @@ details summary:hover {
 .hero-subtitle {
   color: var(--text-secondary);
 }
+
+/* Card icon border radius */
+.quick-access-card .card-icon {
+  border-radius: 14px;
+}
