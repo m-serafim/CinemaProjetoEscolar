@@ -1715,3 +1715,8 @@ details summary:hover {
 .delay-100 { animation-delay: 100ms; }
 .delay-300 { animation-delay: 300ms; }
 .delay-500 { animation-delay: 500ms; }
+
+/* Backdrop blur utilities */
+.backdrop-blur-sm { backdrop-filter: blur(4px); }
+.backdrop-blur-md { backdrop-filter: blur(8px); }
+.backdrop-blur-lg { backdrop-filter: blur(16px); }
