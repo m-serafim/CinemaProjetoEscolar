@@ -24,6 +24,8 @@ html {
   font-size: 14px;
   scroll-behavior: smooth;
   height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @media (min-width: 768px) {
