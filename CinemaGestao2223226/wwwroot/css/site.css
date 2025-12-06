@@ -2343,3 +2343,8 @@ details summary:hover {
 .hero-banner {
   padding: 5rem 0;
 }
+
+/* Footer margin top */
+.site-footer {
+  margin-top: 5rem;
+}
