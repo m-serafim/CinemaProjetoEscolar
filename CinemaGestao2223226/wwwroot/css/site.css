@@ -2283,3 +2283,8 @@ details summary:hover {
 .quick-access-section, .now-showing-section, .about-section {
   margin-bottom: 4rem;
 }
+
+/* Logo icon filter */
+.site-header .logo-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
