@@ -2408,3 +2408,8 @@ details summary:hover {
 .footer-link {
   transition: all 0.2s ease;
 }
+
+/* View details button icon gap */
+.btn-view-details {
+  gap: 8px;
+}
