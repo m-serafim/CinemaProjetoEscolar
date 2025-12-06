@@ -1034,3 +1034,104 @@ footer a:hover {
     font-size: 16px;
   }
 }
+
+/* ========================================
+   QUICK ACCESS SECTION
+   ======================================== */
+.quick-access-section {
+  padding: 3rem 0;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 2rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.section-title i {
+  color: var(--accent-cyan);
+  font-size: 28px;
+}
+
+.quick-access-card {
+  background: linear-gradient(135deg, rgba(10, 10, 20, 0.9) 0%, rgba(2, 6, 23, 0.95) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.quick-access-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
+}
+
+.quick-access-card .card-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(14, 165, 233, 0.15) 100%);
+  border: 2px solid rgba(56, 189, 248, 0.3);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.quick-access-card .card-icon i {
+  font-size: 32px;
+  color: var(--accent-cyan);
+}
+
+.quick-access-card .card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 1rem;
+}
+
+.quick-access-card .card-description {
+  font-size: 15px;
+  color: var(--text-body);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.quick-access-card .card-link {
+  color: var(--accent-cyan);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.quick-access-card .card-link:hover {
+  color: var(--text-heading);
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .quick-access-section {
+    padding: 2rem 0;
+  }
+  
+  .section-title {
+    font-size: 24px;
+  }
+}
