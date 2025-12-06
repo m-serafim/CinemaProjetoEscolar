@@ -35,10 +35,11 @@
 
                 <!-- Center: Search Box -->
                 <div class="navbar-search mx-auto">
-                    <div class="search-box">
-                        <img src="~/images/icons/search.svg" alt="Search" class="search-icon" />
-                        <input type="text" id="liveSearchInput" class="search-input" placeholder="Search movies..." autocomplete="off" />
-                        <div id="searchResults" class="search-results" style="display: none;"></div>
+                    <div class="search-box" role="search">
+                        <img src="~/images/icons/search.svg" alt="Search" class="search-icon" aria-hidden="true" />
+                        <input type="text" id="liveSearchInput" class="search-input" placeholder="Search movies..." 
+                               autocomplete="off" aria-label="Search movies" aria-describedby="searchResults" />
+                        <div id="searchResults" class="search-results" style="display: none;" role="listbox" aria-live="polite"></div>
                     </div>
                 </div>
 
