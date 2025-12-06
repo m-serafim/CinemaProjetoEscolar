@@ -6,14 +6,13 @@ namespace CinemaGestao.Helpers
         /// Formats duration from minutes to a human-readable format (hours and minutes)
         /// </summary>
         /// <param name="durationMinutes">Duration in minutes</param>
-        /// <param name="isEnglish">Whether to use English or Portuguese</param>
         /// <returns>Formatted duration string</returns>
-        public static string FormatDuration(int durationMinutes, bool isEnglish = false)
+        public static string FormatDuration(int durationMinutes)
         {
             if (durationMinutes < 60)
             {
                 // Less than 1 hour - show only minutes
-                return isEnglish ? $"{durationMinutes} min" : $"{durationMinutes} min";
+                return $"{durationMinutes} min";
             }
             else
             {
@@ -24,16 +23,12 @@ namespace CinemaGestao.Helpers
                 if (minutes == 0)
                 {
                     // Exact hours
-                    return isEnglish 
-                        ? (hours == 1 ? "1 hour" : $"{hours} hours")
-                        : (hours == 1 ? "1 hora" : $"{hours} horas");
+                    return hours == 1 ? "1 hour" : $"{hours} hours";
                 }
                 else
                 {
                     // Hours and minutes
-                    return isEnglish 
-                        ? $"{hours}h {minutes}min"
-                        : $"{hours}h {minutes}min";
+                    return $"{hours}h {minutes}min";
                 }
             }
         }

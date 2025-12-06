@@ -89,7 +89,7 @@ namespace CinemaGestao2223226.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = $"Erro ao eliminar utilizador: {string.Join(", ", result.Errors.Select(e => e.Description))}";
+                TempData["ErrorMessage"] = $"Error deleting user: {string.Join(", ", result.Errors.Select(e => e.Description))}";
             }
 
             return RedirectToAction(nameof(Index));
