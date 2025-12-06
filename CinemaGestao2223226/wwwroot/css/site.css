@@ -1466,6 +1466,12 @@ footer a:hover {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.movie-card:hover .tag {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .age-tag {
