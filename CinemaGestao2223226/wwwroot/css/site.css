@@ -2459,3 +2459,8 @@ details summary:hover {
   width: 90px;
   height: 90px;
 }
+
+/* Hero title line height */
+.hero-title {
+  line-height: 1.1;
+}
