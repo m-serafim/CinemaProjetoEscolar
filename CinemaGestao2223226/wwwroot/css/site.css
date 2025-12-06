@@ -2413,3 +2413,8 @@ details summary:hover {
 .btn-view-details {
   gap: 8px;
 }
+
+/* Hero content text align */
+.hero-content {
+  text-align: left;
+}
