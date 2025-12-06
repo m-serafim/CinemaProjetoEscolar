@@ -336,7 +336,8 @@ header {
 .btn-outline-primary:hover {
   background: var(--accent-cyan);
   color: var(--bg-primary);
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.4);
 }
 
 /* Cards */
