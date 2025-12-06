@@ -1,7 +1,7 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Registar";
+    ViewData["Title"] = "Register";
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -28,7 +28,7 @@
                                 <label asp-for="Input.Password" class="form-label mb-0">Password</label>
                                 <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleAllPasswords">
                                     <i class="bi bi-eye" id="toggleAllPasswordsIcon"></i>
-                                    <span id="toggleAllPasswordsText">Mostrar Passwords</span>
+                                    <span id="toggleAllPasswordsText">Show Passwords</span>
                                 </button>
                             </div>
                             <input asp-for="Input.Password" type="password" class="form-control password-field" autocomplete="new-password" aria-required="true" placeholder="password" />
@@ -36,22 +36,22 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label asp-for="Input.ConfirmPassword" class="form-label">Confirmar Password</label>
+                            <label asp-for="Input.ConfirmPassword" class="form-label">Confirm Password</label>
                             <input asp-for="Input.ConfirmPassword" type="password" class="form-control password-field" autocomplete="new-password" aria-required="true" placeholder="password" />
                             <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                         </div>
                         
                         <div class="d-grid gap-2 mb-3">
                             <button id="registerSubmit" type="submit" class="btn btn-primary btn-lg">
-                                <i class="bi bi-check-circle"></i> Criar Conta
+                                <i class="bi bi-check-circle"></i> Create Account
                             </button>
                         </div>
 
                         <div class="text-center">
                             <p class="mb-0">
-                                Já tem uma conta? 
+                                Already have an account? 
                                 <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none">
-                                    <i class="bi bi-box-arrow-in-right"></i> Faça login aqui
+                                    <i class="bi bi-box-arrow-in-right"></i> Log in here
                                 </a>
                             </p>
                         </div>
@@ -63,13 +63,13 @@
             {
                 <div class="card shadow-lg mt-3">
                     <div class="card-body">
-                        <h5 class="card-title">Usar outro serviço para registar</h5>
+                        <h5 class="card-title">Use another service to register</h5>
                         <hr />
                         <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                             <div class="d-grid gap-2">
                                 @foreach (var provider in Model.ExternalLogins!)
                                 {
-                                    <button type="submit" class="btn btn-outline-primary" name="provider" value="@provider.Name" title="Registar usando a sua conta @provider.DisplayName">
+                                    <button type="submit" class="btn btn-outline-primary" name="provider" value="@provider.Name" title="Register usando a sua conta @provider.DisplayName">
                                         <i class="bi bi-box-arrow-in-right"></i> @provider.DisplayName
                                     </button>
                                 }
@@ -103,11 +103,11 @@
             if (isPassword) {
                 icon.classList.remove('bi-eye');
                 icon.classList.add('bi-eye-slash');
-                text.textContent = 'Ocultar Passwords';
+                text.textContent = 'Hide Passwords';
             } else {
                 icon.classList.remove('bi-eye-slash');
                 icon.classList.add('bi-eye');
-                text.textContent = 'Mostrar Passwords';
+                text.textContent = 'Show Passwords';
             }
         });
     </script>

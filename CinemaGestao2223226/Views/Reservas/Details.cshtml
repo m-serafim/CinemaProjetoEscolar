@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <h6 class="text-muted">@(isEnglish ? "Session Information" : "Informações da Sessão")</h6>
+                    <h6 class="text-muted">@(isEnglish ? "Session Information" : "Informações da Session")</h6>
                     <dl class="row">
                         <dt class="col-sm-4">@(isEnglish ? "Date:" : "Data:")</dt>
                         <dd class="col-sm-8">@Model.Sessao.DataHora.ToString("dd/MM/yyyy")</dd>
@@ -54,7 +54,7 @@
                 <div class="col-md-12">
                     <h6 class="text-muted">@(isEnglish ? "Reservation Information" : "Informações da Reserva")</h6>
                     <dl class="row">
-                        <dt class="col-sm-3">@(isEnglish ? "Number of Tickets:" : "Número de Bilhetes:")</dt>
+                        <dt class="col-sm-3">@(isEnglish ? "Number of Tickets:" : "Number of Tickets:")</dt>
                         <dd class="col-sm-9">
                             <span class="badge bg-success fs-6">@Model.NumeroBilhetes</span>
                         </dd>
@@ -85,7 +85,7 @@
                     <i class="bi bi-arrow-left"></i> @(isEnglish ? "Back" : "Voltar")
                 </a>
                 <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
-                    <i class="bi bi-trash"></i> @(isEnglish ? "Cancel Reservation" : "Cancelar Reserva")
+                    <i class="bi bi-trash"></i> @(isEnglish ? "Cancel Reservation" : "Cancel Reservation")
                 </a>
             </div>
         </div>

@@ -2,7 +2,7 @@
 @using CinemaGestao.Helpers
 
 @{
-    ViewData["Title"] = "Eliminar Filme";
+    ViewData["Title"] = "Delete Filme";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,16 +11,16 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h1 class="mb-4 text-danger"><i class="bi bi-trash"></i> Eliminar Filme</h1>
+            <h1 class="mb-4 text-danger"><i class="bi bi-trash"></i> Delete Filme</h1>
 
             <div class="alert alert-danger">
-                <h5><i class="bi bi-exclamation-triangle"></i> Tem a certeza que deseja eliminar este filme?</h5>
-                <p class="mb-0">Esta ação não pode ser desfeita. Todas as sessões associadas também serão afetadas.</p>
+                <h5><i class="bi bi-exclamation-triangle"></i> Are you sure you want to delete this movie?</h5>
+                <p class="mb-0">This action cannot be undone. Todas as sessões associadas também serão afetadas.</p>
             </div>
 
             <div class="card shadow">
                 <div class="card-header bg-danger text-white">
-                    <h5 class="mb-0">Detalhes do Filme</h5>
+                    <h5 class="mb-0">Details do Filme</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -38,22 +38,22 @@
                         </div>
                         <div class="col-md-8">
                             <dl class="row">
-                                <dt class="col-sm-4">Título:</dt>
+                                <dt class="col-sm-4">Title:</dt>
                                 <dd class="col-sm-8"><strong>@Model.Titulo</strong></dd>
 
-                                <dt class="col-sm-4">Género:</dt>
+                                <dt class="col-sm-4">Genre:</dt>
                                 <dd class="col-sm-8">
                                     <span class="badge bg-primary">@Model.Genero</span>
                                 </dd>
 
-                                <dt class="col-sm-4">Duração:</dt>
+                                <dt class="col-sm-4">Duration:</dt>
                                 <dd class="col-sm-8">
                                     <span class="badge bg-info text-dark">
                                         <i class="bi bi-clock"></i> @DurationHelper.FormatDuration(Model.DuracaoMinutos, false)
                                     </span>
                                 </dd>
 
-                                <dt class="col-sm-4">Descrição:</dt>
+                                <dt class="col-sm-4">Description:</dt>
                                 <dd class="col-sm-8">@Model.Descricao</dd>
                             </dl>
                         </div>
@@ -65,7 +65,7 @@
                 <input type="hidden" asp-for="Id" />
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-danger btn-lg">
-                        <i class="bi bi-trash"></i> Sim, Eliminar Filme
+                        <i class="bi bi-trash"></i> Sim, Delete Filme
                     </button>
                     <a asp-action="Index" class="btn btn-secondary btn-lg">
                         <i class="bi bi-x-circle"></i> Não, Voltar

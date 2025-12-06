@@ -3,7 +3,7 @@
 
 @{
     var sessao = ViewBag.Sessao as CinemaGestao.Models.Sessao;
-    ViewData["Title"] = "Nova Reserva";
+    ViewData["Title"] = "New Reservation";
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var isEnglish = (requestCulture?.RequestCulture.UICulture.Name ?? "pt-PT") == "en-US";
 }
@@ -11,13 +11,13 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
 <div class="container">
-    <h1 class="mb-4">🎟️ @(isEnglish ? "New Reservation" : "Nova Reserva")</h1>
+    <h1 class="mb-4">🎟️ @(isEnglish ? "New Reservation" : "New Reservation")</h1>
 
     @if (sessao != null)
     {
         <div class="card mb-4 shadow">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">@(isEnglish ? "Session Details" : "Detalhes da Sessão")</h5>
+                <h5 class="mb-0">@(isEnglish ? "Session Details" : "Detalhes da Session")</h5>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -49,7 +49,7 @@
                         
                         <div class="mb-3">
                             <label asp-for="NumeroBilhetes" class="form-label">
-                                <i class="bi bi-ticket-perforated"></i> @(isEnglish ? "Number of Tickets" : "Número de Bilhetes")
+                                <i class="bi bi-ticket-perforated"></i> @(isEnglish ? "Number of Tickets" : "Number of Tickets")
                             </label>
                             <input asp-for="NumeroBilhetes" class="form-control" type="number" 
                                    min="1" max="@(sessao?.LugaresDisponiveis ?? 20)" 
@@ -74,7 +74,7 @@
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-success btn-lg">
-                                <i class="bi bi-check-circle"></i> @(isEnglish ? "Confirm Reservation" : "Confirmar Reserva")
+                                <i class="bi bi-check-circle"></i> @(isEnglish ? "Confirm Reservation" : "Confirm Reservation")
                             </button>
                             <a asp-controller="Catalogo" asp-action="Sessoes" asp-route-id="@sessao?.FilmeId" class="btn btn-secondary">
                                 <i class="bi bi-x-circle"></i> @(isEnglish ? "Cancel" : "Cancelar")

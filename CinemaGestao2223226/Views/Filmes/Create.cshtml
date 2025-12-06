@@ -10,7 +10,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h1 class="mb-4"><i class="bi bi-plus-circle"></i> Adicionar Novo Filme</h1>
+            <h1 class="mb-4"><i class="bi bi-plus-circle"></i> Add New Movie</h1>
 
             <div class="card shadow">
                 <div class="card-body">
@@ -19,7 +19,7 @@
                         
                         <div class="mb-3">
                             <label asp-for="Titulo" class="form-label">
-                                <i class="bi bi-file-text"></i> <strong>Título</strong>
+                                <i class="bi bi-file-text"></i> <strong>Title</strong>
                             </label>
                             <input asp-for="Titulo" class="form-control form-control-lg" placeholder="Ex: O Senhor dos Anéis" />
                             <span asp-validation-for="Titulo" class="text-danger"></span>
@@ -28,7 +28,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label asp-for="Genero" class="form-label">
-                                    <i class="bi bi-tag"></i> <strong>Género</strong>
+                                    <i class="bi bi-tag"></i> <strong>Genre</strong>
                                 </label>
                                 <input asp-for="Genero" class="form-control" placeholder="Ex: Ação, Aventura" />
                                 <span asp-validation-for="Genero" class="text-danger"></span>
@@ -36,7 +36,7 @@
 
                             <div class="col-md-6 mb-3">
                                 <label asp-for="DuracaoMinutos" class="form-label">
-                                    <i class="bi bi-clock"></i> <strong>Duração (minutos)</strong>
+                                    <i class="bi bi-clock"></i> <strong>Duration (minutos)</strong>
                                 </label>
                                 <input asp-for="DuracaoMinutos" type="number" class="form-control" placeholder="Ex: 120" />
                                 <span asp-validation-for="DuracaoMinutos" class="text-danger"></span>
@@ -45,7 +45,7 @@
 
                         <div class="mb-3">
                             <label asp-for="Descricao" class="form-label">
-                                <i class="bi bi-card-text"></i> <strong>Descrição</strong>
+                                <i class="bi bi-card-text"></i> <strong>Description</strong>
                             </label>
                             <textarea asp-for="Descricao" class="form-control" rows="4" placeholder="Descreva o filme..."></textarea>
                             <span asp-validation-for="Descricao" class="text-danger"></span>
@@ -53,7 +53,7 @@
 
                         <div class="mb-4">
                             <label asp-for="CapaUrl" class="form-label">
-                                <i class="bi bi-image"></i> <strong>URL da Capa</strong>
+                                <i class="bi bi-image"></i> <strong>Cover URL</strong>
                             </label>
                             <input asp-for="CapaUrl" class="form-control mb-2" placeholder="https://exemplo.com/capa.jpg" id="capaUrlInput" />
                             <span asp-validation-for="CapaUrl" class="text-danger"></span>
@@ -76,10 +76,10 @@
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-success btn-lg">
-                                <i class="bi bi-check-circle"></i> Guardar Filme
+                                <i class="bi bi-check-circle"></i> Save Filme
                             </button>
                             <a asp-action="Index" class="btn btn-secondary">
-                                <i class="bi bi-x-circle"></i> Cancelar
+                                <i class="bi bi-x-circle"></i> Cancel
                             </a>
                         </div>
                     </form>
