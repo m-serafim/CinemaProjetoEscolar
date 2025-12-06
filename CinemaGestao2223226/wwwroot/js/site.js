@@ -112,10 +112,10 @@
 
         let html = '';
         results.forEach(movie => {
-            const thumbnail = movie.thumbnail || '/images/movies/placeholder.svg';
+            const thumbnail = escapeHtml(movie.thumbnail || '/images/movies/placeholder.svg');
             html += `
                 <a href="/Catalogo/Details/${movie.id}" class="search-result-item">
-                    <img src="${thumbnail}" alt="${movie.title}" class="search-result-thumbnail" onerror="this.src='/images/movies/placeholder.svg'">
+                    <img src="${thumbnail}" alt="${escapeHtml(movie.title)}" class="search-result-thumbnail" onerror="this.src='/images/movies/placeholder.svg'">
                     <div class="search-result-info">
                         <div class="search-result-title">${escapeHtml(movie.title)}</div>
                         <div class="search-result-genre">${escapeHtml(movie.genre)}</div>
@@ -165,7 +165,7 @@
         if (!movies || movies.length === 0) return;
 
         const movie = movies[index];
-        const thumbnail = movie.thumbnail || '/images/movies/placeholder.svg';
+        const thumbnail = escapeHtml(movie.thumbnail || '/images/movies/placeholder.svg');
 
         rotatingContainer.innerHTML = `
             <div class="rotating-movie-card fade-in">

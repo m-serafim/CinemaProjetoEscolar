@@ -64,9 +64,8 @@ namespace CinemaGestao2223226.Controllers
         [HttpGet]
         public async Task<IActionResult> GetRandomMovies()
         {
-            var movies = await _context.Filmes
-                .OrderBy(f => Guid.NewGuid())
-                .Take(5)
+            // Fetch all movies and randomize client-side for better performance
+            var allMovies = await _context.Filmes
                 .Select(f => new
                 {
                     id = f.Id,
@@ -74,6 +73,10 @@ namespace CinemaGestao2223226.Controllers
                     thumbnail = f.CapaUrl
                 })
                 .ToListAsync();
+
+            // Randomize and take 5
+            var random = new Random();
+            var movies = allMovies.OrderBy(x => random.Next()).Take(5).ToList();
 
             return Json(new { movies = movies });
         }
