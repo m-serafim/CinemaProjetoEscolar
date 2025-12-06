@@ -1355,3 +1355,8 @@ html {
 section {
   position: relative;
 }
+
+/* Improved card animation timing */
+.card {
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
