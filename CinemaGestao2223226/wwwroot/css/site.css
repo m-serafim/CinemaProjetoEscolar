@@ -1666,9 +1666,9 @@ footer a:hover {
 }
 
 .about-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(56, 189, 248, 0.4);
-  box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 12px 35px rgba(56, 189, 248, 0.4);
 }
 
 .card-icon-large {
