@@ -1464,3 +1464,9 @@ img {
 .progress-bar {
   background-color: var(--accent-cyan);
 }
+
+/* Pagination active state */
+.page-item.active .page-link {
+  background-color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+}
