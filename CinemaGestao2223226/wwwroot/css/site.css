@@ -2308,3 +2308,8 @@ details summary:hover {
 .duration-tag {
   letter-spacing: 0.3px;
 }
+
+/* Button border none */
+.btn {
+  border: none;
+}
