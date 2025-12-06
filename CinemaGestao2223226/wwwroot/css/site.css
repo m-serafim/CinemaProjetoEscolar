@@ -1775,3 +1775,9 @@ details summary:hover {
 .list-none { list-style-type: none; }
 .list-disc { list-style-type: disc; }
 .list-decimal { list-style-type: decimal; }
+
+/* Resize utilities */
+.resize-none { resize: none; }
+.resize { resize: both; }
+.resize-y { resize: vertical; }
+.resize-x { resize: horizontal; }
