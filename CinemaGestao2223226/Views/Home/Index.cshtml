@@ -1,303 +1,208 @@
-﻿@model IEnumerable<CinemaGestao.Models.Filme>
-@using CinemaGestao.Helpers
+﻿@*
+    Static Prototype Homepage
+    This page implements a static UI prototype matching the provided design specifications.
+    For dynamic movie content, see the original Index.cshtml.backup file.
+*@
 @{
     ViewData["Title"] = "Home";
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<!-- Hero Section with improved styling -->
-<div class="hero-section text-center">
-    <h1 class="display-3 fw-bold">
-        🎬 Welcome to Nexor Cinema
-    </h1>
-    <p class="lead fs-4 mb-4">
-        Cinema Management System - School Project
-    </p>
-    <a asp-controller="Catalogo" asp-action="Index" class="btn btn-danger btn-lg mt-3 px-5">
-        <i class="bi bi-ticket-perforated"></i> View Available Movies
-    </a>
-</div>
-
-<!-- Now Showing Section with Movie Cards -->
-<div class="row mb-5">
-    <div class="col-12">
-        <h2 class="mb-4"><i class="bi bi-film"></i> Now Showing</h2>
-        
-        @if (!Model.Any())
-        {
-            <div class="alert alert-info">
-                <i class="bi bi-info-circle"></i> 
-                There are no movies currently showing. Check our <a asp-controller="Catalogo" asp-action="Index" class="alert-link">full catalog</a>
-            </div>
-        }
-        else
-        {
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
-                @foreach (var filme in Model)
-                {
-                    <div class="col">
-                        <div class="card h-100 shadow-sm">
-                            @if (!string.IsNullOrEmpty(filme.CapaUrl))
-                            {
-                                <div style="width: 100%; aspect-ratio: 2/3; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #000;">
-                                    <img src="@filme.CapaUrl" class="card-img-top" alt="@filme.Titulo" style="width: 100%; height: 100%; object-fit: cover;">
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="width: 100%; aspect-ratio: 2/3;">
-                                    <i class="bi bi-film" style="font-size: 5rem; color: white;"></i>
-                                </div>
-                            }
-                            <div class="card-body">
-                                <h5 class="card-title">@filme.Titulo</h5>
-                                <p class="card-text">
-                                    <span class="badge bg-primary">@filme.Genero</span>
-                                    <span class="badge bg-info text-dark">@DurationHelper.FormatDuration(filme.DuracaoMinutos)</span>
-                                </p>
-                                <p class="card-text text-truncate">@filme.Descricao</p>
-                            </div>
-                            <div class="card-footer bg-transparent">
-                                <a asp-controller="Catalogo" asp-action="Details" asp-route-id="@filme.Id" class="btn btn-primary w-100">
-                                    <i class="bi bi-info-circle"></i> View Details
-                                </a>
-                            </div>
-                        </div>
+<!-- Hero Section -->
+<section class="hero-banner">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-image-wrapper">
+                    <img src="~/images/hero/avengers-hero.svg" alt="Avengers" class="hero-image" />
+                    <div class="play-button-overlay">
+                        <img src="~/images/icons/play-button.svg" alt="Play" class="play-icon" />
                     </div>
-                }
-            </div>
-            <div class="text-center">
-                <a asp-controller="Catalogo" asp-action="Index" class="btn btn-outline-primary btn-lg">
-                    <i class="bi bi-arrow-right-circle"></i> View All Movies
-                </a>
-            </div>
-        }
-    </div>
-</div>
-
-<!-- Quick Info Cards -->
-<div class="row mb-5">
-    <div class="col-md-4 mb-3">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
-                <i class="bi bi-clock-history" style="font-size: 3rem; color: #38BDF8;"></i>
-                <h5 class="card-title mt-3">Flexible Schedule</h5>
-                <p class="card-text">
-                    Sessions available from morning to night, every day of the week
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-3">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
-                <i class="bi bi-database" style="font-size: 3rem; color: #22c55e;"></i>
-                <h5 class="card-title mt-3">Complete Management</h5>
-                <p class="card-text">
-                    Integrated system for managing movies, sessions and reservations
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-3">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
-                <i class="bi bi-person-check" style="font-size: 3rem; color: #eab308;"></i>
-                <h5 class="card-title mt-3">User System</h5>
-                <p class="card-text">
-                    Access control with administrator and client profiles
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- User Action Cards -->
-<div class="row mt-5">
-    @if (User.IsInRole("Administrador"))
-    {
-        <div class="col-12 mb-4">
-            <h3 class="mb-3"><i class="bi bi-gear-fill"></i> Administration Panel</h3>
-        </div>
-        <div class="col-md-3 mb-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <i class="bi bi-film" style="font-size: 3rem; color: #38BDF8;"></i>
-                    <h5 class="card-title mt-3">Manage Movies</h5>
-                    <p class="card-text">Add, edit and remove movies</p>
-                    <a asp-controller="Filmes" asp-action="Index" class="btn btn-primary">Access</a>
                 </div>
             </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <i class="bi bi-calendar-event" style="font-size: 3rem; color: #22c55e;"></i>
-                    <h5 class="card-title mt-3">Manage Sessions</h5>
-                    <p class="card-text">Manage schedules and rooms</p>
-                    <a asp-controller="Sessoes" asp-action="Index" class="btn btn-success">Access</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <i class="bi bi-ticket-perforated" style="font-size: 3rem; color: #eab308;"></i>
-                    <h5 class="card-title mt-3">View Reservations</h5>
-                    <p class="card-text">All system reservations</p>
-                    <a asp-controller="Reservas" asp-action="Index" class="btn btn-warning">Access</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <i class="bi bi-people" style="font-size: 3rem; color: #ef4444;"></i>
-                    <h5 class="card-title mt-3">Users</h5>
-                    <p class="card-text">View registered users</p>
-                    <a asp-controller="Utilizadores" asp-action="Index" class="btn btn-danger">Access</a>
-                </div>
-            </div>
-        </div>
-    }
-
-    @if (!User.IsInRole("Administrador"))
-    {
-        <div class="col-12 mb-4">
-            <h3 class="mb-3"><i class="bi bi-star-fill"></i> Quick Access</h3>
-        </div>
-    }
-
-    <div class="col-md-6 mb-4">
-        <div class="card text-center shadow h-100">
-            <div class="card-body">
-                <i class="bi bi-film" style="font-size: 3rem; color: #38BDF8;"></i>
-                <h5 class="card-title mt-3">Movie Catalog</h5>
-                <p class="card-text">
-                    Explore the movies on show and choose your next session
-                </p>
-                <a asp-controller="Catalogo" asp-action="Index" class="btn btn-primary btn-lg">
-                    View Catalog
-                </a>
-            </div>
-        </div>
-    </div>
-
-    @if (User.IsInRole("Cliente"))
-    {
-        <div class="col-md-6 mb-4">
-            <div class="card text-center shadow h-100">
-                <div class="card-body">
-                    <i class="bi bi-ticket-perforated" style="font-size: 3rem; color: #22c55e;"></i>
-                    <h5 class="card-title mt-3">My Reservations</h5>
-                    <p class="card-text">
-                        View and manage your reservation history
-                    </p>
-                    <a asp-controller="Reservas" asp-action="Index" class="btn btn-success btn-lg">
-                        View Reservations
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="hero-title">Welcome to Nexor Cinema</h1>
+                    <p class="hero-subtitle">Discover amazing movies and book your seats for an unforgettable experience</p>
+                    <a asp-controller="Catalogo" asp-action="Index" class="btn-cta">
+                        VIEW AVAILABLE MOVIES
                     </a>
                 </div>
             </div>
         </div>
-    }
-    else if (!User.Identity.IsAuthenticated)
-    {
-        <div class="col-md-6 mb-4">
-            <div class="card text-center shadow h-100">
-                <div class="card-body">
-                    <i class="bi bi-box-arrow-in-right" style="font-size: 3rem; color: #22c55e;"></i>
-                    <h5 class="card-title mt-3">Log In</h5>
-                    <p class="card-text">
-                        Sign in to your account to make reservations and access the system
+    </div>
+</section>
+
+<!-- Quick Access Section -->
+<section class="quick-access-section">
+    <div class="container">
+        <h2 class="section-title">
+            <i class="bi bi-star-fill"></i> Quick Access
+        </h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="quick-access-card">
+                    <div class="card-icon">
+                        <i class="bi bi-film"></i>
+                    </div>
+                    <h3 class="card-title">Movie Catalog</h3>
+                    <p class="card-description">
+                        Explore the movies on show and choose your next session
                     </p>
-                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-success btn-lg">Login</a>
+                    <a asp-controller="Catalogo" asp-action="Index" class="card-link">
+                        View Catalog <i class="bi bi-arrow-right"></i>
+                    </a>
                 </div>
             </div>
-        </div>
-    }
-</div>
-
-@if (!User.Identity.IsAuthenticated)
-{
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="alert alert-info text-center shadow-sm">
-                <h4><i class="bi bi-person-plus-fill"></i> New here?</h4>
-                <p class="mb-3">
-                    Create an account to book tickets and test all features!
-                </p>
-                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary btn-lg">
-                    <i class="bi bi-person-plus"></i> Register Now
-                </a>
+            <div class="col-md-4">
+                <div class="quick-access-card">
+                    <div class="card-icon">
+                        <i class="bi bi-ticket-perforated"></i>
+                    </div>
+                    <h3 class="card-title">My Reservations</h3>
+                    <p class="card-description">
+                        View and manage your reservation history
+                    </p>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Cliente"))
+                    {
+                        <a asp-controller="Reservas" asp-action="Index" class="card-link">
+                            View Reservations <i class="bi bi-arrow-right"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-area="Identity" asp-page="/Account/Login" class="card-link">
+                            Login to View <i class="bi bi-arrow-right"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="quick-access-card">
+                    <div class="card-icon">
+                        <i class="bi bi-info-circle-fill"></i>
+                    </div>
+                    <h3 class="card-title">About Us</h3>
+                    <p class="card-description">
+                        Learn more about our cinema management system
+                    </p>
+                    <a href="#about-section" class="card-link">
+                        Learn More <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-}
+</section>
 
-<!-- REDESIGNED Project Info Section with Modern Card Design -->
-<div class="project-info-section">
-    <h4>
-        <i class="bi bi-info-circle-fill"></i> 
-        About This Project
-    </h4>
-    
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="info-card">
-                <div class="info-icon">
-                    <i class="bi bi-code-square"></i>
+<!-- Now Showing Section -->
+<section class="now-showing-section">
+    <div class="container">
+        <h2 class="section-title">
+            <i class="bi bi-film"></i> Now Showing
+        </h2>
+        <div class="row g-4">
+            <!-- John Wick Movie Card -->
+            <div class="col-md-4">
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="~/images/movies/john-wick.svg" alt="John Wick" />
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">John Wick</h3>
+                        <div class="movie-tags">
+                            <span class="tag age-tag">16+</span>
+                            <span class="tag genre-tag">Action</span>
+                        </div>
+                        <p class="movie-description">
+                            An ex-hitman comes out of retirement to track down the gangsters that took everything from him.
+                        </p>
+                    </div>
                 </div>
-                <h5 class="info-title">
-                    School Project
-                </h5>
-                <p class="info-description">
-                    System developed as an academic project
-                </p>
-                <p class="info-detail">
-                    ASP.NET Core MVC with Entity Framework
-                </p>
             </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="info-card">
-                <div class="info-icon">
-                    <i class="bi bi-list-check"></i>
+
+            <!-- Vingadores Movie Card -->
+            <div class="col-md-4">
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="~/images/movies/vingadores.svg" alt="Vingadores" />
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Vingadores</h3>
+                        <div class="movie-tags">
+                            <span class="tag age-tag">12+</span>
+                            <span class="tag genre-tag">Adventure</span>
+                        </div>
+                        <p class="movie-description">
+                            Earth's mightiest heroes must come together to stop an intergalactic threat.
+                        </p>
+                    </div>
                 </div>
-                <h5 class="info-title">
-                    Features
-                </h5>
-                <p class="info-description">
-                    Complete CRUD and authentication system
-                </p>
-                <p class="info-detail">
-                    Management of movies, sessions and reservations
-                </p>
             </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="info-card">
-                <div class="info-icon">
-                    <i class="bi bi-database-fill"></i>
+
+            <!-- Smallville Movie Card -->
+            <div class="col-md-4">
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="~/images/movies/smallville.svg" alt="Smallville" />
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Smallville</h3>
+                        <div class="movie-tags">
+                            <span class="tag age-tag">10+</span>
+                            <span class="tag genre-tag">Drama</span>
+                        </div>
+                        <p class="movie-description">
+                            The early years of Clark Kent before he became Superman.
+                        </p>
+                    </div>
                 </div>
-                <h5 class="info-title">
-                    Database
-                </h5>
-                <p class="info-description">
-                    SQL Server with Identity Framework
-                </p>
-                <p class="info-detail">
-                    User and role control
-                </p>
             </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- About This Project Section -->
+<section class="about-section" id="about-section">
+    <div class="container">
+        <h2 class="section-title">
+            <i class="bi bi-info-circle-fill"></i> About This Project
+        </h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="about-card">
+                    <div class="card-icon-large">
+                        <i class="bi bi-code-square"></i>
+                    </div>
+                    <h3 class="card-title">School Project</h3>
+                    <p class="card-description">System developed as an academic project</p>
+                    <p class="card-detail">ASP.NET Core MVC with Entity Framework</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="about-card">
+                    <div class="card-icon-large">
+                        <i class="bi bi-list-check"></i>
+                    </div>
+                    <h3 class="card-title">Features</h3>
+                    <p class="card-description">Complete CRUD and authentication system</p>
+                    <p class="card-detail">Management of movies, sessions and reservations</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="about-card">
+                    <div class="card-icon-large">
+                        <i class="bi bi-database-fill"></i>
+                    </div>
+                    <h3 class="card-title">Database</h3>
+                    <p class="card-description">SQL Server with Identity Framework</p>
+                    <p class="card-detail">User and role control</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 @section Scripts {
     <script>
