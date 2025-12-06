@@ -95,6 +95,68 @@
     </div>
 </section>
 
+<!-- Quick Access Section -->
+<section class="quick-access-section fade-in-section">
+    <div class="container">
+        <h2 class="section-title">
+            <i class="bi bi-star-fill"></i> Quick Access
+        </h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="quick-access-card">
+                    <div class="card-icon">
+                        <i class="bi bi-film"></i>
+                    </div>
+                    <h3 class="card-title">Movie Catalog</h3>
+                    <p class="card-description">
+                        Explore the movies on show and choose your next session
+                    </p>
+                    <a asp-controller="Catalogo" asp-action="Index" class="card-link">
+                        View Catalog <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="quick-access-card">
+                    <div class="card-icon">
+                        <i class="bi bi-ticket-perforated"></i>
+                    </div>
+                    <h3 class="card-title">My Reservations</h3>
+                    <p class="card-description">
+                        View and manage your reservation history
+                    </p>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Cliente"))
+                    {
+                        <a asp-controller="Reservas" asp-action="Index" class="card-link">
+                            View Reservations <i class="bi bi-arrow-right"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-area="Identity" asp-page="/Account/Login" class="card-link">
+                            Login to View <i class="bi bi-arrow-right"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="quick-access-card">
+                    <div class="card-icon">
+                        <i class="bi bi-info-circle-fill"></i>
+                    </div>
+                    <h3 class="card-title">About Us</h3>
+                    <p class="card-description">
+                        Learn more about our cinema management system
+                    </p>
+                    <a href="#about-section" class="card-link">
+                        Learn More <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- About This Project Section -->
 <section class="about-section fade-in-section" id="about-section">
     <div class="container">
