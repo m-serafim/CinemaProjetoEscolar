@@ -871,3 +871,41 @@ footer a:hover {
     flex-wrap: wrap;
   }
 }
+
+/* ========================================
+   FOOTER STYLES
+   ======================================== */
+.site-footer {
+  background: linear-gradient(180deg, transparent 0%, rgba(2, 6, 23, 0.9) 100%);
+  border-top: 1px solid rgba(56, 189, 248, 0.2);
+  padding: 2rem 0;
+  margin-top: auto;
+}
+
+.footer-content {
+  text-align: center;
+}
+
+.footer-text {
+  color: var(--text-heading);
+  font-weight: 500;
+  font-size: 15px;
+  margin-bottom: 0.5rem;
+}
+
+.footer-author {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.footer-link {
+  color: var(--accent-cyan);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+  color: var(--text-heading);
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+}
