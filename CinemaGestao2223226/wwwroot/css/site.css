@@ -2237,3 +2237,8 @@ details summary:hover {
 .hero-title {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(56, 189, 248, 0.2);
 }
+
+/* Consistent card border radius */
+.quick-access-card, .about-card {
+  border-radius: 14px;
+}
