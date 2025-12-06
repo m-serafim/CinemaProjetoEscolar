@@ -1264,8 +1264,8 @@ footer a:hover {
 .btn-cta:hover {
   background: linear-gradient(135deg, var(--accent-cyan-hover) 0%, #0284c7 100%);
   color: var(--text-heading);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5);
 }
 
 /* Rotating Movie Display */
