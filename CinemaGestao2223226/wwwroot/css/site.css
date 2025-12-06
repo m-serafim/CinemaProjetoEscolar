@@ -2278,3 +2278,8 @@ details summary:hover {
 .hero-content {
   max-width: 600px;
 }
+
+/* Section margin consistency */
+.quick-access-section, .now-showing-section, .about-section {
+  margin-bottom: 4rem;
+}
