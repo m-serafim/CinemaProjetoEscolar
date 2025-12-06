@@ -39,6 +39,10 @@
     }
 
     function performSearch(query) {
+        // Show loading state
+        searchResults.innerHTML = '<div class="search-loading"><div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div> Searching...</div>';
+        searchResults.style.display = 'block';
+
         fetch(`/Home/SearchMovies?query=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => {

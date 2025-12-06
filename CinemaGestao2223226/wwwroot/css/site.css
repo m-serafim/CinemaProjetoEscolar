@@ -893,6 +893,17 @@ footer a:hover {
   font-size: 14px;
 }
 
+.search-loading {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-body);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
 /* Navigation Links */
 .site-header .nav-link {
   color: var(--text-body);
