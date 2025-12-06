@@ -8,3 +8,5 @@
 # Build outputs
 bin/
 obj/
+# Backup files
+*.backup
