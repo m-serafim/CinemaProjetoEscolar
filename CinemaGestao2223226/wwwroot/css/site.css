@@ -2268,3 +2268,8 @@ details summary:hover {
 .quick-access-card .card-link {
   text-underline-offset: 4px;
 }
+
+/* Movie poster aspect ratio */
+.movie-poster {
+  aspect-ratio: 2/3;
+}
