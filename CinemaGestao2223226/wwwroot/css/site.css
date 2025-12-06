@@ -2438,3 +2438,8 @@ details summary:hover {
 .about-card {
   padding: 2.25rem;
 }
+
+/* Search box border radius */
+.search-box {
+  border-radius: 28px;
+}
