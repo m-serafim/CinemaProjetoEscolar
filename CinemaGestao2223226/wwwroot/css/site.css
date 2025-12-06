@@ -2373,3 +2373,8 @@ details summary:hover {
 .about-card .card-description {
   color: var(--text-heading);
 }
+
+/* Hero rotating section padding */
+.hero-rotating-section {
+  padding: 3rem 2rem;
+}
