@@ -1735,3 +1735,9 @@ details summary:hover {
 .object-contain { object-fit: contain; }
 .object-cover { object-fit: cover; }
 .object-fill { object-fit: fill; }
+
+/* Position utilities */
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
