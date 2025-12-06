@@ -1584,6 +1584,7 @@ footer a:hover {
   gap: 8px;
   margin-bottom: 1rem;
   flex-wrap: wrap;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tag {
