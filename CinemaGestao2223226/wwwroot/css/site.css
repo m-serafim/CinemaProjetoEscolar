@@ -1705,3 +1705,8 @@ details summary:hover {
 .rotate-45 { transform: rotate(45deg); }
 .rotate-90 { transform: rotate(90deg); }
 .rotate-180 { transform: rotate(180deg); }
+
+/* Transition duration utilities */
+.duration-150 { transition-duration: 150ms; }
+.duration-300 { transition-duration: 300ms; }
+.duration-500 { transition-duration: 500ms; }
