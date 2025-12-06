@@ -1695,7 +1695,7 @@ footer a:hover {
 .card-icon-large i {
   font-size: 40px;
   color: var(--accent-cyan);
-  transition: transform 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .about-card:hover .card-icon-large i {
