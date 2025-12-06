@@ -2293,3 +2293,8 @@ details summary:hover {
 .quick-access-card .card-link i {
   transition: transform 0.3s ease;
 }
+
+/* Hero subtitle max width */
+.hero-subtitle {
+  max-width: 500px;
+}
