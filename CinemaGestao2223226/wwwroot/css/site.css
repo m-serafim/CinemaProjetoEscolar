@@ -1454,3 +1454,8 @@ img {
 .breadcrumb-item + .breadcrumb-item::before {
   color: var(--text-body);
 }
+
+/* Spinner color */
+.spinner-border {
+  color: var(--accent-cyan);
+}
