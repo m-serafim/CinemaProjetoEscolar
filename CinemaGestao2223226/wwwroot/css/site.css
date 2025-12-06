@@ -2338,3 +2338,8 @@ details summary:hover {
 .quick-access-card {
   min-height: 280px;
 }
+
+/* Hero banner padding */
+.hero-banner {
+  padding: 5rem 0;
+}
