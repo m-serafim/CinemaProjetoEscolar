@@ -1328,3 +1328,8 @@ footer a:hover {
 a {
   transition: all 0.2s ease;
 }
+
+/* Container max-width for better readability */
+.container-fluid {
+  max-width: 1400px;
+}
