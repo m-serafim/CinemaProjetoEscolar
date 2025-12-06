@@ -1601,3 +1601,8 @@ details summary:hover {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Dark mode is default - light mode support would go here */
+@media (prefers-color-scheme: light) {
+  /* Future: light mode overrides */
+}
