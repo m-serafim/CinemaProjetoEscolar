@@ -1661,7 +1661,7 @@ footer a:hover {
   padding: 2rem;
   height: 100%;
   text-align: center;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
