@@ -1,11 +1,8 @@
 @model CinemaGestao.Models.Filme
-@using Microsoft.AspNetCore.Localization
 @using CinemaGestao.Helpers
 
 @{
     ViewData["Title"] = Model.Titulo;
-    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
-    var isEnglish = (requestCulture?.RequestCulture.UICulture.Name ?? "pt-PT") == "en-US";
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -13,7 +10,7 @@
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a asp-action="Index">@(isEnglish ? "Catalog" : "Catálogo")</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Catalog</a></li>
             <li class="breadcrumb-item active" aria-current="page">@Model.Titulo</li>
         </ol>
     </nav>
@@ -36,20 +33,20 @@
             
             <div class="mb-3">
                 <span class="badge bg-primary me-2">@Model.Genero</span>
-                <span class="badge bg-info text-dark">@DurationHelper.FormatDuration(Model.DuracaoMinutos, isEnglish)</span>
+                <span class="badge bg-info text-dark">@DurationHelper.FormatDuration(Model.DuracaoMinutos, true)</span>
             </div>
 
-            <h5>@(isEnglish ? "Synopsis" : "Sinopse")</h5>
+            <h5>Synopsis</h5>
             <p class="lead">@Model.Descricao</p>
 
             <hr />
 
             <div class="d-grid gap-2">
                 <a asp-action="Sessoes" asp-route-id="@Model.Id" class="btn btn-primary btn-lg">
-                    <i class="bi bi-calendar-event"></i> @(isEnglish ? "View Available Sessions" : "Ver Sessões Disponíveis")
+                    <i class="bi bi-calendar-event"></i> View Available Sessions
                 </a>
                 <a asp-action="Index" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left"></i> @(isEnglish ? "Back to Catalog" : "Voltar ao Catálogo")
+                    <i class="bi bi-arrow-left"></i> Back to Catalog
                 </a>
             </div>
         </div>
