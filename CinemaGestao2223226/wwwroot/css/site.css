@@ -1470,3 +1470,10 @@ img {
   background-color: var(--accent-cyan);
   border-color: var(--accent-cyan);
 }
+
+/* Code block styling */
+code {
+  background-color: rgba(56, 189, 248, 0.1);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
