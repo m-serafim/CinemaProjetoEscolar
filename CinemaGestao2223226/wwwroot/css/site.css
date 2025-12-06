@@ -1499,3 +1499,10 @@ hr {
   border-color: rgba(56, 189, 248, 0.2);
   opacity: 1;
 }
+
+/* Mark/Highlight styling */
+mark {
+  background-color: rgba(56, 189, 248, 0.3);
+  color: var(--text-heading);
+  padding: 0.1em 0.3em;
+}
