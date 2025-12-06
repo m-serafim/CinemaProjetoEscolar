@@ -197,7 +197,7 @@ header {
   font-weight: bold;
   font-size: 1.5rem;
   color: var(--accent-cyan) !important;
-  transition: transform 0.3s ease, filter 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .navbar-brand:hover {
