@@ -2227,3 +2227,8 @@ details summary:hover {
 .movie-info {
   padding: 1.75rem;
 }
+
+/* Section title letter spacing */
+.section-title {
+  letter-spacing: 1px;
+}
