@@ -1250,6 +1250,16 @@ footer a:hover {
 .section-title i {
   color: var(--accent-cyan);
   font-size: 28px;
+  animation: iconGlow 2s ease-in-out infinite;
+}
+
+@keyframes iconGlow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.8);
+  }
 }
 
 .quick-access-card {
