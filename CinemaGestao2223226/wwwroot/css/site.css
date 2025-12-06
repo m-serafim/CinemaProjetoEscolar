@@ -1606,3 +1606,8 @@ details summary:hover {
 @media (prefers-color-scheme: light) {
   /* Future: light mode overrides */
 }
+
+/* Container for responsive components */
+.responsive-container {
+  container-type: inline-size;
+}
