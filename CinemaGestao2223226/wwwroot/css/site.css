@@ -1321,7 +1321,7 @@ footer a:hover {
   height: 400px;
   object-fit: cover;
   display: block;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .rotating-movie-card:hover .rotating-movie-image {
