@@ -1758,3 +1758,9 @@ details summary:hover {
 .break-normal { word-break: normal; overflow-wrap: normal; }
 .break-words { overflow-wrap: break-word; }
 .break-all { word-break: break-all; }
+
+/* Text align utilities */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
