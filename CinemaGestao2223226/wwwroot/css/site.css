@@ -1797,3 +1797,10 @@ details summary:hover {
   .lg\:block { display: block; }
   .lg\:hidden { display: none; }
 }
+
+/* Responsive typography scale */
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 42px;
+  }
+}
