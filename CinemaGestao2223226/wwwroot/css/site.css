@@ -2313,3 +2313,8 @@ details summary:hover {
 .btn {
   border: none;
 }
+
+/* Card title margin */
+.about-card .card-title {
+  margin-bottom: 1.25rem;
+}
