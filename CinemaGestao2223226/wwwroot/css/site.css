@@ -1523,6 +1523,7 @@ footer a:hover {
 .now-showing-section {
   padding: 3rem 0;
   margin-bottom: 3rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .movie-card {
