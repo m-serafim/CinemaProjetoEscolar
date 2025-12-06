@@ -2217,3 +2217,8 @@ details summary:hover {
 .movie-card:hover .movie-title {
   color: var(--accent-cyan);
 }
+
+/* Movie description line height */
+.movie-description {
+  line-height: 1.7;
+}
