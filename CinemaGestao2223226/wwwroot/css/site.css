@@ -1577,3 +1577,16 @@ details summary:hover {
 ::placeholder {
   opacity: 0.6;
 }
+
+/* Print styles */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .site-header,
+  .site-footer {
+    display: none;
+  }
+}
