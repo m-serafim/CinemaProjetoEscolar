@@ -1,22 +1,15 @@
 <header class="site-header">
     <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid navbar-container-spread">
-            <!-- Logo -->
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                <img src="~/images/icons/logo-white.svg" alt="Nexor Cinema" class="logo-icon" />
-                <span class="logo-text">Nexor Cinema</span>
-            </a>
+        <!-- Desktop: Three-column grid layout -->
+        <div class="container-fluid d-none d-lg-grid header-desktop-grid">
+            <!-- Left: Logo + Nav Links -->
+            <div class="navbar-left-section">
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/nexor-icon.ico" alt="NExor Cinema" class="logo-icon" />
+                    <span class="logo-text">NExor Cinema</span>
+                </a>
 
-            <!-- Mobile Toggle Button -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
-                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Navigation Content -->
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <!-- Left: Navigation Links -->
-                <ul class="navbar-nav navbar-links-left">
+                <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
@@ -31,23 +24,111 @@
                             <a class="nav-link" asp-controller="Reservas" asp-action="Index">My Reservations</a>
                         </li>
                     }
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-shield-fill-check"></i> Admin
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                <li><a class="dropdown-item" asp-controller="Filmes" asp-action="Index"><i class="bi bi-film"></i> Manage Movies</a></li>
+                                <li><a class="dropdown-item" asp-controller="Sessoes" asp-action="Index"><i class="bi bi-calendar-event"></i> Manage Sessions</a></li>
+                                <li><a class="dropdown-item" asp-controller="Utilizadores" asp-action="Index"><i class="bi bi-people"></i> Manage Users</a></li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <!-- Center: Search Box -->
+            <div class="navbar-center-section">
+                <div class="search-box" role="search">
+                    <img src="~/images/icons/search.svg" alt="Search" class="search-icon" aria-hidden="true" />
+                    <input type="text" id="liveSearchInput" class="search-input" placeholder="Search movies..." 
+                           autocomplete="off" aria-label="Search movies" aria-describedby="searchResults" />
+                    <button type="button" id="clearSearchBtn" class="search-clear-btn" aria-label="Clear search" style="display: none;">
+                        <i class="bi bi-x-circle-fill"></i>
+                    </button>
+                    <div id="searchResults" class="search-results" style="display: none;" role="listbox" aria-live="polite"></div>
+                </div>
+            </div>
+
+            <!-- Right: User Actions -->
+            <div class="navbar-right-section">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <partial name="_LoginPartial" />
+                }
+                else
+                {
+                    <a class="action-btn btn-login" asp-area="Identity" asp-page="/Account/Login">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Login</span>
+                    </a>
+                }
+            </div>
+        </div>
+
+        <!-- Mobile: Collapsible layout -->
+        <div class="container-fluid d-lg-none d-flex justify-content-between align-items-center flex-wrap">
+            <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/images/nexor-icon.ico" alt="NExor Cinema" class="logo-icon" />
+                <span class="logo-text">NExor Cinema</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse w-100" id="navbarContent">
+                <ul class="navbar-nav mb-3 mt-3">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-highlighted" asp-controller="Catalogo" asp-action="Index">
+                            <i class="bi bi-film"></i> Movie Catalog
+                        </a>
+                    </li>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Cliente"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Reservas" asp-action="Index">My Reservations</a>
+                        </li>
+                    }
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Filmes" asp-action="Index">
+                                <i class="bi bi-film"></i> Manage Movies
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Sessoes" asp-action="Index">
+                                <i class="bi bi-calendar-event"></i> Manage Sessions
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Utilizadores" asp-action="Index">
+                                <i class="bi bi-people"></i> Manage Users
+                            </a>
+                        </li>
+                    }
                 </ul>
 
-                <!-- Center: Search Box -->
-                <div class="navbar-search mx-auto">
+                <div class="mb-3">
                     <div class="search-box" role="search">
                         <img src="~/images/icons/search.svg" alt="Search" class="search-icon" aria-hidden="true" />
-                        <input type="text" id="liveSearchInput" class="search-input" placeholder="Search movies..." 
-                               autocomplete="off" aria-label="Search movies" aria-describedby="searchResults" />
-                        <button type="button" id="clearSearchBtn" class="search-clear-btn" aria-label="Clear search" style="display: none;">
+                        <input type="text" id="liveSearchInputMobile" class="search-input" placeholder="Search movies..." 
+                               autocomplete="off" aria-label="Search movies" />
+                        <button type="button" id="clearSearchBtnMobile" class="search-clear-btn" aria-label="Clear search" style="display: none;">
                             <i class="bi bi-x-circle-fill"></i>
                         </button>
-                        <div id="searchResults" class="search-results" style="display: none;" role="listbox" aria-live="polite"></div>
                     </div>
                 </div>
 
-                <!-- Right: Action Buttons -->
-                <div class="navbar-actions ms-auto">
+                <div>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <partial name="_LoginPartial" />
@@ -64,3 +145,4 @@
         </div>
     </nav>
 </header>
+
