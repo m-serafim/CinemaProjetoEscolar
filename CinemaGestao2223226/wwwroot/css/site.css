@@ -2348,3 +2348,8 @@ details summary:hover {
 .site-footer {
   margin-top: 5rem;
 }
+
+/* Section title margin bottom */
+.section-title {
+  margin-bottom: 2.5rem;
+}
