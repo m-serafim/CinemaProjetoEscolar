@@ -825,6 +825,28 @@ footer a:hover {
   color: var(--text-body);
 }
 
+.search-clear-btn {
+  background: none;
+  border: none;
+  color: var(--text-body);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, transform 0.2s ease;
+  font-size: 18px;
+}
+
+.search-clear-btn:hover {
+  color: var(--accent-cyan);
+  transform: scale(1.1);
+}
+
+.search-clear-btn:active {
+  transform: scale(0.95);
+}
+
 /* Live Search Results */
 .search-results {
   position: absolute;

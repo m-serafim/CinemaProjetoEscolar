@@ -5,6 +5,7 @@
 (function() {
     const searchInput = document.getElementById('liveSearchInput');
     const searchResults = document.getElementById('searchResults');
+    const clearBtn = document.getElementById('clearSearchBtn');
     let searchTimeout;
 
     if (searchInput && searchResults) {
@@ -12,6 +13,11 @@
         searchInput.addEventListener('input', function(e) {
             clearTimeout(searchTimeout);
             const query = e.target.value.trim();
+
+            // Show/hide clear button
+            if (clearBtn) {
+                clearBtn.style.display = query.length > 0 ? 'block' : 'none';
+            }
 
             if (query.length < 2) {
                 searchResults.style.display = 'none';
@@ -23,9 +29,19 @@
             }, 300);
         });
 
+        // Clear button click handler
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                searchResults.style.display = 'none';
+                clearBtn.style.display = 'none';
+                searchInput.focus();
+            });
+        }
+
         // Close search results when clicking outside
         document.addEventListener('click', function(e) {
-            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target) && (!clearBtn || !clearBtn.contains(e.target))) {
                 searchResults.style.display = 'none';
             }
         });
