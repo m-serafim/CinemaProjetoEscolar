@@ -878,9 +878,15 @@ footer a:hover {
   border-bottom: none;
 }
 
-.search-result-item:hover {
+.search-result-item:hover,
+.search-result-item.keyboard-focused {
   background: rgba(56, 189, 248, 0.15);
   transform: translateX(4px);
+}
+
+.search-result-item.keyboard-focused {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: -2px;
 }
 
 .search-result-thumbnail {

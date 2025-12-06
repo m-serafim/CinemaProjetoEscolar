@@ -52,6 +52,38 @@
                 searchResults.style.display = 'block';
             }
         });
+
+        // Keyboard navigation for search results
+        searchInput.addEventListener('keydown', function(e) {
+            const items = searchResults.querySelectorAll('.search-result-item');
+            if (items.length === 0) return;
+
+            let currentIndex = -1;
+            items.forEach((item, index) => {
+                if (item.classList.contains('keyboard-focused')) {
+                    currentIndex = index;
+                }
+            });
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                items.forEach(item => item.classList.remove('keyboard-focused'));
+                const nextIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+                items[nextIndex].classList.add('keyboard-focused');
+                items[nextIndex].scrollIntoView({ block: 'nearest' });
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                items.forEach(item => item.classList.remove('keyboard-focused'));
+                const prevIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+                items[prevIndex].classList.add('keyboard-focused');
+                items[prevIndex].scrollIntoView({ block: 'nearest' });
+            } else if (e.key === 'Enter' && currentIndex >= 0) {
+                e.preventDefault();
+                items[currentIndex].click();
+            } else if (e.key === 'Escape') {
+                searchResults.style.display = 'none';
+            }
+        });
     }
 
     function performSearch(query) {
