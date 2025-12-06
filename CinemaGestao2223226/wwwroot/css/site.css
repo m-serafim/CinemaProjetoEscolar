@@ -1303,9 +1303,9 @@ footer a:hover {
 }
 
 .rotating-movie-card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(56, 189, 248, 0.5);
-  box-shadow: 0 16px 50px rgba(56, 189, 248, 0.3);
+  transform: translateY(-10px) scale(1.02);
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow: 0 20px 60px rgba(56, 189, 248, 0.4);
 }
 
 .rotating-movie-card a {
