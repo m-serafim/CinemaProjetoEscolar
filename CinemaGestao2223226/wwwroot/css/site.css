@@ -1493,3 +1493,9 @@ blockquote {
   font-style: italic;
   color: var(--text-body);
 }
+
+/* Horizontal rule styling */
+hr {
+  border-color: rgba(56, 189, 248, 0.2);
+  opacity: 1;
+}
