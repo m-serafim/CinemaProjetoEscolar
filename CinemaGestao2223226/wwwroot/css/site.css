@@ -2484,3 +2484,8 @@ details summary:hover {
 .rotating-movie-title {
   padding: 1.75rem;
 }
+
+/* Footer text font size */
+.footer-text {
+  font-size: 14px;
+}
