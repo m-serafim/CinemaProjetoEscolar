@@ -1385,3 +1385,14 @@ h1, h2, h3, h4, h5, h6 {
 .card:focus-within {
   border-color: var(--accent-cyan);
 }
+
+/* Link decoration */
+a:not(.btn):not(.nav-link) {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.3s;
+}
+
+a:not(.btn):not(.nav-link):hover {
+  text-decoration-color: currentColor;
+}
