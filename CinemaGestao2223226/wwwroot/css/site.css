@@ -2398,3 +2398,8 @@ details summary:hover {
 .card:hover {
   transform: translateY(-3px);
 }
+
+/* Navbar actions gap */
+.navbar-actions {
+  gap: 16px;
+}
