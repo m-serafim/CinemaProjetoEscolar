@@ -1730,3 +1730,8 @@ details summary:hover {
 .grayscale { filter: grayscale(100%); }
 .blur-sm { filter: blur(4px); }
 .brightness-50 { filter: brightness(0.5); }
+
+/* Object fit utilities */
+.object-contain { object-fit: contain; }
+.object-cover { object-fit: cover; }
+.object-fill { object-fit: fill; }
