@@ -2433,3 +2433,8 @@ details summary:hover {
 .quick-access-card .card-description {
   font-size: 14px;
 }
+
+/* About card padding */
+.about-card {
+  padding: 2.25rem;
+}
