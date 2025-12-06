@@ -2505,3 +2505,8 @@ details summary:hover {
 .search-input {
   font-size: 15px;
 }
+
+/* Btn view details padding */
+.btn-view-details {
+  padding: 12px 24px;
+}
