@@ -1535,3 +1535,14 @@ figcaption {
   font-style: italic;
   margin-top: 0.5rem;
 }
+
+/* Details/Summary styling */
+details summary {
+  cursor: pointer;
+  color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+details summary:hover {
+  color: var(--text-heading);
+}
