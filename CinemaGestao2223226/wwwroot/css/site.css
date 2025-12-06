@@ -816,7 +816,7 @@ footer a:hover {
   padding: 4px;
   background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(14, 165, 233, 0.1) 100%);
   border: 2px solid rgba(56, 189, 248, 0.3);
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
 }
