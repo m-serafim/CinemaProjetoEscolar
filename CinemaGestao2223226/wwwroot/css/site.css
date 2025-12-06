@@ -2448,3 +2448,8 @@ details summary:hover {
 .navbar-toggler-icon {
   filter: invert(1);
 }
+
+/* Logo text transition */
+.site-header .logo-text {
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
