@@ -2479,3 +2479,8 @@ details summary:hover {
 .action-btn {
   font-size: 13px;
 }
+
+/* Rotating movie title padding */
+.rotating-movie-title {
+  padding: 1.75rem;
+}
