@@ -1240,3 +1240,83 @@ footer a:hover {
     margin-bottom: 1.5rem;
   }
 }
+
+/* ========================================
+   ABOUT THIS PROJECT SECTION
+   ======================================== */
+.about-section {
+  padding: 3rem 0;
+  margin-bottom: 2rem;
+}
+
+.about-card {
+  background: linear-gradient(135deg, rgba(10, 10, 20, 0.9) 0%, rgba(2, 6, 23, 0.95) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  height: 100%;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.about-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
+}
+
+.card-icon-large {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(14, 165, 233, 0.15) 100%);
+  border: 2px solid rgba(56, 189, 248, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.about-card:hover .card-icon-large {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.3) 0%, rgba(14, 165, 233, 0.25) 100%);
+  transform: scale(1.1) rotate(5deg);
+}
+
+.card-icon-large i {
+  font-size: 40px;
+  color: var(--accent-cyan);
+}
+
+.about-card .card-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  margin-bottom: 1rem;
+}
+
+.about-card .card-description {
+  font-size: 16px;
+  color: var(--text-heading);
+  font-weight: 500;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.about-card .card-detail {
+  font-size: 14px;
+  color: var(--text-body);
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .about-section {
+    padding: 2rem 0;
+  }
+  
+  .about-card {
+    margin-bottom: 1.5rem;
+  }
+}
