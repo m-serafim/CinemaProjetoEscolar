@@ -1684,7 +1684,7 @@ footer a:hover {
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.5rem;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .about-card:hover .card-icon-large {
