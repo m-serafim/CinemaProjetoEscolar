@@ -1546,3 +1546,10 @@ details summary {
 details summary:hover {
   color: var(--text-heading);
 }
+
+/* Disabled elements */
+.btn:disabled,
+.form-control:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
