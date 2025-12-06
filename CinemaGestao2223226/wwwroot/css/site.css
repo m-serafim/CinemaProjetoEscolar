@@ -2378,3 +2378,8 @@ details summary:hover {
 .hero-rotating-section {
   padding: 3rem 2rem;
 }
+
+/* Rotating movie card box shadow */
+.rotating-movie-card {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(56, 189, 248, 0.2);
+}
