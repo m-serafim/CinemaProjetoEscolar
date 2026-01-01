@@ -17,7 +17,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Configure Identity with email confirmation disabled for easier testing
@@ -29,6 +29,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => {
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
+
+// Register MovieApiService for OMDb API integration
+builder.Services.AddHttpClient<IMovieApiService, MovieApiService>();
 
 var app = builder.Build();
 

@@ -12,8 +12,43 @@
         <div class="col-md-8">
             <h1 class="mb-4"><i class="bi bi-plus-circle"></i> Add New Movie</h1>
 
+            <!-- Movie Search Section -->
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <i class="bi bi-search"></i> Search Movie from IMDb
+                    </h5>
+                    <div class="input-group mb-3">
+                        <input type="text" id="movieSearchInput" class="form-control form-control-lg" 
+                               placeholder="Enter movie title (e.g., Inception, The Matrix)..." />
+                        <button class="btn btn-primary btn-lg" type="button" id="searchButton">
+                            <i class="bi bi-search"></i> Search
+                        </button>
+                    </div>
+                    
+                    <!-- Loading Spinner -->
+                    <div id="loadingSpinner" class="text-center my-4" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Searching movies...</p>
+                    </div>
+
+                    <!-- Search Results -->
+                    <div id="searchResults" class="row g-3"></div>
+
+                    <!-- Error Message -->
+                    <div id="searchError" class="alert alert-danger" role="alert" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Manual Entry Form -->
             <div class="card shadow">
                 <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <i class="bi bi-pencil"></i> Movie Details
+                        <small class="text-muted">(Auto-filled or enter manually)</small>
+                    </h5>
                     <form asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
                         
@@ -92,14 +127,20 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        // Image preview functionality
+        // Elements
+        const searchInput = document.getElementById('movieSearchInput');
+        const searchButton = document.getElementById('searchButton');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const searchResults = document.getElementById('searchResults');
+        const searchError = document.getElementById('searchError');
         const capaUrlInput = document.getElementById('capaUrlInput');
         const imagePreview = document.getElementById('imagePreview');
         const previewImg = document.getElementById('previewImg');
 
+        // Image preview functionality
         capaUrlInput.addEventListener('input', function() {
             const url = this.value.trim();
-            if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+            if (url && (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/'))) {
                 previewImg.src = url;
                 imagePreview.style.display = 'block';
                 
@@ -111,5 +152,157 @@
                 imagePreview.style.display = 'none';
             }
         });
+
+        // Movie search functionality
+        searchButton.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        async function performSearch() {
+            const query = searchInput.value.trim();
+            if (!query) {
+                showError('Please enter a movie title to search');
+                return;
+            }
+
+            // Show loading, hide results and errors
+            loadingSpinner.style.display = 'block';
+            searchResults.innerHTML = '';
+            searchError.style.display = 'none';
+
+            try {
+                const response = await fetch(`/Filmes/SearchMovies?query=${encodeURIComponent(query)}`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+
+                loadingSpinner.style.display = 'none';
+
+                if (!data.success) {
+                    showError(data.error || 'No movies found');
+                    return;
+                }
+
+                displayResults(data.movies);
+            } catch (error) {
+                loadingSpinner.style.display = 'none';
+                showError('Error connecting to the server. Please try again.');
+                console.error('Search error:', error);
+            }
+        }
+
+        function displayResults(movies) {
+            if (!movies || movies.length === 0) {
+                showError('No movies found');
+                return;
+            }
+
+            searchResults.innerHTML = '';
+            
+            movies.forEach(movie => {
+                const col = document.createElement('div');
+                col.className = 'col-md-3';
+                
+                const card = document.createElement('div');
+                card.className = 'card h-100 shadow-sm movie-card';
+                card.style.cursor = 'pointer';
+                card.onclick = () => selectMovie(movie.imdbID);
+                
+                const posterUrl = movie.poster && movie.poster !== 'N/A' 
+                    ? movie.poster 
+                    : 'https://via.placeholder.com/300x450?text=No+Poster';
+                
+                card.innerHTML = `
+                    <img src="${posterUrl}" class="card-img-top" alt="${movie.title}" 
+                         style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h6 class="card-title">${movie.title}</h6>
+                        <p class="card-text text-muted small">
+                            <i class="bi bi-calendar"></i> ${movie.year}
+                        </p>
+                        <button class="btn btn-sm btn-primary w-100">
+                            <i class="bi bi-check-circle"></i> Select
+                        </button>
+                    </div>
+                `;
+                
+                col.appendChild(card);
+                searchResults.appendChild(col);
+            });
+        }
+
+        async function selectMovie(imdbId) {
+            // Show loading
+            loadingSpinner.style.display = 'block';
+            searchResults.innerHTML = '';
+            searchError.style.display = 'none';
+
+            try {
+                const response = await fetch(`/Filmes/GetMovieDetails?imdbId=${imdbId}`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+
+                loadingSpinner.style.display = 'none';
+
+                if (!data.success) {
+                    showError(data.error || 'Error loading movie details');
+                    return;
+                }
+
+                // Auto-fill form fields
+                const movie = data.movie;
+                document.getElementById('Titulo').value = movie.titulo || '';
+                document.getElementById('Genero').value = movie.genero || '';
+                document.getElementById('DuracaoMinutos').value = movie.duracaoMinutos || '';
+                document.getElementById('Descricao').value = movie.descricao || '';
+                document.getElementById('CapaUrl').value = movie.capaUrl || '';
+
+                // Trigger image preview
+                capaUrlInput.dispatchEvent(new Event('input'));
+
+                // Show success message
+                showSuccess('Movie details loaded successfully! Review and save.');
+
+                // Scroll to form
+                document.getElementById('Titulo').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) {
+                loadingSpinner.style.display = 'none';
+                showError('Error loading movie details. Please try again.');
+                console.error('Details error:', error);
+            }
+        }
+
+        function showError(message) {
+            searchError.textContent = message;
+            searchError.style.display = 'block';
+        }
+
+        function showSuccess(message) {
+            searchError.className = 'alert alert-success';
+            searchError.textContent = message;
+            searchError.style.display = 'block';
+            
+            // Reset to error class after 5 seconds
+            setTimeout(() => {
+                searchError.className = 'alert alert-danger';
+                searchError.style.display = 'none';
+            }, 5000);
+        }
     </script>
+    
+    <style>
+        .movie-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .movie-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2) !important;
+        }
+    </style>
 }
+
