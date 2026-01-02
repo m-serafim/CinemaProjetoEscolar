@@ -142,6 +142,54 @@ static async Task SeedDataAsync(IHost host)
             }
         }
 
+        // Client user
+        var clientEmail = "cliente@cinema.com";
+        var clientUser = await userManager.FindByEmailAsync(clientEmail);
+
+        if (clientUser != null)
+        {
+            // Delete existing client so we can recreate with known password
+            Console.WriteLine("Deleting existing client user...");
+            await userManager.DeleteAsync(clientUser);
+            clientUser = null;
+        }
+
+        if (clientUser == null)
+        {
+            Console.WriteLine("Creating client user...");
+            clientUser = new IdentityUser
+            {
+                UserName = clientEmail,
+                Email = clientEmail,
+                EmailConfirmed = true
+            };
+
+            var result = await userManager.CreateAsync(clientUser, "Cliente123!");
+
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(clientUser, "Cliente");
+                Console.WriteLine("Client user created and added to role");
+            }
+            else
+            {
+                Console.WriteLine("Failed to create client user:");
+                foreach (var error in result.Errors)
+                {
+                    Console.WriteLine($"{error.Code}: {error.Description}");
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("Client user already exists");
+            if (!await userManager.IsInRoleAsync(clientUser, "Cliente"))
+            {
+                await userManager.AddToRoleAsync(clientUser, "Cliente");
+                Console.WriteLine("Client added to role Cliente");
+            }
+        }
+
         Console.WriteLine("Seeding finished");
     }
     catch (Exception ex)

@@ -35,7 +35,7 @@
                     </div>
 
                     <!-- Search Results -->
-                    <div id="searchResults" class="row g-3"></div>
+                    <div id="movieSearchResults" class="row g-3"></div>
 
                     <!-- Error Message -->
                     <div id="searchError" class="alert alert-danger" role="alert" style="display: none;"></div>
@@ -131,7 +131,7 @@
         const searchInput = document.getElementById('movieSearchInput');
         const searchButton = document.getElementById('searchButton');
         const loadingSpinner = document.getElementById('loadingSpinner');
-        const searchResults = document.getElementById('searchResults');
+        const searchResults = document.getElementById('movieSearchResults');
         const searchError = document.getElementById('searchError');
         const capaUrlInput = document.getElementById('capaUrlInput');
         const imagePreview = document.getElementById('imagePreview');
@@ -249,17 +249,17 @@
                 loadingSpinner.style.display = 'none';
 
                 if (!data.success) {
-                    showError(data.error || 'Error loading movie details');
+                    showError(data.error || 'Error loading movie details. Please try again.');
                     return;
                 }
 
                 // Auto-fill form fields
                 const movie = data.movie;
-                document.getElementById('Titulo').value = movie.titulo || '';
-                document.getElementById('Genero').value = movie.genero || '';
-                document.getElementById('DuracaoMinutos').value = movie.duracaoMinutos || '';
-                document.getElementById('Descricao').value = movie.descricao || '';
-                document.getElementById('CapaUrl').value = movie.capaUrl || '';
+                document.querySelector('input[name="Titulo"]').value = movie.titulo || '';
+                document.querySelector('input[name="Genero"]').value = movie.genero || '';
+                document.querySelector('input[name="DuracaoMinutos"]').value = movie.duracaoMinutos || '';
+                document.querySelector('textarea[name="Descricao"]').value = movie.descricao || '';
+                capaUrlInput.value = movie.capaUrl || '';
 
                 // Trigger image preview
                 capaUrlInput.dispatchEvent(new Event('input'));
@@ -268,7 +268,7 @@
                 showSuccess('Movie details loaded successfully! Review and save.');
 
                 // Scroll to form
-                document.getElementById('Titulo').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.querySelector('input[name="Titulo"]').scrollIntoView({ behavior: 'smooth', block: 'start' });
             } catch (error) {
                 loadingSpinner.style.display = 'none';
                 showError('Error loading movie details. Please try again.');

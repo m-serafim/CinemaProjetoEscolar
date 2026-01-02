@@ -5,26 +5,66 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<!-- Hero Section with Rotating Movie Display -->
-<section class="hero-banner">
-    <div class="container-fluid">
-        <div class="row align-items-center">
-            <div class="col-lg-5">
-                <div class="hero-content">
-                    <h1 class="hero-title">Welcome to Nexor Cinema</h1>
-                    <p class="hero-subtitle">Discover amazing movies and book your seats for an unforgettable experience</p>
-                    <a asp-controller="Catalogo" asp-action="Index" class="btn-cta">
-                        VIEW AVAILABLE MOVIES
-                    </a>
+<!-- Premium Cinematic Hero Section -->
+<section class="premium-hero">
+    <div class="hero-particles"></div>
+    <div class="hero-gradient-orb hero-gradient-orb-1"></div>
+    <div class="hero-gradient-orb hero-gradient-orb-2"></div>
+    
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="hero-content-premium">
+                    <div class="hero-badge">
+                        <i class="bi bi-stars"></i>
+                        <span>Premium Cinema Experience</span>
+                    </div>
+                    <h1 class="hero-title-premium">
+                        <span class="hero-title-gradient">Experience</span>
+                        <span class="hero-title-main">Cinema Like Never Before</span>
+                    </h1>
+                    <p class="hero-description-premium">
+                        Immerse yourself in the magic of movies at Nexor Cinema. 
+                        State-of-the-art screens, premium sound, and unforgettable moments await you.
+                    </p>
+                    <div class="hero-cta-group">
+                        <a asp-controller="Catalogo" asp-action="Index" class="btn-premium-primary">
+                            <i class="bi bi-film"></i>
+                            <span>Explore Movies</span>
+                            <div class="btn-shine"></div>
+                        </a>
+                        <a href="#now-showing" class="btn-premium-secondary">
+                            <i class="bi bi-play-circle"></i>
+                            <span>Now Showing</span>
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">@Model.Count()</div>
+                            <div class="stat-label">Movies Available</div>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <div class="stat-number">4K</div>
+                            <div class="stat-label">Ultra HD Quality</div>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <div class="stat-number">∞</div>
+                            <div class="stat-label">Entertainment</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-7">
-                <div class="hero-rotating-section">
-                    <div id="rotatingMovieDisplay" class="rotating-movie-container">
-                        <!-- Movies will be loaded dynamically via JavaScript -->
-                        <div class="rotating-movie-loading">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="hero-visual">
+                    <div class="floating-card-container">
+                        <div id="rotatingMovieDisplay" class="premium-rotating-display">
+                            <!-- Movies will be loaded dynamically via JavaScript -->
+                            <div class="rotating-movie-loading">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -34,20 +74,29 @@
     </div>
 </section>
 
-<!-- Now Showing Section - Dynamic -->
-<section class="now-showing-section fade-in-section">
+<!-- Premium Now Showing Section -->
+<section id="now-showing" class="premium-now-showing fade-in-section">
     <div class="container">
-        <h2 class="section-title">
-            <i class="bi bi-film"></i> Now Showing
-        </h2>
+        <div class="section-header-premium" data-aos="fade-up">
+            <div class="section-badge">
+                <i class="bi bi-film"></i>
+                <span>Featured</span>
+            </div>
+            <h2 class="section-title-premium">Now Showing</h2>
+            <p class="section-subtitle-premium">Discover the latest blockbusters and timeless classics</p>
+        </div>
+        
         <div class="row g-4">
             @if (Model != null && Model.Any())
             {
+                int animDelay = 0;
                 @foreach (var filme in Model.Take(3))
                 {
-                    <div class="col-md-4">
-                        <div class="movie-card">
-                            <div class="movie-poster" style="aspect-ratio: 2/3;">
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="@(animDelay)">
+                        <div class="premium-movie-card">
+                            <div class="card-glow"></div>
+                            <div class="movie-poster-premium">
+                                <div class="poster-overlay"></div>
                                 @if (!string.IsNullOrEmpty(filme.CapaUrl))
                                 {
                                     <img src="@filme.CapaUrl" alt="@filme.Titulo" onerror="this.src='/images/movies/placeholder.svg'" />
@@ -56,80 +105,152 @@
                                 {
                                     <img src="~/images/movies/placeholder.svg" alt="@filme.Titulo" />
                                 }
+                                <div class="poster-shine"></div>
                             </div>
-                            <div class="movie-info">
-                                <h3 class="movie-title">@filme.Titulo</h3>
-                                <div class="movie-tags">
-                                    <span class="tag genre-tag">@filme.Genero</span>
+                            <div class="movie-info-premium">
+                                <h3 class="movie-title-premium">@filme.Titulo</h3>
+                                <div class="movie-meta">
+                                    <span class="meta-badge meta-genre">
+                                        <i class="bi bi-bookmark-fill"></i>
+                                        @filme.Genero
+                                    </span>
                                     @if (filme.DuracaoMinutos > 0)
                                     {
-                                        <span class="tag duration-tag">@filme.DuracaoMinutos min</span>
+                                        <span class="meta-badge meta-duration">
+                                            <i class="bi bi-clock-fill"></i>
+                                            @filme.DuracaoMinutos min
+                                        </span>
                                     }
                                 </div>
-                                <p class="movie-description">
-                                    @(filme.Descricao.Length > 120 ? filme.Descricao.Substring(0, 120) + "..." : filme.Descricao)
+                                <p class="movie-description-premium">
+                                    @(filme.Descricao.Length > 100 ? filme.Descricao.Substring(0, 100) + "..." : filme.Descricao)
                                 </p>
-                                <a asp-controller="Catalogo" asp-action="Details" asp-route-id="@filme.Id" class="btn-view-details">
-                                    <i class="bi bi-eye"></i> View Details
+                                <a asp-controller="Catalogo" asp-action="Details" asp-route-id="@filme.Id" class="btn-card-action">
+                                    <span>View Details</span>
+                                    <i class="bi bi-arrow-right"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
+                    animDelay += 100;
                 }
             }
             else
             {
                 <div class="col-12">
-                    <div class="no-movies-message">
+                    <div class="no-movies-premium">
                         <i class="bi bi-film"></i>
-                        <p>No movies available at the moment. Check back soon!</p>
+                        <h3>No Movies Available</h3>
+                        <p>Check back soon for new releases!</p>
                     </div>
                 </div>
             }
         </div>
-        <div class="text-center mt-4">
-            <a href="https://localhost:7207/Catalogo" class="btn btn-primary btn-lg">
-                <i class="bi bi-film"></i> View All Movies
+        
+        <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="300">
+            <a asp-controller="Catalogo" asp-action="Index" class="btn-view-all-premium">
+                <span>View All Movies</span>
+                <i class="bi bi-arrow-right-circle-fill"></i>
+                <div class="btn-shine"></div>
             </a>
         </div>
     </div>
 </section>
 
-<!-- About This Project Section -->
-<section class="about-section fade-in-section" id="about-section">
+<!-- Premium Features Section -->
+<section class="premium-features-section fade-in-section">
     <div class="container">
-        <h2 class="section-title">
-            <i class="bi bi-info-circle-fill"></i> About This Project
-        </h2>
+        <div class="section-header-premium" data-aos="fade-up">
+            <div class="section-badge">
+                <i class="bi bi-star-fill"></i>
+                <span>Why Choose Us</span>
+            </div>
+            <h2 class="section-title-premium">Premium Cinema Features</h2>
+            <p class="section-subtitle-premium">Experience the best in movie entertainment technology</p>
+        </div>
+        
         <div class="row g-4">
-            <div class="col-md-4">
-                <div class="about-card">
-                    <div class="card-icon-large">
-                        <i class="bi bi-code-square"></i>
+            <div class="col-lg-4 col-md-6" data-aos="flip-left" data-aos-delay="0">
+                <div class="feature-card-premium">
+                    <div class="feature-icon-wrapper">
+                        <div class="icon-glow"></div>
+                        <i class="bi bi-badge-4k"></i>
                     </div>
-                    <h3 class="card-title">School Project</h3>
-                    <p class="card-description">System developed as an academic project</p>
-                    <p class="card-detail">ASP.NET Core MVC with Entity Framework</p>
+                    <h3 class="feature-title">4K Ultra HD</h3>
+                    <p class="feature-description">
+                        Crystal-clear picture quality with state-of-the-art projection technology
+                    </p>
+                    <div class="feature-highlight"></div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="about-card">
-                    <div class="card-icon-large">
-                        <i class="bi bi-list-check"></i>
+            
+            <div class="col-lg-4 col-md-6" data-aos="flip-left" data-aos-delay="100">
+                <div class="feature-card-premium">
+                    <div class="feature-icon-wrapper">
+                        <div class="icon-glow"></div>
+                        <i class="bi bi-soundwave"></i>
                     </div>
-                    <h3 class="card-title">Features</h3>
-                    <p class="card-description">Complete CRUD and authentication system</p>
-                    <p class="card-detail">Management of movies, sessions and reservations</p>
+                    <h3 class="feature-title">Immersive Sound</h3>
+                    <p class="feature-description">
+                        Dolby Atmos surround sound for the ultimate audio experience
+                    </p>
+                    <div class="feature-highlight"></div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="about-card">
-                    <div class="card-icon-large">
-                        <i class="bi bi-database-fill"></i>
+            
+            <div class="col-lg-4 col-md-6" data-aos="flip-left" data-aos-delay="200">
+                <div class="feature-card-premium">
+                    <div class="feature-icon-wrapper">
+                        <div class="icon-glow"></div>
+                        <i class="bi bi-ticket-perforated"></i>
                     </div>
-                    <h3 class="card-title">Database</h3>
-                    <p class="card-description">SQL Server with Identity Framework</p>
-                    <p class="card-detail">User and role control</p>
+                    <h3 class="feature-title">Easy Booking</h3>
+                    <p class="feature-description">
+                        Seamless online reservation system with instant confirmation
+                    </p>
+                    <div class="feature-highlight"></div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="flip-left" data-aos-delay="300">
+                <div class="feature-card-premium">
+                    <div class="feature-icon-wrapper">
+                        <div class="icon-glow"></div>
+                        <i class="bi bi-bookmark-star"></i>
+                    </div>
+                    <h3 class="feature-title">Latest Releases</h3>
+                    <p class="feature-description">
+                        Get access to the newest blockbusters and exclusive premieres
+                    </p>
+                    <div class="feature-highlight"></div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="flip-left" data-aos-delay="400">
+                <div class="feature-card-premium">
+                    <div class="feature-icon-wrapper">
+                        <div class="icon-glow"></div>
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h3 class="feature-title">Secure Platform</h3>
+                    <p class="feature-description">
+                        Built with ASP.NET Core Identity for safe and secure transactions
+                    </p>
+                    <div class="feature-highlight"></div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="flip-left" data-aos-delay="500">
+                <div class="feature-card-premium">
+                    <div class="feature-icon-wrapper">
+                        <div class="icon-glow"></div>
+                        <i class="bi bi-lightning-charge"></i>
+                    </div>
+                    <h3 class="feature-title">Fast Performance</h3>
+                    <p class="feature-description">
+                        Powered by modern technology for lightning-fast browsing
+                    </p>
+                    <div class="feature-highlight"></div>
                 </div>
             </div>
         </div>
@@ -137,7 +258,20 @@
 </section>
 
 @section Scripts {
+    <!-- AOS (Animate On Scroll) Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
     <script>
-        console.log('Nexor Cinema - Cinema Management System');
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 50,
+            delay: 0
+        });
+        
+        console.log('Nexor Cinema - Premium Cinema Experience Loaded ✨');
     </script>
 }
