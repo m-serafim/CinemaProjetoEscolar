@@ -7,7 +7,7 @@
 
 <!-- Clean Modern Hero Section -->
 <section class="modern-hero">
-    <div class="container">
+    <div class="container-fluid px-4 px-lg-5">
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
                 <div class="hero-content">
@@ -53,7 +53,7 @@
 
 <!-- Now Showing Section -->
 <section id="now-showing" class="now-showing-section">
-    <div class="container">
+    <div class="container-fluid px-4 px-lg-5">
         <div class="section-header">
             <div class="section-badge">
                 <i class="bi bi-film"></i>
@@ -130,7 +130,7 @@
 
 <!-- Features Section -->
 <section class="features-section">
-    <div class="container">
+    <div class="container-fluid px-4 px-lg-5">
         <div class="section-header">
             <div class="section-badge">
                 <i class="bi bi-star-fill"></i>
@@ -218,65 +218,74 @@
 
 @section Scripts {
     <script>
-        // Enhanced movie rotation with smooth animations
+        // Enhanced movie rotation with CROSSFADE animation
         document.addEventListener('DOMContentLoaded', function() {
             const heroDisplay = document.getElementById('heroMovieDisplay');
             
-            // Fetch movies data (assuming it's available in Model)
+            // Fetch movies data
             const movies = @Html.Raw(Json.Serialize(Model?.Take(5) ?? Enumerable.Empty<CinemaGestao.Models.Filme>()));
             
             if (movies && movies.length > 0) {
                 let currentIndex = 0;
-                let isAnimating = false;
+                let currentCard = null;
                 
                 function createMovieCard(movie) {
                     const imageUrl = movie.capaUrl || '/images/movies/placeholder.svg';
-                    return `
-                        <a href="/Catalogo/Details/${movie.id}" class="hero-movie-card">
-                            <img src="${imageUrl}" alt="${movie.titulo}" onerror="this.src='/images/movies/placeholder.svg'">
-                            <div class="hero-movie-title">${movie.titulo}</div>
-                        </a>
+                    const card = document.createElement('a');
+                    card.href = `/Catalogo/Details/${movie.id}`;
+                    card.className = 'hero-movie-card';
+                    card.innerHTML = `
+                        <img src="${imageUrl}" alt="${movie.titulo}" onerror="this.src='/images/movies/placeholder.svg'">
+                        <div class="hero-movie-title">${movie.titulo}</div>
                     `;
+                    return card;
                 }
                 
-                function displayMovie(index, direction = 'next') {
-                    if (isAnimating) return;
-                    isAnimating = true;
+                function displayMovie(index) {
+                    const newCard = createMovieCard(movies[index]);
                     
-                    const movie = movies[index];
-                    
-                    // Add exit animation to current movie
-                    heroDisplay.classList.add(direction === 'next' ? 'slide-out-left' : 'slide-out-right');
-                    
-                    setTimeout(() => {
-                        // Update content
-                        heroDisplay.innerHTML = createMovieCard(movie);
+                    if (currentCard) {
+                        // Crossfade transition
+                        newCard.style.opacity = '0';
+                        heroDisplay.appendChild(newCard);
                         
-                        // Remove exit animation and add enter animation
-                        heroDisplay.classList.remove('slide-out-left', 'slide-out-right');
-                        heroDisplay.classList.add(direction === 'next' ? 'slide-in-right' : 'slide-in-left');
+                        // Trigger reflow
+                        newCard.offsetHeight;
                         
+                        // Start crossfade
+                        currentCard.classList.add('crossfade-out');
+                        newCard.classList.add('crossfade-in');
+                        newCard.classList.add('active');
+                        
+                        // Clean up old card after transition
                         setTimeout(() => {
-                            heroDisplay.classList.remove('slide-in-right', 'slide-in-left');
-                            isAnimating = false;
+                            if (currentCard && currentCard.parentNode === heroDisplay) {
+                                heroDisplay.removeChild(currentCard);
+                            }
+                            currentCard = newCard;
                         }, 600);
-                    }, 400);
+                    } else {
+                        // First movie
+                        newCard.classList.add('active');
+                        heroDisplay.innerHTML = '';
+                        heroDisplay.appendChild(newCard);
+                        currentCard = newCard;
+                    }
                 }
                 
                 // Display first movie
-                heroDisplay.innerHTML = createMovieCard(movies[0]);
+                displayMovie(0);
                 
-                // Rotate every 5 seconds
+                // Rotate every 5 seconds with crossfade
                 setInterval(() => {
-                    const nextIndex = (currentIndex + 1) % movies.length;
-                    displayMovie(nextIndex, 'next');
-                    currentIndex = nextIndex;
+                    currentIndex = (currentIndex + 1) % movies.length;
+                    displayMovie(currentIndex);
                 }, 5000);
             } else {
                 heroDisplay.innerHTML = '<div class="no-movies"><p>No movies available</p></div>';
             }
             
-            console.log('Nexor Cinema - Enhanced Animation Design Loaded ✨');
+            console.log('✨ Nexor Cinema - Enhanced Crossfade Animation Loaded');
         });
     </script>
 }

@@ -7,13 +7,13 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<div class="container">
+<div class="container fade-in-up">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h1 class="mb-4"><i class="bi bi-plus-circle"></i> Add New Movie</h1>
+            <h1 class="mb-4 fade-in-down"><i class="bi bi-plus-circle"></i> Add New Movie</h1>
 
             <!-- Movie Search Section -->
-            <div class="card shadow mb-4">
+            <div class="card shadow mb-4 scale-in">
                 <div class="card-body">
                     <h5 class="card-title mb-3">
                         <i class="bi bi-search"></i> Search Movie from IMDb
@@ -28,10 +28,8 @@
                     
                     <!-- Loading Spinner -->
                     <div id="loadingSpinner" class="text-center my-4" style="display: none;">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <p class="mt-2">Searching movies...</p>
+                        <div class="loading-spinner loading-spinner-lg"></div>
+                        <p class="mt-2 fade-in">Searching movies...</p>
                     </div>
 
                     <!-- Search Results -->
@@ -43,16 +41,16 @@
             </div>
 
             <!-- Manual Entry Form -->
-            <div class="card shadow">
+            <div class="card shadow scale-in stagger-delay-2">
                 <div class="card-body">
                     <h5 class="card-title mb-3">
                         <i class="bi bi-pencil"></i> Movie Details
                         <small class="text-muted">(Auto-filled or enter manually)</small>
                     </h5>
                     <form asp-action="Create">
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger shake" role="alert"></div>
                         
-                        <div class="mb-3">
+                        <div class="mb-3 form-group-animated">
                             <label asp-for="Titulo" class="form-label">
                                 <i class="bi bi-file-text"></i> <strong>Title</strong>
                             </label>
@@ -61,7 +59,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-3 form-group-animated">
                                 <label asp-for="Genero" class="form-label">
                                     <i class="bi bi-tag"></i> <strong>Genre</strong>
                                 </label>
@@ -69,7 +67,7 @@
                                 <span asp-validation-for="Genero" class="text-danger"></span>
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-3 form-group-animated">
                                 <label asp-for="DuracaoMinutos" class="form-label">
                                     <i class="bi bi-clock"></i> <strong>Duration (minutes)</strong>
                                 </label>
@@ -78,7 +76,7 @@
                             </div>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 form-group-animated">
                             <label asp-for="Descricao" class="form-label">
                                 <i class="bi bi-card-text"></i> <strong>Description</strong>
                             </label>
@@ -86,7 +84,7 @@
                             <span asp-validation-for="Descricao" class="text-danger"></span>
                         </div>
 
-                        <div class="mb-4">
+                        <div class="mb-4 form-group-animated">
                             <label asp-for="CapaUrl" class="form-label">
                                 <i class="bi bi-image"></i> <strong>Cover URL</strong>
                             </label>
@@ -109,8 +107,8 @@
                             </div>
                         </div>
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-success btn-lg">
+                        <div class="d-grid gap-2 form-group-animated">
+                            <button type="submit" class="btn btn-success btn-lg btn-ripple hover-lift">
                                 <i class="bi bi-check-circle"></i> Save Movie
                             </button>
                             <a asp-action="Index" class="btn btn-secondary">
