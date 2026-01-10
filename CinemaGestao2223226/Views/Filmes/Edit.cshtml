@@ -1,7 +1,7 @@
-﻿@model CinemaGestao.Models.Filme
+﻿@model CinemaGestao2223226.Models.Filme
 
 @{
-    ViewData["Title"] = "Edit Filme";
+    ViewData["Title"] = "Editar Filme";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +10,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h1 class="mb-4"><i class="bi bi-pencil"></i> Edit Filme</h1>
+            <h1 class="mb-4"><i class="bi bi-pencil"></i> Editar Filme</h1>
 
             <div class="card shadow">
                 <div class="card-body">
@@ -20,7 +20,7 @@
                         
                         <div class="mb-3">
                             <label asp-for="Titulo" class="form-label">
-                                <i class="bi bi-file-text"></i> <strong>Title</strong>
+                                <i class="bi bi-file-text"></i> <strong>Título</strong>
                             </label>
                             <input asp-for="Titulo" class="form-control form-control-lg" />
                             <span asp-validation-for="Titulo" class="text-danger"></span>
@@ -29,7 +29,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label asp-for="Genero" class="form-label">
-                                    <i class="bi bi-tag"></i> <strong>Genre</strong>
+                                    <i class="bi bi-tag"></i> <strong>Género</strong>
                                 </label>
                                 <input asp-for="Genero" class="form-control" />
                                 <span asp-validation-for="Genero" class="text-danger"></span>
@@ -37,7 +37,7 @@
 
                             <div class="col-md-6 mb-3">
                                 <label asp-for="DuracaoMinutos" class="form-label">
-                                    <i class="bi bi-clock"></i> <strong>Duration (minutes)</strong>
+                                    <i class="bi bi-clock"></i> <strong>Duração (minutos)</strong>
                                 </label>
                                 <input asp-for="DuracaoMinutos" type="number" class="form-control" />
                                 <span asp-validation-for="DuracaoMinutos" class="text-danger"></span>
@@ -46,7 +46,7 @@
 
                         <div class="mb-3">
                             <label asp-for="Descricao" class="form-label">
-                                <i class="bi bi-card-text"></i> <strong>Description</strong>
+                                <i class="bi bi-card-text"></i> <strong>Descrição</strong>
                             </label>
                             <textarea asp-for="Descricao" class="form-control" rows="4"></textarea>
                             <span asp-validation-for="Descricao" class="text-danger"></span>
@@ -54,13 +54,13 @@
 
                         <div class="mb-4">
                             <label asp-for="CapaUrl" class="form-label">
-                                <i class="bi bi-image"></i> <strong>Cover URL</strong>
+                                <i class="bi bi-image"></i> <strong>URL da Capa (Poster)</strong>
                             </label>
                             <input asp-for="CapaUrl" class="form-control mb-2" id="capaUrlInput" />
                             <span asp-validation-for="CapaUrl" class="text-danger"></span>
                             <div class="d-flex gap-2 align-items-center mt-2">
                                 <small class="form-text text-muted flex-grow-1">
-                                    <i class="bi bi-info-circle"></i> Insira o URL completo de uma imagem
+                                    <i class="bi bi-info-circle"></i> Imagem vertical para listagens (poster do filme)
                                 </small>
                                 <a href="https://www.themoviedb.org/movie" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-info">
                                     <i class="bi bi-search"></i> Procurar Capas (TMDb)
@@ -76,6 +76,86 @@
                                     <img src="@Model.CapaUrl" alt="Capa atual" class="img-thumbnail mt-1" style="max-width: 200px;" id="previewImg">
                                 </div>
                             }
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="BannerUrl" class="form-label">
+                                <i class="bi bi-image-fill"></i> <strong>Banner URL (Hero)</strong>
+                            </label>
+                            <input asp-for="BannerUrl" class="form-control mb-2" id="bannerUrlInput" />
+                            <span asp-validation-for="BannerUrl" class="text-danger"></span>
+                            <small class="form-text text-muted">
+                                <i class="bi bi-info-circle"></i> Imagem horizontal/wide para o destaque na homepage (1920x1080 recomendado)
+                            </small>
+                            @if (!string.IsNullOrEmpty(Model.BannerUrl))
+                            {
+                                <div class="mt-2">
+                                    <small class="text-muted">Pré-visualização Banner:</small><br>
+                                    <img src="@Model.BannerUrl" alt="Banner atual" class="img-thumbnail mt-1" style="max-width: 400px;" id="previewBannerImg">
+                                </div>
+                            }
+                        </div>
+
+                        <hr class="my-4" />
+                        <h5 class="mb-3"><i class="bi bi-info-circle"></i> Informações Adicionais (Opcional)</h5>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Elenco" class="form-label">
+                                    <i class="bi bi-people"></i> <strong>Elenco</strong>
+                                </label>
+                                <input asp-for="Elenco" class="form-control" placeholder="Ex: Jack Black, Paul Rudd, Steve Zahn" />
+                                <span asp-validation-for="Elenco" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Realizador" class="form-label">
+                                    <i class="bi bi-camera-reels"></i> <strong>Realizador</strong>
+                                </label>
+                                <input asp-for="Realizador" class="form-control" placeholder="Ex: Tom Gormican" />
+                                <span asp-validation-for="Realizador" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DataEstreia" class="form-label">
+                                    <i class="bi bi-calendar-event"></i> <strong>Data de Estreia</strong>
+                                </label>
+                                <input asp-for="DataEstreia" type="date" class="form-control" />
+                                <span asp-validation-for="DataEstreia" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="TrailerUrl" class="form-label">
+                                    <i class="bi bi-play-btn"></i> <strong>URL do Trailer</strong>
+                                </label>
+                                <input asp-for="TrailerUrl" class="form-control" placeholder="https://youtube.com/watch?v=..." />
+                                <span asp-validation-for="TrailerUrl" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="Status" class="form-label">
+                                    <i class="bi bi-tag-fill"></i> <strong>Status do Filme</strong>
+                                </label>
+                                <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<CinemaGestao2223226.Models.StatusFilme>()">
+                                </select>
+                                <small class="form-text text-muted">
+                                    <i class="bi bi-info-circle"></i> "Em Cartaz" - O filme pode ter sessões criadas. "Brevemente" - O filme aparece apenas na secção "Em Breve"
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                <input asp-for="DestaqueHome" class="form-check-input" type="checkbox" id="destaqueHomeCheck" />
+                                <label asp-for="DestaqueHome" class="form-check-label">
+                                    <i class="bi bi-star-fill text-warning"></i> <strong>Destaque na Homepage</strong>
+                                    <small class="text-muted d-block">Marque para exibir este filme no banner principal da homepage</small>
+                                </label>
+                            </div>
                         </div>
 
                         <div class="d-grid gap-2">

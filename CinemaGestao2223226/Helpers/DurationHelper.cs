@@ -23,7 +23,7 @@ namespace CinemaGestao.Helpers
                 if (minutes == 0)
                 {
                     // Exact hours
-                    return hours == 1 ? "1 hour" : $"{hours} hours";
+                    return hours == 1 ? "1 hora" : $"{hours} horas";
                 }
                 else
                 {

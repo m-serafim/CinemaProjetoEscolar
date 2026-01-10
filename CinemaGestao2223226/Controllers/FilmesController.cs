@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CinemaGestao.Models;
+using CinemaGestao2223226.Models;
 using Microsoft.AspNetCore.Authorization;
 using CinemaGestao2223226.Data;
 using CinemaGestao2223226.Services;
@@ -65,7 +65,7 @@ namespace CinemaGestao2223226.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Genero,DuracaoMinutos,Descricao,CapaUrl")] Filme filme)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,Genero,DuracaoMinutos,Descricao,CapaUrl,BannerUrl,Elenco,Realizador,ClassificacaoEtaria,TrailerUrl,DataEstreia,DestaqueHome,Status")] Filme filme)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace CinemaGestao2223226.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Genero,DuracaoMinutos,Descricao,CapaUrl")] Filme filme)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Genero,DuracaoMinutos,Descricao,CapaUrl,BannerUrl,Elenco,Realizador,ClassificacaoEtaria,TrailerUrl,DataEstreia,DestaqueHome,Status")] Filme filme)
         {
             if (id != filme.Id)
             {
@@ -153,6 +153,35 @@ namespace CinemaGestao2223226.Controllers
             var filme = await _context.Filmes.FindAsync(id);
             if (filme != null)
             {
+                // Get all sessions for this movie with their data
+                var sessoes = await _context.Sessoes
+                    .Where(s => s.FilmeId == id)
+                    .ToListAsync();
+
+                var sessaoIds = sessoes.Select(s => s.Id).ToList();
+
+                // Mark all reservations as cancelled and process refunds
+                var reservas = await _context.Reservas
+                    .Include(r => r.Sessao)
+                    .Where(r => r.SessaoId.HasValue && sessaoIds.Contains(r.SessaoId.Value) && !r.CanceladaPeloSistema)
+                    .ToListAsync();
+
+                foreach (var reserva in reservas)
+                {
+                    reserva.CanceladaPeloSistema = true;
+                    reserva.MotivoCancelamento = $"O filme '{filme.Titulo}' foi removido do catálogo pelo administrador.";
+                    reserva.Reembolsado = true;
+                    reserva.DataReembolso = DateTime.Now;
+                    reserva.AvisoVisualizado = false;
+                    // Store snapshot of session/movie info before deletion
+                    reserva.FilmeTitulo = filme.Titulo;
+                    reserva.SessaoDataHora = reserva.Sessao?.DataHora;
+                    _context.Update(reserva);
+                }
+
+                // Delete sessions first (due to foreign key constraint)
+                _context.Sessoes.RemoveRange(sessoes);
+
                 _context.Filmes.Remove(filme);
             }
 
@@ -220,13 +249,73 @@ namespace CinemaGestao2223226.Controllers
                 posterLocalPath = await DownloadPoster(details.Poster, imdbId);
             }
 
+            // Get TMDB data for backdrop and Portuguese info
+            string bannerUrl = null;
+            string generoPortugues = details.Genre;
+            string descricaoPortugues = details.Plot;
+            string elenco = details.Actors;
+            string realizador = details.Director;
+
+            try
+            {
+                var tmdbDetails = await _movieApiService.GetTmdbMovieDetailsAsync(imdbId);
+                if (tmdbDetails != null)
+                {
+                    // Get backdrop/banner URL
+                    bannerUrl = await _movieApiService.GetMovieBackdropAsync(imdbId);
+                    
+                    // Download and save banner locally if available
+                    if (!string.IsNullOrEmpty(bannerUrl))
+                    {
+                        bannerUrl = await DownloadBanner(bannerUrl, imdbId);
+                    }
+
+                    // Get Portuguese genres from TMDB
+                    if (tmdbDetails.Genres != null && tmdbDetails.Genres.Any())
+                    {
+                        generoPortugues = string.Join(", ", tmdbDetails.Genres.Select(g => g.Name));
+                    }
+
+                    // Get Portuguese description if available
+                    if (!string.IsNullOrEmpty(tmdbDetails.Overview))
+                    {
+                        descricaoPortugues = tmdbDetails.Overview;
+                    }
+
+                    // Get cast from TMDB in Portuguese names
+                    if (tmdbDetails.Credits?.Cast != null && tmdbDetails.Credits.Cast.Any())
+                    {
+                        elenco = string.Join(", ", tmdbDetails.Credits.Cast.Take(5).Select(c => c.Name));
+                    }
+
+                    // Get director from TMDB
+                    if (tmdbDetails.Credits?.Crew != null)
+                    {
+                        var director = tmdbDetails.Credits.Crew.FirstOrDefault(c => c.Job == "Director");
+                        if (director != null)
+                        {
+                            realizador = director.Name;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting TMDB data: {ex.Message}");
+                // Continue with OMDB data if TMDB fails
+            }
+
             var filme = new
             {
                 titulo = details.Title,
-                genero = details.Genre,
+                genero = generoPortugues,
                 duracaoMinutos = duracaoMinutos,
-                descricao = details.Plot,
-                capaUrl = posterLocalPath ?? details.Poster
+                descricao = descricaoPortugues,
+                capaUrl = posterLocalPath ?? details.Poster,
+                bannerUrl = bannerUrl,
+                elenco = elenco,
+                realizador = realizador,
+                classificacaoEtaria = details.Rated
             };
 
             return Json(new { success = true, movie = filme });
@@ -264,6 +353,40 @@ namespace CinemaGestao2223226.Controllers
                 // Log error and return original URL
                 Console.WriteLine($"Error downloading poster: {ex.Message}");
                 return posterUrl;
+            }
+        }
+
+        // Helper: Download banner/backdrop image and save to wwwroot/images/banners
+        private async Task<string> DownloadBanner(string bannerUrl, string imdbId)
+        {
+            try
+            {
+                using var httpClient = new HttpClient();
+                var imageBytes = await httpClient.GetByteArrayAsync(bannerUrl);
+
+                // Ensure banners directory exists
+                var bannersPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "banners");
+                Directory.CreateDirectory(bannersPath);
+
+                // Generate unique filename
+                var extension = Path.GetExtension(bannerUrl).Split('?')[0];
+                if (string.IsNullOrEmpty(extension) || extension.Length > 5)
+                {
+                    extension = ".jpg";
+                }
+                var fileName = $"banner_{imdbId}_{Guid.NewGuid()}{extension}";
+                var filePath = Path.Combine(bannersPath, fileName);
+
+                // Save image
+                await System.IO.File.WriteAllBytesAsync(filePath, imageBytes);
+
+                // Return relative URL
+                return $"/images/banners/{fileName}";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error downloading banner: {ex.Message}");
+                return bannerUrl;
             }
         }
     }

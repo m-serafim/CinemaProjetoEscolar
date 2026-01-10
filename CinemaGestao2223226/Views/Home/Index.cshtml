@@ -1,76 +1,109 @@
-﻿@model IEnumerable<CinemaGestao.Models.Filme>
+﻿@model IEnumerable<CinemaGestao2223226.Models.Filme>
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Início";
+    var filmesRotativos = Model?.Where(f => f.DestaqueHome || Model.Count() <= 3).Take(5).ToList() ?? new List<CinemaGestao2223226.Models.Filme>();
+    if (!filmesRotativos.Any())
+    {
+        filmesRotativos = Model?.Take(3).ToList() ?? new List<CinemaGestao2223226.Models.Filme>();
+    }
+    var primeiroFilme = filmesRotativos.FirstOrDefault();
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<!-- Clean Modern Hero Section -->
-<section class="modern-hero">
-    <div class="container-fluid px-4 px-lg-5">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-6">
-                <div class="hero-content">
-                    <div class="hero-badge">
-                        <i class="bi bi-stars"></i>
-                        <span>Premium Cinema Experience</span>
-                    </div>
-                    <h1 class="hero-title">
-                        <span class="title-accent">Experience Cinema</span>
-                        <span class="title-main">Like Never Before</span>
-                    </h1>
-                    <p class="hero-description">
-                        Immerse yourself in the magic of movies at Nexor Cinema. 
-                        State-of-the-art screens, premium sound, and unforgettable moments await you.
-                    </p>
-                    <div class="hero-cta">
-                        <a asp-controller="Catalogo" asp-action="Index" class="btn-modern-primary">
-                            <i class="bi bi-film"></i>
-                            <span>Explore Movies</span>
-                        </a>
-                        <a href="#now-showing" class="btn-modern-secondary">
-                            <i class="bi bi-play-circle"></i>
-                            <span>Now Showing</span>
-                        </a>
-                    </div>
-                </div>
+<!-- Hero Section - Featured Movie (Dynamic) -->
+@if (primeiroFilme != null)
+{
+    <section class="cinema-hero" id="cinemaHero">
+        <!-- Background container for smooth transitions -->
+        <div class="hero-background-container">
+            <div class="hero-background active">
+                <img src="@(primeiroFilme.BannerUrl ?? primeiroFilme.CapaUrl)" alt="@primeiroFilme.Titulo" class="hero-bg-image" />
+                <div class="hero-overlay"></div>
             </div>
-            <div class="col-lg-6">
-                <div class="hero-visual">
-                    <div id="heroMovieDisplay" class="hero-movie-display">
-                        <!-- Movies will be loaded dynamically via JavaScript -->
-                        <div class="movie-loading">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
+        </div>
+        
+        <div class="container-fluid px-4 px-lg-5">
+            <div class="hero-content-wrapper">
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="hero-poster-container" id="heroPosterContainer">
+                            <!-- Dynamic poster will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="hero-movie-info" id="heroMovieInfo">
+                            <!-- Dynamic movie info will be loaded here -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- Now Showing Section -->
-<section id="now-showing" class="now-showing-section">
-    <div class="container-fluid px-4 px-lg-5">
-        <div class="section-header">
-            <div class="section-badge">
-                <i class="bi bi-film"></i>
-                <span>Featured</span>
+        
+        <!-- Navigation dots -->
+        <div class="hero-navigation">
+            <div class="hero-dots" id="heroDots"></div>
+        </div>
+    </section>
+}
+else
+{
+    <!-- Fallback Hero when no movies -->
+    <section class="modern-hero">
+        <div class="container-fluid px-4 px-lg-5">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <div class="hero-badge">
+                            <i class="bi bi-stars"></i>
+                            <span>Experiência Premium de Cinema</span>
+                        </div>
+                        <h1 class="hero-title">
+                            <span class="title-accent">Viva o Cinema</span>
+                            <span class="title-main">Como Nunca Antes</span>
+                        </h1>
+                        <p class="hero-description">
+                            Mergulhe na magia do cinema no Nexor Cinema.
+                            Ecrãs de última geração, som premium e momentos inesquecíveis esperam por si.
+                        </p>
+                        <div class="hero-cta">
+                            <a asp-controller="Catalogo" asp-action="Index" class="btn-modern-primary">
+                                <i class="bi bi-film"></i>
+                                <span>Explorar Filmes</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h2 class="section-title">Now Showing</h2>
-            <p class="section-subtitle">Discover the latest blockbusters and timeless classics</p>
+        </div>
+    </section>
+}
+
+<!-- Movie Tabs Section -->
+<section id="now-showing" class="movies-tabs-section">
+    <div class="container-fluid px-4 px-lg-5">
+        <div class="tabs-header">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="em-cartaz">Filmes em cartaz</button>
+                <button class="tab-btn" data-tab="brevemente">Brevemente</button>
+            </div>
+            <a asp-controller="Catalogo" asp-action="Index" class="view-all-link">
+                Ver todos os filmes <i class="bi bi-arrow-right"></i>
+            </a>
         </div>
         
-        <div class="row g-4">
-            @if (Model != null && Model.Any())
-            {
-                @foreach (var filme in Model.Take(3))
+        <!-- Filmes em Cartaz Tab -->
+        <div class="tab-content active" id="em-cartaz" style="display: block;">
+            <div class="movies-carousel movies-centered">
+                @{
+                    var filmesEmCartaz = Model?.Where(f => f.Status == CinemaGestao2223226.Models.StatusFilme.EmCartaz).Take(6).ToList() ?? new List<CinemaGestao2223226.Models.Filme>();
+                }
+                @if (filmesEmCartaz.Any())
                 {
-                    <div class="col-lg-4 col-md-6">
-                        <div class="movie-card">
-                            <div class="movie-poster">
+                    @foreach (var filme in filmesEmCartaz)
+                    {
+                        <a asp-controller="Catalogo" asp-action="Details" asp-route-id="@filme.Id" class="movie-poster-card">
+                            <div class="poster-wrapper">
                                 @if (!string.IsNullOrEmpty(filme.CapaUrl))
                                 {
                                     <img src="@filme.CapaUrl" alt="@filme.Titulo" onerror="this.src='/images/movies/placeholder.svg'" />
@@ -79,51 +112,65 @@
                                 {
                                     <img src="~/images/movies/placeholder.svg" alt="@filme.Titulo" />
                                 }
+                                @if (filme.DataEstreia.HasValue && filme.DataEstreia.Value > DateTime.Now.AddDays(-7))
+                                {
+                                    <span class="poster-badge">BILHETES JÁ À VENDA</span>
+                                }
                             </div>
-                            <div class="movie-info">
-                                <h3 class="movie-title">@filme.Titulo</h3>
-                                <div class="movie-meta">
-                                    <span class="meta-badge meta-genre">
-                                        <i class="bi bi-bookmark-fill"></i>
-                                        @filme.Genero
-                                    </span>
-                                    @if (filme.DuracaoMinutos > 0)
-                                    {
-                                        <span class="meta-badge meta-duration">
-                                            <i class="bi bi-clock-fill"></i>
-                                            @filme.DuracaoMinutos min
-                                        </span>
-                                    }
-                                </div>
-                                <p class="movie-description">
-                                    @(filme.Descricao.Length > 100 ? filme.Descricao.Substring(0, 100) + "..." : filme.Descricao)
-                                </p>
-                                <a asp-controller="Catalogo" asp-action="Details" asp-route-id="@filme.Id" class="btn-card">
-                                    <span>View Details</span>
-                                    <i class="bi bi-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
+                            <div class="poster-title">@filme.Titulo</div>
+                        </a>
+                    }
+                }
+                else
+                {
+                    <div class="no-movies-message">
+                        <i class="bi bi-film"></i>
+                        <h3>Sem filmes em cartaz</h3>
+                        <p>Volte em breve para novos lançamentos!</p>
                     </div>
                 }
-            }
-            else
-            {
-                <div class="col-12">
-                    <div class="no-movies">
-                        <i class="bi bi-film"></i>
-                        <h3>No Movies Available</h3>
-                        <p>Check back soon for new releases!</p>
-                    </div>
-                </div>
-            }
+            </div>
         </div>
         
-        <div class="text-center mt-5">
-            <a asp-controller="Catalogo" asp-action="Index" class="btn-view-all">
-                <span>View All Movies</span>
-                <i class="bi bi-arrow-right-circle-fill"></i>
-            </a>
+        <!-- Brevemente Tab (Coming Soon) -->
+        <div class="tab-content" id="brevemente">
+            <div class="movies-carousel movies-centered">
+                @{
+                    var filmesEmBreve = Model?.Where(f => f.Status == CinemaGestao2223226.Models.StatusFilme.Brevemente).Take(6).ToList() ?? new List<CinemaGestao2223226.Models.Filme>();
+                }
+                @if (filmesEmBreve.Any())
+                {
+                    @foreach (var filme in filmesEmBreve)
+                    {
+                        <a asp-controller="Catalogo" asp-action="Details" asp-route-id="@filme.Id" class="movie-poster-card">
+                            <div class="poster-wrapper">
+                                @if (!string.IsNullOrEmpty(filme.CapaUrl))
+                                {
+                                    <img src="@filme.CapaUrl" alt="@filme.Titulo" onerror="this.src='/images/movies/placeholder.svg'" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/movies/placeholder.svg" alt="@filme.Titulo" />
+                                }
+                                <span class="poster-badge coming-soon">EM BREVE</span>
+                            </div>
+                            <div class="poster-title">@filme.Titulo</div>
+                            @if (filme.DataEstreia.HasValue)
+                            {
+                                <div class="poster-date">@filme.DataEstreia.Value.ToString("dd MMMM")</div>
+                            }
+                        </a>
+                    }
+                }
+                else
+                {
+                    <div class="no-movies-message">
+                        <i class="bi bi-calendar-event"></i>
+                        <h3>Em breve novos filmes</h3>
+                        <p>Fique atento às próximas estreias!</p>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </section>
@@ -134,21 +181,21 @@
         <div class="section-header">
             <div class="section-badge">
                 <i class="bi bi-star-fill"></i>
-                <span>Why Choose Us</span>
+                <span>Tecnologias Utilizadas</span>
             </div>
-            <h2 class="section-title">Premium Cinema Features</h2>
-            <p class="section-subtitle">Experience the best in movie entertainment technology</p>
+            <h2 class="section-title">Componentes do Sistema</h2>
+            <p class="section-subtitle">Tecnologias e funcionalidades implementadas neste projeto</p>
         </div>
         
         <div class="row g-4">
             <div class="col-lg-4 col-md-6">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="bi bi-badge-4k"></i>
+                        <i class="bi bi-film"></i>
                     </div>
-                    <h3 class="feature-title">4K Ultra HD</h3>
+                    <h3 class="feature-title">API TMDB/OMDB</h3>
                     <p class="feature-description">
-                        Crystal-clear picture quality with state-of-the-art projection technology
+                        Integração com APIs externas para obter informações de filmes, capas e banners automaticamente
                     </p>
                 </div>
             </div>
@@ -156,11 +203,11 @@
             <div class="col-lg-4 col-md-6">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="bi bi-soundwave"></i>
+                        <i class="bi bi-database"></i>
                     </div>
-                    <h3 class="feature-title">Immersive Sound</h3>
+                    <h3 class="feature-title">CRUD Completo</h3>
                     <p class="feature-description">
-                        Dolby Atmos surround sound for the ultimate audio experience
+                        Operações Create, Read, Update e Delete para Filmes, Sessões e Reservas
                     </p>
                 </div>
             </div>
@@ -168,11 +215,11 @@
             <div class="col-lg-4 col-md-6">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="bi bi-ticket-perforated"></i>
+                        <i class="bi bi-shield-lock"></i>
                     </div>
-                    <h3 class="feature-title">Easy Booking</h3>
+                    <h3 class="feature-title">ASP.NET Core Identity</h3>
                     <p class="feature-description">
-                        Seamless online reservation system with instant confirmation
+                        Sistema de autenticação e autorização com gestão de utilizadores e roles
                     </p>
                 </div>
             </div>
@@ -180,11 +227,11 @@
             <div class="col-lg-4 col-md-6">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="bi bi-bookmark-star"></i>
+                        <i class="bi bi-layers"></i>
                     </div>
-                    <h3 class="feature-title">Latest Releases</h3>
+                    <h3 class="feature-title">Entity Framework Core</h3>
                     <p class="feature-description">
-                        Get access to the newest blockbusters and exclusive premieres
+                        ORM para mapeamento objeto-relacional com SQLite e migrations
                     </p>
                 </div>
             </div>
@@ -192,11 +239,11 @@
             <div class="col-lg-4 col-md-6">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="bi bi-shield-check"></i>
+                        <i class="bi bi-grid-1x2"></i>
                     </div>
-                    <h3 class="feature-title">Secure Platform</h3>
+                    <h3 class="feature-title">Arquitetura MVC</h3>
                     <p class="feature-description">
-                        Built with ASP.NET Core Identity for safe and secure transactions
+                        Padrão Model-View-Controller para separação de responsabilidades
                     </p>
                 </div>
             </div>
@@ -204,11 +251,11 @@
             <div class="col-lg-4 col-md-6">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="bi bi-lightning-charge"></i>
+                        <i class="bi bi-ui-checks-grid"></i>
                     </div>
-                    <h3 class="feature-title">Fast Performance</h3>
+                    <h3 class="feature-title">Sistema de Reservas</h3>
                     <p class="feature-description">
-                        Powered by modern technology for lightning-fast browsing
+                        Seleção visual de lugares com validação em tempo real e confirmação
                     </p>
                 </div>
             </div>
@@ -218,74 +265,221 @@
 
 @section Scripts {
     <script>
-        // Enhanced movie rotation with CROSSFADE animation
         document.addEventListener('DOMContentLoaded', function() {
-            const heroDisplay = document.getElementById('heroMovieDisplay');
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
             
-            // Fetch movies data
-            const movies = @Html.Raw(Json.Serialize(Model?.Take(5) ?? Enumerable.Empty<CinemaGestao.Models.Filme>()));
+            // Ensure "em-cartaz" tab is visible on page load - force display
+            const emCartazTab = document.getElementById('em-cartaz');
+            const brevementeTab = document.getElementById('brevemente');
             
-            if (movies && movies.length > 0) {
-                let currentIndex = 0;
-                let currentCard = null;
-                
-                function createMovieCard(movie) {
-                    const imageUrl = movie.capaUrl || '/images/movies/placeholder.svg';
-                    const card = document.createElement('a');
-                    card.href = `/Catalogo/Details/${movie.id}`;
-                    card.className = 'hero-movie-card';
-                    card.innerHTML = `
-                        <img src="${imageUrl}" alt="${movie.titulo}" onerror="this.src='/images/movies/placeholder.svg'">
-                        <div class="hero-movie-title">${movie.titulo}</div>
-                    `;
-                    return card;
-                }
-                
-                function displayMovie(index) {
-                    const newCard = createMovieCard(movies[index]);
-                    
-                    if (currentCard) {
-                        // Crossfade transition
-                        newCard.style.opacity = '0';
-                        heroDisplay.appendChild(newCard);
-                        
-                        // Trigger reflow
-                        newCard.offsetHeight;
-                        
-                        // Start crossfade
-                        currentCard.classList.add('crossfade-out');
-                        newCard.classList.add('crossfade-in');
-                        newCard.classList.add('active');
-                        
-                        // Clean up old card after transition
-                        setTimeout(() => {
-                            if (currentCard && currentCard.parentNode === heroDisplay) {
-                                heroDisplay.removeChild(currentCard);
-                            }
-                            currentCard = newCard;
-                        }, 600);
-                    } else {
-                        // First movie
-                        newCard.classList.add('active');
-                        heroDisplay.innerHTML = '';
-                        heroDisplay.appendChild(newCard);
-                        currentCard = newCard;
-                    }
-                }
-                
-                // Display first movie
-                displayMovie(0);
-                
-                // Rotate every 5 seconds with crossfade
-                setInterval(() => {
-                    currentIndex = (currentIndex + 1) % movies.length;
-                    displayMovie(currentIndex);
-                }, 5000);
-            } else {
-                heroDisplay.innerHTML = '<div class="no-movies"><p>No movies available</p></div>';
+            if (emCartazTab) {
+                // Force the em-cartaz tab to be visible immediately
+                emCartazTab.style.display = 'block';
+                emCartazTab.style.opacity = '1';
+                emCartazTab.style.transform = 'translateY(0)';
+                emCartazTab.classList.add('active');
             }
             
-            console.log('✨ Nexor Cinema - Enhanced Crossfade Animation Loaded');
+            if (brevementeTab) {
+                brevementeTab.style.display = 'none';
+                brevementeTab.classList.remove('active');
+            }
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.dataset.tab;
+                    
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        content.style.display = 'none';
+                    });
+                    
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    const targetElement = document.getElementById(targetTab);
+                    if (targetElement) {
+                        targetElement.style.display = 'block';
+                        targetElement.classList.add('active');
+                    }
+                });
+            });
+
+            // Hero Movie Rotation
+            const heroSection = document.getElementById('cinemaHero');
+            if (heroSection) {
+                const movies = @Html.Raw(Json.Serialize(filmesRotativos.Select(f => new {
+                    id = f.Id,
+                    titulo = f.Titulo,
+                    genero = f.Genero,
+                    duracaoMinutos = f.DuracaoMinutos,
+                    descricao = f.Descricao,
+                    capaUrl = f.CapaUrl,
+                    bannerUrl = f.BannerUrl,
+                    elenco = f.Elenco,
+                    realizador = f.Realizador,
+                    classificacaoEtaria = f.ClassificacaoEtaria,
+                    trailerUrl = f.TrailerUrl
+                })));
+
+                if (!movies || movies.length === 0) return;
+
+                let currentIndex = 0;
+                let isTransitioning = false;
+                const backgroundContainer = document.querySelector('.hero-background-container');
+                const posterContainer = document.getElementById('heroPosterContainer');
+                const infoContainer = document.getElementById('heroMovieInfo');
+                const dotsContainer = document.getElementById('heroDots');
+
+                // Create dots
+                movies.forEach((_, index) => {
+                    const dot = document.createElement('button');
+                    dot.className = `hero-dot ${index === 0 ? 'active' : ''}`;
+                    dot.setAttribute('aria-label', `Slide ${index + 1}`);
+                    dot.addEventListener('click', () => goToSlide(index));
+                    dotsContainer.appendChild(dot);
+                });
+
+                function createPosterHTML(movie) {
+                    const imageUrl = movie.bannerUrl || movie.capaUrl || '/images/movies/placeholder.svg';
+                    const trailerButton = movie.trailerUrl 
+                        ? `<a href="${movie.trailerUrl}" target="_blank" class="play-button" title="Ver Trailer">
+                               <i class="bi bi-play-fill"></i>
+                           </a>`
+                        : '';
+
+                    return `
+                        <img src="${imageUrl}" alt="${movie.titulo}" class="hero-poster-image" 
+                             onerror="this.src='${movie.capaUrl || '/images/movies/placeholder.svg'}'" />
+                        ${trailerButton}
+                    `;
+                }
+
+                function formatDuration(minutes) {
+                    if (minutes < 60) {
+                        return minutes + ' min';
+                    } else {
+                        const hours = Math.floor(minutes / 60);
+                        const mins = minutes % 60;
+                        if (mins === 0) {
+                            return hours === 1 ? '1 hora' : hours + ' horas';
+                        }
+                        return hours + 'h ' + mins + 'min';
+                    }
+                }
+
+                function createInfoHTML(movie) {
+                    const badges = [];
+                    badges.push(`<span class="badge-genre">${movie.genero}</span>`);
+                    if (movie.duracaoMinutos > 0) {
+                        badges.push(`<span class="badge-duration">${formatDuration(movie.duracaoMinutos)}</span>`);
+                    }
+
+                    const cast = movie.elenco 
+                        ? `<p class="hero-cast"><span class="cast-label">Com:</span> ${movie.elenco}</p>`
+                        : '';
+                    
+                    const director = movie.realizador
+                        ? `<p class="hero-director"><span class="director-label">De:</span> ${movie.realizador}</p>`
+                        : '';
+
+                    return `
+                        <div class="movie-badges">
+                            ${badges.join('')}
+                        </div>
+                        <h1 class="hero-movie-title">${movie.titulo}</h1>
+                        ${cast}
+                        ${director}
+                        <div class="hero-actions">
+                            <a href="/Catalogo/Sessoes/${movie.id}" class="btn-comprar-bilhete">
+                                <i class="bi bi-ticket-perforated"></i> Comprar bilhete
+                            </a>
+                            <a href="/Catalogo/Details/${movie.id}" class="btn-mais-info">
+                                <i class="bi bi-info-circle"></i> Mais informações
+                            </a>
+                        </div>
+                    `;
+                }
+
+                function updateBackground(movie, immediate = false) {
+                    const imageUrl = movie.bannerUrl || movie.capaUrl || '/images/movies/placeholder.svg';
+                    
+                    // Create new background
+                    const newBg = document.createElement('div');
+                    newBg.className = 'hero-background';
+                    newBg.innerHTML = `
+                        <img src="${imageUrl}" alt="${movie.titulo}" class="hero-bg-image" />
+                        <div class="hero-overlay"></div>
+                    `;
+
+                    // Add to container
+                    backgroundContainer.appendChild(newBg);
+
+                    // Trigger transition
+                    setTimeout(() => {
+                        newBg.classList.add('active');
+                    }, immediate ? 0 : 50);
+
+                    // Remove old background after transition
+                    const oldBgs = backgroundContainer.querySelectorAll('.hero-background:not(:last-child)');
+                    setTimeout(() => {
+                        oldBgs.forEach(bg => bg.remove());
+                    }, immediate ? 0 : 1000);
+                }
+
+                function goToSlide(index) {
+                    if (isTransitioning || index === currentIndex) return;
+                    isTransitioning = true;
+
+                    const movie = movies[index];
+                    
+                    // Update dots
+                    const dots = dotsContainer.querySelectorAll('.hero-dot');
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === index);
+                    });
+
+                    // Fade out current content
+                    posterContainer.style.opacity = '0';
+                    infoContainer.style.opacity = '0';
+
+                    setTimeout(() => {
+                        // Update content
+                        posterContainer.innerHTML = createPosterHTML(movie);
+                        infoContainer.innerHTML = createInfoHTML(movie);
+                        
+                        // Update background
+                        updateBackground(movie);
+
+                        // Fade in new content
+                        setTimeout(() => {
+                            posterContainer.style.opacity = '1';
+                            infoContainer.style.opacity = '1';
+                            currentIndex = index;
+                            isTransitioning = false;
+                        }, 50);
+                    }, 600);
+                }
+
+                function nextSlide() {
+                    const nextIndex = (currentIndex + 1) % movies.length;
+                    goToSlide(nextIndex);
+                }
+
+                // Initialize first slide
+                posterContainer.innerHTML = createPosterHTML(movies[0]);
+                infoContainer.innerHTML = createInfoHTML(movies[0]);
+                posterContainer.style.opacity = '1';
+                infoContainer.style.opacity = '1';
+
+                // Auto-rotate every 6 seconds
+                if (movies.length > 1) {
+                    setInterval(nextSlide, 6000);
+                }
+            }
         });
     </script>
 }

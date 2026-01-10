@@ -5,8 +5,8 @@
             <!-- Left: Logo + Nav Links + User Actions -->
             <div class="navbar-left-section">
                 <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/nexor-icon.ico" alt="NExor Cinema" class="logo-icon" />
-                    <span class="logo-text">NExor Cinema</span>
+                    <img src="~/images/nexor-icon.ico" alt="Nexor Cinema" class="logo-icon" />
+                    <span class="logo-text">Nexor Cinema</span>
                 </a>
 
                 @{
@@ -16,17 +16,17 @@
 
                 <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item">
-                        <a class="nav-link @(currentController == "Home" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link @(currentController == "Home" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Início</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @(currentController == "Catalogo" ? "active nav-link-highlighted" : "")" asp-controller="Catalogo" asp-action="Index">
-                            <i class="bi bi-film"></i> Movie Catalog
+                            <i class="bi bi-film"></i> Catálogo de Filmes
                         </a>
                     </li>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Cliente"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link @(currentController == "Reservas" ? "active" : "")" asp-controller="Reservas" asp-action="Index">My Reservations</a>
+                            <a class="nav-link @(currentController == "Reservas" ? "active" : "")" asp-controller="Reservas" asp-action="Index">As Minhas Reservas</a>
                         </li>
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
@@ -34,12 +34,14 @@
                         var isAdminPage = currentController == "Filmes" || currentController == "Sessoes" || currentController == "Utilizadores";
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle @(isAdminPage ? "active" : "")" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-shield-fill-check"></i> Admin
+                                <i class="bi bi-shield-fill-check"></i> Administração
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                <li><a class="dropdown-item @(currentController == "Filmes" ? "active" : "")" asp-controller="Filmes" asp-action="Index"><i class="bi bi-film"></i> Manage Movies</a></li>
-                                <li><a class="dropdown-item @(currentController == "Sessoes" ? "active" : "")" asp-controller="Sessoes" asp-action="Index"><i class="bi bi-calendar-event"></i> Manage Sessions</a></li>
-                                <li><a class="dropdown-item @(currentController == "Utilizadores" ? "active" : "")" asp-controller="Utilizadores" asp-action="Index"><i class="bi bi-people"></i> Manage Users</a></li>
+                                <li><a class="dropdown-item @(currentController == "Filmes" ? "active" : "")" asp-controller="Filmes" asp-action="Index"><i class="bi bi-film"></i> Gerir Filmes</a></li>
+                                <li><a class="dropdown-item @(currentController == "Sessoes" ? "active" : "")" asp-controller="Sessoes" asp-action="Index"><i class="bi bi-calendar-event"></i> Gerir Sessões</a></li>
+                                <li><a class="dropdown-item @(currentController == "Utilizadores" ? "active" : "")" asp-controller="Utilizadores" asp-action="Index"><i class="bi bi-people"></i> Gerir Utilizadores</a></li>
+                                <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.1);"></li>
+                                <li><a class="dropdown-item @(currentController == "Reservas" && currentAction == "Profits" ? "active" : "")" asp-controller="Reservas" asp-action="Profits"><i class="bi bi-graph-up-arrow"></i> Lucros e Estatísticas</a></li>
                             </ul>
                         </li>
                     }
@@ -63,10 +65,10 @@
             <!-- Right: Search Box -->
             <div class="navbar-right-section">
                 <div class="search-box" role="search">
-                    <img src="~/images/icons/search.svg" alt="Search" class="search-icon" aria-hidden="true" />
-                    <input type="text" id="liveSearchInput" class="search-input" placeholder="Search movies..." 
-                           autocomplete="off" aria-label="Search movies" aria-describedby="searchResults" />
-                    <button type="button" id="clearSearchBtn" class="search-clear-btn" aria-label="Clear search" style="display: none;">
+                    <img src="~/images/icons/search.svg" alt="Pesquisar" class="search-icon" aria-hidden="true" />
+                    <input type="text" id="liveSearchInput" class="search-input" placeholder="Pesquisar filmes..." 
+                           autocomplete="off" aria-label="Pesquisar filmes" aria-describedby="searchResults" />
+                    <button type="button" id="clearSearchBtn" class="search-clear-btn" aria-label="Limpar pesquisa" style="display: none;">
                         <i class="bi bi-x-circle-fill"></i>
                     </button>
                     <div id="searchResults" class="search-results" style="display: none;" role="listbox" aria-live="polite"></div>
@@ -77,8 +79,8 @@
         <!-- Mobile: Collapsible layout -->
         <div class="container-fluid d-lg-none d-flex justify-content-between align-items-center flex-wrap">
             <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
-                <img src="~/images/nexor-icon.ico" alt="NExor Cinema" class="logo-icon" />
-                <span class="logo-text">NExor Cinema</span>
+                <img src="~/images/nexor-icon.ico" alt="Nexor Cinema" class="logo-icon" />
+                <span class="logo-text">Nexor Cinema</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
@@ -89,34 +91,39 @@
             <div class="collapse navbar-collapse w-100" id="navbarContent">
                 <ul class="navbar-nav mb-3 mt-3">
                     <li class="nav-item">
-                        <a class="nav-link @(currentController == "Home" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link @(currentController == "Home" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Início</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @(currentController == "Catalogo" ? "active nav-link-highlighted" : "")" asp-controller="Catalogo" asp-action="Index">
-                            <i class="bi bi-film"></i> Movie Catalog
+                            <i class="bi bi-film"></i> Catálogo de Filmes
                         </a>
                     </li>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Cliente"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link @(currentController == "Reservas" ? "active" : "")" asp-controller="Reservas" asp-action="Index">My Reservations</a>
+                            <a class="nav-link @(currentController == "Reservas" ? "active" : "")" asp-controller="Reservas" asp-action="Index">As Minhas Reservas</a>
                         </li>
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
                     {
                         <li class="nav-item">
                             <a class="nav-link @(currentController == "Filmes" ? "active" : "")" asp-controller="Filmes" asp-action="Index">
-                                <i class="bi bi-film"></i> Manage Movies
+                                <i class="bi bi-film"></i> Gerir Filmes
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @(currentController == "Sessoes" ? "active" : "")" asp-controller="Sessoes" asp-action="Index">
-                                <i class="bi bi-calendar-event"></i> Manage Sessions
+                                <i class="bi bi-calendar-event"></i> Gerir Sessões
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @(currentController == "Utilizadores" ? "active" : "")" asp-controller="Utilizadores" asp-action="Index">
-                                <i class="bi bi-people"></i> Manage Users
+                                <i class="bi bi-people"></i> Gerir Utilizadores
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "Reservas" && ViewContext.RouteData.Values["action"]?.ToString() == "Profits" ? "active" : "")" asp-controller="Reservas" asp-action="Profits">
+                                <i class="bi bi-graph-up-arrow"></i> Lucros e Estatísticas
                             </a>
                         </li>
                     }
@@ -124,10 +131,10 @@
 
                 <div class="mb-3">
                     <div class="search-box" role="search">
-                        <img src="~/images/icons/search.svg" alt="Search" class="search-icon" aria-hidden="true" />
-                        <input type="text" id="liveSearchInputMobile" class="search-input" placeholder="Search movies..." 
-                               autocomplete="off" aria-label="Search movies" />
-                        <button type="button" id="clearSearchBtnMobile" class="search-clear-btn" aria-label="Clear search" style="display: none;">
+                        <img src="~/images/icons/search.svg" alt="Pesquisar" class="search-icon" aria-hidden="true" />
+                        <input type="text" id="liveSearchInputMobile" class="search-input" placeholder="Pesquisar filmes..." 
+                               autocomplete="off" aria-label="Pesquisar filmes" />
+                        <button type="button" id="clearSearchBtnMobile" class="search-clear-btn" aria-label="Limpar pesquisa" style="display: none;">
                             <i class="bi bi-x-circle-fill"></i>
                         </button>
                     </div>

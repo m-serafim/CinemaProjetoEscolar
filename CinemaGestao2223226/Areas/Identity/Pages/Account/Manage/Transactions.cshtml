@@ -1,0 +1,409 @@
+@page
+@model TransactionsModel
+@{
+    ViewData["Title"] = "As Minhas Transações";
+    ViewData["ActivePage"] = "Transactions";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<style>
+    .account-page {
+        padding: 2rem 0;
+    }
+    
+    .account-header {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(14, 165, 233, 0.05) 100%);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+    
+    .account-header h1 {
+        color: #fff;
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin: 0;
+    }
+    
+    .nav-account {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-account .nav-link {
+        color: #fff;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        margin-bottom: 0.25rem;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-account .nav-link:hover {
+        background: rgba(56, 189, 248, 0.1);
+        color: var(--accent-cyan);
+    }
+    
+    .nav-account .nav-link.active {
+        background: linear-gradient(135deg, var(--accent-cyan) 0%, #0ea5e9 100%);
+        color: #000;
+        font-weight: 600;
+    }
+    
+    .nav-account .nav-link i {
+        margin-right: 0.5rem;
+    }
+    
+    .card-account {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+    }
+    
+    .card-account .card-header {
+        background: linear-gradient(135deg, var(--accent-cyan) 0%, #0ea5e9 100%);
+        border-radius: 12px 12px 0 0;
+        padding: 1rem 1.5rem;
+    }
+    
+    .card-account .card-header h4 {
+        color: #000;
+        margin: 0;
+        font-weight: 600;
+    }
+    
+    .card-account .card-body {
+        padding: 1.5rem;
+    }
+    
+    .stats-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-box {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        padding: 1.25rem;
+        text-align: center;
+    }
+    
+    .stat-box .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--accent-cyan);
+    }
+    
+    .stat-box .stat-label {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .transaction-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .transaction-card:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(56, 189, 248, 0.3);
+    }
+    
+    .transaction-card.cancelled {
+        border-left: 4px solid #ef4444;
+        opacity: 0.8;
+    }
+    
+    .transaction-card.refunded {
+        border-left: 4px solid #22c55e;
+    }
+    
+    .transaction-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+    
+    .transaction-movie {
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0;
+    }
+    
+    .transaction-date {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.85rem;
+    }
+    
+    .transaction-amount {
+        color: var(--accent-cyan);
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+    
+    .transaction-details {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.75rem;
+    }
+    
+    .transaction-detail {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+    }
+    
+    .transaction-detail-label {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+    }
+    
+    .transaction-detail-value {
+        color: #fff;
+        font-size: 0.9rem;
+    }
+    
+    .payment-method {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(56, 189, 248, 0.1);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: var(--accent-cyan);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem 2rem;
+    }
+    
+    .empty-state i {
+        font-size: 4rem;
+        color: rgba(255, 255, 255, 0.3);
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state h3 {
+        color: #fff;
+    }
+    
+    .empty-state p {
+        color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .badge-cancelled {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+    }
+    
+    .badge-refunded {
+        background: rgba(34, 197, 94, 0.15);
+        color: #22c55e;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+    }
+    
+    .badge-active {
+        background: rgba(56, 189, 248, 0.15);
+        color: var(--accent-cyan);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+    }
+</style>
+
+<div class="container account-page">
+    <div class="account-header">
+        <h1><i class="bi bi-person-circle me-2"></i>A Minha Conta</h1>
+    </div>
+
+    @if (User.IsInRole("Administrador"))
+    {
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Esta página não está disponível para administradores. Utilize o painel de administração para ver as reservas.
+        </div>
+        <a asp-controller="Reservas" asp-action="Profits" class="btn btn-primary">
+            <i class="bi bi-graph-up me-1"></i>Ver Painel de Lucros
+        </a>
+    }
+    else
+    {
+    <div class="row">
+        <div class="col-md-3">
+            <nav class="nav-account">
+                <nav class="nav flex-column">
+                    <a class="nav-link" asp-page="./Index">
+                        <i class="bi bi-person"></i> Perfil
+                    </a>
+                    <a class="nav-link" asp-page="./Email">
+                        <i class="bi bi-envelope"></i> Email
+                    </a>
+                    <a class="nav-link" asp-page="./ChangePassword">
+                        <i class="bi bi-key"></i> Palavra-passe
+                    </a>
+                    <a class="nav-link" asp-page="./PersonalData">
+                        <i class="bi bi-shield"></i> Dados
+                    </a>
+                    <a class="nav-link active" asp-page="./Transactions">
+                        <i class="bi bi-receipt"></i> Transações
+                    </a>
+                </nav>
+            </nav>
+        </div>
+
+        <div class="col-md-9">
+            <div class="card card-account shadow">
+                <div class="card-header">
+                    <h4><i class="bi bi-receipt me-2"></i>As Minhas Transações</h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.Reservas != null && Model.Reservas.Any())
+                    {
+                        <div class="stats-summary">
+                            <div class="stat-box">
+                                <div class="stat-value">@Model.Reservas.Count()</div>
+                                <div class="stat-label">Total Compras</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">@Model.Reservas.Sum(r => r.NumeroBilhetes)</div>
+                                <div class="stat-label">Bilhetes</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">@Model.Reservas.Where(r => !r.CanceladaPeloSistema).Sum(r => r.ValorPago).ToString("C")</div>
+                                <div class="stat-label">Total Gasto</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">@Model.Reservas.Where(r => r.Reembolsado).Sum(r => r.ValorPago).ToString("C")</div>
+                                <div class="stat-label">Reembolsado</div>
+                            </div>
+                        </div>
+                        
+                        @foreach (var reserva in Model.Reservas.OrderByDescending(r => r.DataReserva))
+                        {
+                            var cardClass = reserva.CanceladaPeloSistema ? "cancelled" : reserva.Reembolsado ? "refunded" : "";
+                            
+                            <div class="transaction-card @cardClass">
+                                <div class="transaction-header">
+                                    <div>
+                                        <h5 class="transaction-movie">
+                                            @(reserva.Sessao?.Filme?.Titulo ?? "Filme não disponível")
+                                        </h5>
+                                        <span class="transaction-date">
+                                            <i class="bi bi-calendar3 me-1"></i>@reserva.DataReserva.ToString("dd/MM/yyyy HH:mm")
+                                        </span>
+                                        @if (reserva.CanceladaPeloSistema)
+                                        {
+                                            <span class="badge-cancelled ms-2">
+                                                <i class="bi bi-x-circle"></i> Cancelada
+                                            </span>
+                                        }
+                                        @if (reserva.Reembolsado)
+                                        {
+                                            <span class="badge-refunded ms-2">
+                                                <i class="bi bi-check-circle"></i> Reembolsada
+                                            </span>
+                                        }
+                                        else if (!reserva.CanceladaPeloSistema)
+                                        {
+                                            <span class="badge-active ms-2">
+                                                <i class="bi bi-ticket"></i> Ativa
+                                            </span>
+                                        }
+                                    </div>
+                                    <div class="transaction-amount">
+                                        @reserva.ValorPago.ToString("C")
+                                    </div>
+                                </div>
+                                
+                                <div class="transaction-details">
+                                    <div class="transaction-detail">
+                                        <span class="transaction-detail-label">Reserva</span>
+                                        <span class="transaction-detail-value">#@reserva.Id</span>
+                                    </div>
+                                    <div class="transaction-detail">
+                                        <span class="transaction-detail-label">Bilhetes</span>
+                                        <span class="transaction-detail-value">@reserva.NumeroBilhetes</span>
+                                    </div>
+                                    <div class="transaction-detail">
+                                        <span class="transaction-detail-label">Lugares</span>
+                                        <span class="transaction-detail-value">@(reserva.LugaresSelecionados ?? "N/A")</span>
+                                    </div>
+                                    @if (reserva.Sessao != null)
+                                    {
+                                        <div class="transaction-detail">
+                                            <span class="transaction-detail-label">Sessão</span>
+                                            <span class="transaction-detail-value">@reserva.Sessao.DataHora.ToString("dd/MM HH:mm")</span>
+                                        </div>
+                                    }
+                                </div>
+                                
+                                @if (!string.IsNullOrEmpty(reserva.NumeroCartao))
+                                {
+                                    <div class="payment-method">
+                                        <i class="bi bi-credit-card"></i>
+                                        <span>**** **** **** @reserva.NumeroCartao.Replace(" ", "").Substring(Math.Max(0, reserva.NumeroCartao.Replace(" ", "").Length - 4))</span>
+                                        @if (!string.IsNullOrEmpty(reserva.NomeCartao))
+                                        {
+                                            <span>• @reserva.NomeCartao</span>
+                                        }
+                                    </div>
+                                }
+                                
+                                @if (reserva.CanceladaPeloSistema && !string.IsNullOrEmpty(reserva.MotivoCancelamento))
+                                {
+                                    <div class="mt-2" style="color: rgba(239, 68, 68, 0.8); font-size: 0.85rem;">
+                                        <i class="bi bi-info-circle me-1"></i>@reserva.MotivoCancelamento
+                                    </div>
+                                }
+                                
+                                @if (reserva.Reembolsado && reserva.DataReembolso.HasValue)
+                                {
+                                    <div class="mt-2" style="color: rgba(34, 197, 94, 0.8); font-size: 0.85rem;">
+                                        <i class="bi bi-check-circle me-1"></i>Reembolso processado em @reserva.DataReembolso.Value.ToString("dd/MM/yyyy")
+                                    </div>
+                                }
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="empty-state">
+                            <i class="bi bi-receipt"></i>
+                            <h3>Sem Transações</h3>
+                            <p>Ainda não efetuou nenhuma compra de bilhetes.</p>
+                            <a asp-controller="Catalogo" asp-action="Index" class="btn btn-primary mt-3">
+                                <i class="bi bi-film"></i> Ver Filmes
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>

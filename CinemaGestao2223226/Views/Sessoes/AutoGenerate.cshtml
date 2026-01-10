@@ -1,0 +1,415 @@
+@{
+    ViewData["Title"] = "Criar Sessões Automaticamente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<style>
+    .auto-generate-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .card-modern {
+        background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .card-header-modern {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(56, 189, 248, 0.05) 100%);
+        border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+        padding: 1.5rem;
+    }
+
+    .card-header-modern h4 {
+        color: var(--accent-cyan);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .card-body-modern {
+        padding: 2rem;
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .form-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    .section-title {
+        color: var(--text-heading);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .section-title i {
+        color: var(--accent-cyan);
+    }
+
+    .form-label {
+        color: var(--text-body);
+        font-weight: 500;
+    }
+
+    .form-control, .form-select {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-heading);
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+        background: rgba(0, 0, 0, 0.4);
+        border-color: var(--accent-cyan);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+        color: var(--text-heading);
+    }
+
+    .checkbox-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .checkbox-item {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .checkbox-item:hover {
+        border-color: rgba(56, 189, 248, 0.4);
+        background: rgba(56, 189, 248, 0.1);
+    }
+
+    .checkbox-item input {
+        margin-right: 0.5rem;
+    }
+
+    .checkbox-item.checked {
+        background: rgba(56, 189, 248, 0.2);
+        border-color: var(--accent-cyan);
+    }
+
+    .time-chip {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(56, 189, 248, 0.15);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        border-radius: 20px;
+        padding: 0.5rem 1rem;
+        margin: 0.25rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .time-chip:hover {
+        background: rgba(56, 189, 248, 0.25);
+    }
+
+    .time-chip.selected {
+        background: var(--accent-cyan);
+        color: var(--bg-primary);
+        border-color: var(--accent-cyan);
+    }
+
+    .time-chip input {
+        display: none;
+    }
+
+    .btn-generate {
+        background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-cyan-hover) 100%);
+        color: var(--bg-primary);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-generate:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(56, 189, 248, 0.4);
+    }
+
+    .preview-box {
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .preview-title {
+        color: #22c55e;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .preview-stat {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .preview-stat:last-child {
+        border-bottom: none;
+    }
+
+    .preview-label {
+        color: var(--text-body);
+    }
+
+    .preview-value {
+        color: var(--text-heading);
+        font-weight: 600;
+    }
+
+    .input-group-text {
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--accent-cyan);
+    }
+</style>
+
+<div class="container py-4 auto-generate-container">
+    <div class="text-center mb-4">
+        <h1 class="mb-2" style="color: var(--text-heading);">
+            <i class="bi bi-magic" style="color: var(--accent-cyan);"></i> Criar Sessões Automaticamente
+        </h1>
+        <p style="color: var(--text-body);">
+            Configure os parâmetros e o sistema irá gerar várias sessões de uma só vez
+        </p>
+    </div>
+
+    <div class="card-modern">
+        <div class="card-header-modern">
+            <h4><i class="bi bi-gear-fill"></i> Configuração das Sessões</h4>
+        </div>
+        <div class="card-body-modern">
+            <form asp-action="AutoGenerate" method="post" id="autoGenerateForm">
+                
+                <!-- Filme Selection -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="bi bi-film"></i> Selecionar Filme
+                    </div>
+                    <select asp-for="@ViewData["FilmeId"]" class="form-select" name="filmeId" id="filmeSelect" required>
+                        <option value="">-- Selecione um filme --</option>
+                        @if (ViewData["FilmeId"] is SelectList filmesList)
+                        {
+                            @foreach (var item in filmesList)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <!-- Period Configuration -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="bi bi-calendar-range"></i> Período
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Número de dias a gerar</label>
+                            <input type="number" class="form-control" name="diasSemana" id="diasSemana" 
+                                   value="7" min="1" max="30" required>
+                            <small class="text-muted">A partir de hoje</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Salas Selection -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="bi bi-door-open"></i> Sala
+                    </div>
+                    <div class="checkbox-grid" id="salasContainer">
+                        <label class="checkbox-item checked">
+                            <input type="checkbox" name="salas" value="Sala Principal" checked onchange="updatePreview(); toggleCheckboxItem(this);">
+                            Sala Principal (150 lugares)
+                        </label>
+                    </div>
+                    <small class="text-muted mt-2 d-block">
+                        <i class="bi bi-info-circle"></i> Sala única com capacidade fixa de 150 lugares (10 filas x 15 colunas)
+                    </small>
+                </div>
+
+                <!-- Horários Selection -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="bi bi-clock"></i> Horários
+                    </div>
+                    <div class="d-flex flex-wrap" id="horariosContainer">
+                        @{
+                            var horarios = new[] { "14:00", "16:30", "19:00", "21:30", "23:00" };
+                        }
+                        @foreach (var horario in horarios)
+                        {
+                            <label class="time-chip">
+                                <input type="checkbox" name="horarios" value="@horario" onchange="updatePreview(); toggleTimeChip(this);">
+                                @horario
+                            </label>
+                        }
+                    </div>
+                </div>
+
+                <!-- Pricing & Capacity -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="bi bi-currency-euro"></i> Preço e Capacidade
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Preço por Bilhete</label>
+                            <div class="input-group">
+                                <span class="input-group-text">€</span>
+                                <input type="number" class="form-control" name="preco" id="precoInput"
+                                       value="8.50" step="0.50" min="1" required onchange="updatePreview()">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Lugares por Sessão</label>
+                            <input type="number" class="form-control" name="lugaresTotais" id="lugaresInput"
+                                   value="150" min="150" max="150" readonly>
+                            <small class="text-muted">Capacidade fixa da sala</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="preview-box" id="previewBox">
+                    <div class="preview-title">
+                        <i class="bi bi-eye"></i> Pré-visualização
+                    </div>
+                    <div class="preview-stat">
+                        <span class="preview-label">Total de sessões a criar:</span>
+                        <span class="preview-value" id="totalSessoes">0</span>
+                    </div>
+                    <div class="preview-stat">
+                        <span class="preview-label">Salas selecionadas:</span>
+                        <span class="preview-value" id="totalSalas">0</span>
+                    </div>
+                    <div class="preview-stat">
+                        <span class="preview-label">Horários por dia:</span>
+                        <span class="preview-value" id="totalHorarios">0</span>
+                    </div>
+                    <div class="preview-stat">
+                        <span class="preview-label">Capacidade total:</span>
+                        <span class="preview-value" id="capacidadeTotal">0 lugares</span>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn-generate" id="submitBtn">
+                        <i class="bi bi-magic"></i> Gerar Sessões
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary text-center" style="border-radius: 50px; padding: 0.75rem;">
+                        <i class="bi bi-x-circle"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleCheckboxItem(checkbox) {
+            const label = checkbox.closest('.checkbox-item');
+            if (checkbox.checked) {
+                label.classList.add('checked');
+            } else {
+                label.classList.remove('checked');
+            }
+        }
+
+        function toggleTimeChip(checkbox) {
+            const label = checkbox.closest('.time-chip');
+            if (checkbox.checked) {
+                label.classList.add('selected');
+            } else {
+                label.classList.remove('selected');
+            }
+        }
+
+        function updatePreview() {
+            const dias = parseInt(document.getElementById('diasSemana').value) || 0;
+            const salas = document.querySelectorAll('input[name="salas"]:checked').length;
+            const horarios = document.querySelectorAll('input[name="horarios"]:checked').length;
+            const lugares = parseInt(document.getElementById('lugaresInput').value) || 0;
+
+            const totalSessoes = dias * salas * horarios;
+            const capacidadeTotal = totalSessoes * lugares;
+
+            document.getElementById('totalSessoes').textContent = totalSessoes;
+            document.getElementById('totalSalas').textContent = salas;
+            document.getElementById('totalHorarios').textContent = horarios;
+            document.getElementById('capacidadeTotal').textContent = capacidadeTotal.toLocaleString() + ' lugares';
+        }
+
+        // Add event listeners
+        document.getElementById('diasSemana').addEventListener('input', updatePreview);
+        document.getElementById('lugaresInput').addEventListener('input', updatePreview);
+
+        // Form validation
+        document.getElementById('autoGenerateForm').addEventListener('submit', function(e) {
+            const filme = document.getElementById('filmeSelect').value;
+            const salas = document.querySelectorAll('input[name="salas"]:checked').length;
+            const horarios = document.querySelectorAll('input[name="horarios"]:checked').length;
+
+            if (!filme) {
+                e.preventDefault();
+                alert('Por favor, selecione um filme.');
+                return false;
+            }
+
+            if (salas === 0) {
+                e.preventDefault();
+                alert('Por favor, selecione pelo menos uma sala.');
+                return false;
+            }
+
+            if (horarios === 0) {
+                e.preventDefault();
+                alert('Por favor, selecione pelo menos um horário.');
+                return false;
+            }
+
+            return confirm(`Tem a certeza que deseja criar ${document.getElementById('totalSessoes').textContent} sessões?`);
+        });
+
+        // Initial preview update
+        updatePreview();
+    </script>
+}

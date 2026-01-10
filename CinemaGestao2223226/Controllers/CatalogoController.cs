@@ -55,7 +55,7 @@ namespace CinemaGestao2223226.Controllers
             }
 
             var sessoes = await _context.Sessoes
-                .Where(s => s.FilmeId == id && s.DataHora > System.DateTime.Now)
+                .Where(s => s.FilmeId == id && s.DataHora >= System.DateTime.Today)
                 .OrderBy(s => s.DataHora)
                 .ToListAsync();
 

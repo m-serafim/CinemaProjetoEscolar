@@ -1,4 +1,4 @@
-@model CinemaGestao.Models.Filme
+@model CinemaGestao2223226.Models.Filme
 @using CinemaGestao.Helpers
 
 @{
@@ -7,46 +7,233 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<div class="container">
+<style>
+    .movie-details-page {
+        padding: 2rem 0;
+    }
+    
+    .movie-poster-container {
+        position: relative;
+    }
+    
+    .movie-poster-container img {
+        border-radius: 16px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+    
+    .play-trailer-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
+        background: rgba(56, 189, 248, 0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #000;
+    }
+    
+    .play-trailer-overlay:hover {
+        background: var(--accent-cyan);
+        transform: translate(-50%, -50%) scale(1.1);
+        box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
+    }
+    
+    .play-trailer-overlay i {
+        font-size: 2rem;
+        margin-left: 4px;
+    }
+    
+    .movie-title {
+        color: #fff;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    
+    .movie-meta-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .movie-meta-badges .badge {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+    
+    .movie-description {
+        color: #fff;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+    }
+    
+    .movie-info-row {
+        margin-bottom: 1rem;
+    }
+    
+    .movie-info-row strong {
+        color: var(--accent-cyan);
+    }
+    
+    .movie-info-row span {
+        color: #fff;
+    }
+    
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .btn-buy-ticket {
+        background: linear-gradient(135deg, var(--accent-cyan) 0%, #0ea5e9 100%);
+        border: none;
+        color: #000;
+        font-weight: 700;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-buy-ticket:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
+        color: #000;
+    }
+    
+    .btn-watch-trailer {
+        background: transparent;
+        border: 2px solid var(--accent-cyan);
+        color: var(--accent-cyan);
+        font-weight: 600;
+        padding: 0.875rem 2rem;
+        font-size: 1rem;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-watch-trailer:hover {
+        background: rgba(56, 189, 248, 0.1);
+        color: var(--accent-cyan);
+    }
+    
+    .btn-back {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+    
+    .btn-back:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--accent-cyan);
+    }
+    
+    .breadcrumb {
+        background: transparent;
+        padding: 0;
+        margin-bottom: 1.5rem;
+    }
+    
+    .breadcrumb-item a {
+        color: var(--accent-cyan);
+        text-decoration: none;
+    }
+    
+    .breadcrumb-item.active {
+        color: #fff;
+    }
+</style>
+
+<div class="container movie-details-page">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a asp-action="Index">Catalog</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Catálogo</a></li>
             <li class="breadcrumb-item active" aria-current="page">@Model.Titulo</li>
         </ol>
     </nav>
 
     <div class="row">
         <div class="col-md-4">
-            @if (!string.IsNullOrEmpty(Model.CapaUrl))
-            {
-                <img src="@Model.CapaUrl" class="img-fluid rounded shadow" alt="@Model.Titulo">
-            }
-            else
-            {
-                <div class="bg-secondary rounded d-flex align-items-center justify-content-center" style="height: 500px;">
-                    <i class="bi bi-film" style="font-size: 8rem; color: white;"></i>
-                </div>
-            }
+            <div class="movie-poster-container">
+                @if (!string.IsNullOrEmpty(Model.CapaUrl))
+                {
+                    <img src="@Model.CapaUrl" class="img-fluid rounded shadow" alt="@Model.Titulo">
+                    @if (!string.IsNullOrEmpty(Model.TrailerUrl))
+                    {
+                        <a href="@Model.TrailerUrl" target="_blank" class="play-trailer-overlay" title="Ver Trailer">
+                            <i class="bi bi-play-fill"></i>
+                        </a>
+                    }
+                }
+                else
+                {
+                    <div class="bg-secondary rounded d-flex align-items-center justify-content-center" style="height: 500px;">
+                        <i class="bi bi-film" style="font-size: 8rem; color: white;"></i>
+                    </div>
+                }
+            </div>
         </div>
         <div class="col-md-8">
-            <h1 class="mb-3">@Model.Titulo</h1>
+            <h1 class="movie-title">@Model.Titulo</h1>
             
-            <div class="mb-3">
-                <span class="badge bg-primary me-2">@Model.Genero</span>
+            <div class="movie-meta-badges">
+                <span class="badge bg-primary">@Model.Genero</span>
                 <span class="badge bg-info text-dark">@DurationHelper.FormatDuration(Model.DuracaoMinutos)</span>
             </div>
 
-            <h5>Synopsis</h5>
-            <p class="lead">@Model.Descricao</p>
+            @if (!string.IsNullOrEmpty(Model.Elenco))
+            {
+                <div class="movie-info-row">
+                    <strong><i class="bi bi-people me-2"></i>Elenco:</strong>
+                    <span>@Model.Elenco</span>
+                </div>
+            }
 
-            <hr />
+            @if (!string.IsNullOrEmpty(Model.Realizador))
+            {
+                <div class="movie-info-row">
+                    <strong><i class="bi bi-camera-reels me-2"></i>Realizador:</strong>
+                    <span>@Model.Realizador</span>
+                </div>
+            }
 
-            <div class="d-grid gap-2">
-                <a asp-action="Sessoes" asp-route-id="@Model.Id" class="btn btn-primary btn-lg">
-                    <i class="bi bi-calendar-event"></i> View Available Sessions
-                </a>
-                <a asp-action="Index" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left"></i> Back to Catalog
+            <h5 class="mt-4" style="color: #fff;">Sinopse</h5>
+            <p class="movie-description">@Model.Descricao</p>
+
+            <div class="action-buttons">
+                @if (Model.Status != CinemaGestao2223226.Models.StatusFilme.Brevemente)
+                {
+                    <a asp-action="Sessoes" asp-route-id="@Model.Id" class="btn btn-buy-ticket btn-lg">
+                        <i class="bi bi-ticket-perforated me-2"></i> Comprar Bilhete
+                    </a>
+                }
+                else
+                {
+                    <div class="alert alert-warning d-flex align-items-center" style="background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3); color: #fb923c;">
+                        <i class="bi bi-calendar-event me-2"></i>
+                        <span>Este filme estreia brevemente. Os bilhetes estarão disponíveis em breve!</span>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.TrailerUrl))
+                {
+                    <a href="@Model.TrailerUrl" target="_blank" class="btn btn-watch-trailer">
+                        <i class="bi bi-play-circle me-2"></i> Ver Trailer
+                    </a>
+                }
+                <a asp-action="Index" class="btn btn-back">
+                    <i class="bi bi-arrow-left me-2"></i> Voltar ao Catálogo
                 </a>
             </div>
         </div>

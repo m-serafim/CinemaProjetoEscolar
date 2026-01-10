@@ -1,127 +1,845 @@
-﻿@model CinemaGestao.Models.Reserva
+﻿@model CinemaGestao2223226.Models.Reserva
 
 @{
-    var sessao = ViewBag.Sessao as CinemaGestao.Models.Sessao;
-    ViewData["Title"] = "New Reservation";
+    var sessao = ViewBag.Sessao as CinemaGestao2223226.Models.Sessao;
+    var lugaresOcupados = ViewBag.LugaresOcupados as List<string> ?? new List<string>();
+    ViewData["Title"] = "Comprar Bilhetes";
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<div class="container">
-    <h1 class="mb-4">🎟️ New Reservation</h1>
+<style>
+    .seat-selection-container {
+        background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
 
+    .screen-container {
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .screen {
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.4) 0%, rgba(56, 189, 248, 0.1) 100%);
+        height: 40px;
+        width: 80%;
+        margin: 0 auto 1rem;
+        border-radius: 50% 50% 0 0;
+        box-shadow: 0 -5px 30px rgba(56, 189, 248, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: var(--text-body);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .zoom-controls {
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .zoom-btn {
+        background: rgba(56, 189, 248, 0.2);
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        color: var(--accent-cyan);
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .zoom-btn:hover {
+        background: rgba(56, 189, 248, 0.3);
+        transform: scale(1.1);
+    }
+
+    .seats-wrapper {
+        overflow-x: auto;
+        padding: 1rem 0;
+    }
+
+    .seats-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        min-width: fit-content;
+        transform-origin: center top;
+        transition: transform 0.3s ease;
+    }
+
+    .seat-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .row-label {
+        width: 30px;
+        text-align: center;
+        font-weight: 700;
+        color: var(--accent-cyan);
+        font-size: 0.9rem;
+    }
+
+    .seat {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px 6px 10px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        font-size: 0.7rem;
+        font-weight: 600;
+        border: 2px solid transparent;
+        position: relative;
+    }
+
+    .seat.available {
+        background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+        border-color: #4b5563;
+        color: #9ca3af;
+    }
+
+    .seat.available:hover {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.4) 0%, rgba(56, 189, 248, 0.2) 100%);
+        border-color: var(--accent-cyan);
+        transform: scale(1.15);
+        box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+    }
+
+    .seat.selected {
+        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        border-color: #22c55e;
+        color: white;
+        transform: scale(1.1);
+        box-shadow: 0 4px 15px rgba(34, 197, 94, 0.5);
+    }
+
+    .seat.occupied {
+        background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+        border-color: #dc2626;
+        color: #fca5a5;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    .seat.occupied::after {
+        content: '×';
+        font-size: 1rem;
+        color: #fca5a5;
+    }
+
+    .seat.wheelchair {
+        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        border-color: #3b82f6;
+    }
+
+    .seat.wheelchair::before {
+        content: '♿';
+        font-size: 0.8rem;
+    }
+
+    .seat.vip {
+        background: linear-gradient(135deg, #854d0e 0%, #713f12 100%);
+        border-color: #eab308;
+    }
+
+    .seat.vip.available:hover {
+        background: linear-gradient(135deg, rgba(234, 179, 8, 0.4) 0%, rgba(234, 179, 8, 0.2) 100%);
+        border-color: #eab308;
+        box-shadow: 0 4px 15px rgba(234, 179, 8, 0.4);
+    }
+
+    .seat.vip.selected {
+        background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+        border-color: #eab308;
+    }
+
+    .legend-container {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
+        flex-wrap: wrap;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-body);
+        font-size: 0.85rem;
+    }
+
+    .legend-seat {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px 4px 8px 8px;
+    }
+
+    .legend-seat.available {
+        background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+        border: 2px solid #4b5563;
+    }
+
+    .legend-seat.selected {
+        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        border: 2px solid #22c55e;
+    }
+
+    .legend-seat.occupied {
+        background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+        border: 2px solid #dc2626;
+    }
+
+    .legend-seat.wheelchair {
+        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        border: 2px solid #3b82f6;
+    }
+
+    .legend-seat.vip {
+        background: linear-gradient(135deg, #854d0e 0%, #713f12 100%);
+        border: 2px solid #eab308;
+    }
+
+    .selection-summary {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(56, 189, 248, 0.05) 100%);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .summary-row:last-child {
+        border-bottom: none;
+    }
+
+    .summary-label {
+        color: var(--text-body);
+        font-size: 0.95rem;
+    }
+
+    .summary-value {
+        color: var(--text-heading);
+        font-weight: 600;
+    }
+
+    .summary-total {
+        font-size: 1.5rem;
+        color: var(--accent-cyan);
+    }
+
+    .selected-seats-display {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .selected-seat-tag {
+        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .btn-confirm-purchase {
+        background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-cyan-hover) 100%);
+        color: var(--bg-primary);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        width: 100%;
+        margin-top: 1.5rem;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-confirm-purchase:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(56, 189, 248, 0.4);
+    }
+
+    .btn-confirm-purchase:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .session-info-card {
+        background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .session-info-card h5 {
+        color: var(--accent-cyan);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .session-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .session-detail {
+        text-align: center;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+    }
+
+    .session-detail-label {
+        color: var(--text-body);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+    }
+
+    .session-detail-value {
+        color: var(--text-heading);
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+        color: var(--text-heading);
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .page-header p {
+        color: var(--text-body);
+    }
+</style>
+
+<div class="container py-4">
     @if (sessao != null)
     {
-        <div class="card mb-4 shadow">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Session Details</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p><strong>Movie:</strong> @sessao.Filme.Titulo</p>
-                        <p><strong>Date:</strong> @sessao.DataHora.ToString("dd/MM/yyyy")</p>
-                        <p><strong>Time:</strong> @sessao.DataHora.ToString("HH:mm")</p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong>Room:</strong> @sessao.Sala</p>
-                        <p><strong>Price per Ticket:</strong> @sessao.Preco.ToString("C")</p>
-                        <p><strong>Available Seats:</strong> 
-                            <span class="badge bg-success">@sessao.LugaresDisponiveis</span>
-                        </p>
-                    </div>
+        <div class="page-header">
+            <h1><i class="bi bi-ticket-perforated"></i> Selecione os seus Lugares</h1>
+            <p>Escolha os lugares onde deseja sentar para assistir ao filme</p>
+        </div>
+
+        <!-- Session Info Card -->
+        <div class="session-info-card">
+            <h5><i class="bi bi-film"></i> @sessao.Filme.Titulo</h5>
+            <div class="session-details">
+                <div class="session-detail">
+                    <div class="session-detail-label">Data</div>
+                    <div class="session-detail-value">@sessao.DataHora.ToString("dd/MM/yyyy")</div>
                 </div>
+                <div class="session-detail">
+                    <div class="session-detail-label">Hora</div>
+                    <div class="session-detail-value">@sessao.DataHora.ToString("HH:mm")</div>
+                </div>
+                <div class="session-detail">
+                    <div class="session-detail-label">Sala</div>
+                    <div class="session-detail-value">@sessao.Sala</div>
+                </div>
+                <div class="session-detail">
+                    <div class="session-detail-label">Preço/Bilhete</div>
+                    <div class="session-detail-value">@sessao.Preco.ToString("C")</div>
+                </div>
+                <div class="session-detail">
+                    <div class="session-detail-label">Disponíveis</div>
+                    <div class="session-detail-value">@sessao.LugaresDisponiveis</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seat Selection -->
+        <div class="seat-selection-container">
+            <div class="screen-container">
+                <div class="zoom-controls">
+                    <button type="button" class="zoom-btn" onclick="zoomIn()">
+                        <i class="bi bi-zoom-in"></i>
+                    </button>
+                    <button type="button" class="zoom-btn" onclick="zoomOut()">
+                        <i class="bi bi-zoom-out"></i>
+                    </button>
+                </div>
+                <div class="screen">Ecrã</div>
+            </div>
+
+            <div class="seats-wrapper">
+                <div class="seats-grid" id="seatsGrid">
+                    @{
+                        var filas = sessao.FilasSala > 0 ? sessao.FilasSala : 10;
+                        var colunas = sessao.ColunasSala > 0 ? sessao.ColunasSala : 15;
+                        var letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    }
+                    @for (int fila = 0; fila < filas; fila++)
+                    {
+                        var letraFila = letras[fila].ToString();
+                        var isVipRow = fila >= filas - 2;
+                        <div class="seat-row">
+                            <span class="row-label">@letraFila</span>
+                            @for (int coluna = 1; coluna <= colunas; coluna++)
+                            {
+                                var seatId = $"{letraFila}{coluna}";
+                                var isOccupied = lugaresOcupados.Contains(seatId);
+                                var isWheelchair = (fila == filas - 3) && (coluna == 1 || coluna == 2 || coluna == colunas - 1 || coluna == colunas);
+                                var seatClass = isOccupied ? "occupied" : "available";
+                                if (isWheelchair && !isOccupied) { seatClass += " wheelchair"; }
+                                else if (isVipRow && !isOccupied) { seatClass += " vip"; }
+                                
+                                <div class="seat @seatClass" 
+                                     data-seat-id="@seatId" 
+                                     data-is-vip="@isVipRow.ToString().ToLower()"
+                                     onclick="@(isOccupied ? "" : $"toggleSeat('{seatId}', {(isVipRow ? "true" : "false")})")">
+                                    @if (!isOccupied && !isWheelchair)
+                                    {
+                                        @coluna
+                                    }
+                                </div>
+                            }
+                            <span class="row-label">@letraFila</span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="legend-container">
+                <div class="legend-item">
+                    <div class="legend-seat available"></div>
+                    <span>Disponível</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-seat selected"></div>
+                    <span>Selecionado</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-seat occupied"></div>
+                    <span>Ocupado</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-seat wheelchair"></div>
+                    <span>Mobilidade Reduzida</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-seat vip"></div>
+                    <span>VIP</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Selection Summary -->
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form asp-action="Create" method="post" id="reservaForm">
+                    <input type="hidden" asp-for="SessaoId" value="@ViewData["SessaoId"]" />
+                    <input type="hidden" asp-for="NumeroBilhetes" id="numeroBilhetes" value="0" />
+                    <input type="hidden" asp-for="LugaresSelecionados" id="lugaresSelecionados" value="" />
+                    <input type="hidden" asp-for="ValorPago" id="valorPago" value="0" />
+
+                    <div class="selection-summary">
+                        <h5 class="text-center mb-3" style="color: var(--text-heading);">
+                            <i class="bi bi-receipt"></i> Resumo da Compra
+                        </h5>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label">Lugares Selecionados</span>
+                            <span class="summary-value" id="selectedCount">0</span>
+                        </div>
+                        
+                        <div id="selectedSeatsContainer" style="display: none;">
+                            <div class="summary-label mb-2">Lugares:</div>
+                            <div class="selected-seats-display" id="selectedSeatsList"></div>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label">Preço por bilhete</span>
+                            <span class="summary-value">@sessao.Preco.ToString("C")</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label"><strong>Total a Pagar</strong></span>
+                            <span class="summary-value summary-total" id="totalPrice">€0,00</span>
+                        </div>
+
+                        <!-- Payment Card Details Section -->
+                        <div class="payment-section" id="paymentSection" style="display: none;">
+                            <h5 class="text-center mb-3" style="color: var(--text-heading); margin-top: 1.5rem;">
+                                <i class="bi bi-credit-card"></i> Dados do Cartão
+                            </h5>
+                            <div class="secure-payment-notice">
+                                <i class="bi bi-shield-lock-fill"></i>
+                                <span>Pagamento Seguro - Os seus dados estão protegidos</span>
+                            </div>
+                            
+                            <div class="card-input-group">
+                                <label for="numeroCartao">Número do Cartão</label>
+                                <div class="card-input-wrapper">
+                                    <i class="bi bi-credit-card-2-front"></i>
+                                    <input type="text" 
+                                           asp-for="NumeroCartao" 
+                                           id="numeroCartao" 
+                                           class="card-input" 
+                                           placeholder="1234 5678 9012 3456"
+                                           maxlength="19"
+                                           autocomplete="off"
+                                           required />
+                                </div>
+                            </div>
+                            
+                            <div class="card-input-group">
+                                <label for="nomeCartao">Nome no Cartão</label>
+                                <div class="card-input-wrapper">
+                                    <i class="bi bi-person"></i>
+                                    <input type="text" 
+                                           asp-for="NomeCartao" 
+                                           id="nomeCartao" 
+                                           class="card-input" 
+                                           placeholder="NOME COMPLETO"
+                                           autocomplete="off"
+                                           required />
+                                </div>
+                            </div>
+                            
+                            <div class="card-row">
+                                <div class="card-input-group">
+                                    <label for="validadeCartao">Validade</label>
+                                    <div class="card-input-wrapper">
+                                        <i class="bi bi-calendar"></i>
+                                        <input type="text" 
+                                               asp-for="ValidadeCartao" 
+                                               id="validadeCartao" 
+                                               class="card-input" 
+                                               placeholder="MM/AAAA"
+                                               maxlength="7"
+                                               autocomplete="off"
+                                               required />
+                                    </div>
+                                </div>
+                                
+                                <div class="card-input-group">
+                                    <label for="cvv">CVV</label>
+                                    <div class="card-input-wrapper">
+                                        <i class="bi bi-lock"></i>
+                                        <input type="text" 
+                                               asp-for="CVV" 
+                                               id="cvv" 
+                                               class="card-input" 
+                                               placeholder="123"
+                                               maxlength="4"
+                                               autocomplete="off"
+                                               required />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card-icons">
+                                <img src="https://img.icons8.com/color/48/visa.png" alt="Visa" />
+                                <img src="https://img.icons8.com/color/48/mastercard.png" alt="Mastercard" />
+                                <img src="https://img.icons8.com/color/48/amex.png" alt="American Express" />
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-confirm-purchase" id="confirmBtn" disabled>
+                            <i class="bi bi-credit-card"></i> Pagar e Confirmar
+                        </button>
+                        
+                        <a asp-controller="Catalogo" asp-action="Sessoes" asp-route-id="@sessao.FilmeId" 
+                           class="btn btn-secondary w-100 mt-2" style="border-radius: 50px;">
+                            <i class="bi bi-x-circle"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
     }
-
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-body">
-                    <form asp-action="Create" method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-                        
-                        <input type="hidden" asp-for="SessaoId" value="@ViewData["SessaoId"]" />
-                        
-                        <div class="mb-3">
-                            <label asp-for="NumeroBilhetes" class="form-label">
-                                <i class="bi bi-ticket-perforated"></i> Number of Tickets
-                            </label>
-                            <input asp-for="NumeroBilhetes" class="form-control" type="number" 
-                                   min="1" max="@(sessao?.LugaresDisponiveis ?? 20)" 
-                                   value="1" id="numberOfTickets" />
-                            <span asp-validation-for="NumeroBilhetes" class="text-danger"></span>
-                        </div>
-
-                        @if (sessao != null)
-                        {
-                            <div class="alert alert-info">
-                                <h5 class="mb-2">
-                                    <i class="bi bi-calculator"></i> Total Amount:
-                                </h5>
-                                <h3 class="mb-0 text-primary">
-                                    <strong id="total">@sessao.Preco.ToString("C")</strong>
-                                </h3>
-                                <small class="text-muted">
-                                    Price updates automatically when you change the number of tickets
-                                </small>
-                            </div>
-                        }
-
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-success btn-lg">
-                                <i class="bi bi-check-circle"></i> Confirm Reservation
-                            </button>
-                            <a asp-controller="Catalogo" asp-action="Sessoes" asp-route-id="@sessao?.FilmeId" class="btn btn-secondary">
-                                <i class="bi bi-x-circle"></i> Cancel
-                            </a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    else
+    {
+        <div class="alert alert-danger text-center">
+            <i class="bi bi-exclamation-triangle"></i> Sessão não encontrada.
         </div>
-    </div>
+    }
 </div>
+
+<style>
+    .payment-section {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .secure-payment-notice {
+        background: rgba(34, 197, 94, 0.15);
+        border: 1px solid rgba(34, 197, 94, 0.4);
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        color: #22c55e;
+        font-size: 0.85rem;
+    }
+
+    .card-input-group {
+        margin-bottom: 1rem;
+    }
+
+    .card-input-group label {
+        display: block;
+        color: var(--text-body);
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .card-input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .card-input-wrapper > i {
+        position: absolute;
+        left: 1rem;
+        color: var(--accent-cyan);
+        font-size: 1.1rem;
+    }
+
+    .card-input {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        border-radius: 10px;
+        padding: 0.85rem 1rem 0.85rem 2.75rem;
+        color: var(--text-heading);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .card-input:focus {
+        outline: none;
+        border-color: var(--accent-cyan);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+
+    .card-input::placeholder {
+        color: #6b7280;
+    }
+
+    .card-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .card-icons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+        opacity: 0.7;
+    }
+
+    .card-icons img {
+        width: 40px;
+        height: auto;
+    }
+</style>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     @if (sessao != null)
     {
         <script>
-            const numberOfTicketsInput = document.getElementById('numberOfTickets');
-            const totalElement = document.getElementById('total');
-            const precoPorBilhete = @sessao.Preco;
-            const isEnglish = true;
+            let selectedSeats = [];
+            const pricePerSeat = @sessao.Preco;
+            let currentZoom = 1;
 
-            // Function to format currency
-            function formatCurrency(value) {
-                if (isEnglish) {
-                    return new Intl.NumberFormat('en-US', { 
-                        style: 'currency', 
-                        currency: 'EUR' 
-                    }).format(value);
+            function toggleSeat(seatId, isVip) {
+                const seatElement = document.querySelector(`[data-seat-id="${seatId}"]`);
+                
+                if (seatElement.classList.contains('occupied')) return;
+                
+                if (seatElement.classList.contains('selected')) {
+                    seatElement.classList.remove('selected');
+                    selectedSeats = selectedSeats.filter(s => s !== seatId);
                 } else {
-                    return new Intl.NumberFormat('pt-PT', { 
-                        style: 'currency', 
-                        currency: 'EUR' 
-                    }).format(value);
+                    if (selectedSeats.length >= 20) {
+                        alert('Máximo de 20 lugares por reserva.');
+                        return;
+                    }
+                    seatElement.classList.add('selected');
+                    selectedSeats.push(seatId);
+                }
+                
+                updateSummary();
+            }
+
+            function updateSummary() {
+                const count = selectedSeats.length;
+                const total = count * pricePerSeat;
+                
+                document.getElementById('selectedCount').textContent = count;
+                document.getElementById('totalPrice').textContent = formatCurrency(total);
+                document.getElementById('numeroBilhetes').value = count;
+                document.getElementById('lugaresSelecionados').value = selectedSeats.join(',');
+                document.getElementById('valorPago').value = total;
+                
+                // Show/hide payment section based on selection
+                const paymentSection = document.getElementById('paymentSection');
+                const confirmBtn = document.getElementById('confirmBtn');
+                
+                if (count > 0) {
+                    paymentSection.style.display = 'block';
+                    // Enable button only if card details are filled
+                    validatePaymentForm();
+                } else {
+                    paymentSection.style.display = 'none';
+                    confirmBtn.disabled = true;
+                }
+                
+                const container = document.getElementById('selectedSeatsContainer');
+                const list = document.getElementById('selectedSeatsList');
+                
+                if (count > 0) {
+                    container.style.display = 'block';
+                    list.innerHTML = selectedSeats
+                        .sort()
+                        .map(seat => `<span class="selected-seat-tag">${seat}</span>`)
+                        .join('');
+                } else {
+                    container.style.display = 'none';
                 }
             }
 
-            // Update total when number of tickets changes
-            function updateTotal() {
-                const quantidade = parseInt(numberOfTicketsInput.value) || 1;
-                const total = quantidade * precoPorBilhete;
-                totalElement.textContent = formatCurrency(total);
+            function validatePaymentForm() {
+                const numeroCartao = document.getElementById('numeroCartao').value.replace(/\s/g, '');
+                const nomeCartao = document.getElementById('nomeCartao').value.trim();
+                const validadeCartao = document.getElementById('validadeCartao').value.trim();
+                const cvv = document.getElementById('cvv').value.trim();
+                const confirmBtn = document.getElementById('confirmBtn');
+                
+                const isValid = selectedSeats.length > 0 &&
+                                numeroCartao.length >= 13 &&
+                                nomeCartao.length >= 3 &&
+                                validadeCartao.length >= 5 &&
+                                cvv.length >= 3;
+                
+                confirmBtn.disabled = !isValid;
             }
 
-            // Add event listener
-            numberOfTicketsInput.addEventListener('input', updateTotal);
-            numberOfTicketsInput.addEventListener('change', updateTotal);
+            // Format card number input
+            document.getElementById('numeroCartao').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+                let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+                e.target.value = formatted;
+                validatePaymentForm();
+            });
 
-            // Initialize on page load
-            updateTotal();
+            // Format expiry date input
+            document.getElementById('validadeCartao').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 6);
+                }
+                e.target.value = value;
+                validatePaymentForm();
+            });
+
+            // CVV only numbers
+            document.getElementById('cvv').addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/\D/g, '');
+                validatePaymentForm();
+            });
+
+            // Name input validation
+            document.getElementById('nomeCartao').addEventListener('input', function(e) {
+                e.target.value = e.target.value.toUpperCase();
+                validatePaymentForm();
+            });
+
+            function formatCurrency(value) {
+                return new Intl.NumberFormat('pt-PT', { 
+                    style: 'currency', 
+                    currency: 'EUR' 
+                }).format(value);
+            }
+
+            function zoomIn() {
+                if (currentZoom < 1.5) {
+                    currentZoom += 0.1;
+                    document.getElementById('seatsGrid').style.transform = `scale(${currentZoom})`;
+                }
+            }
+
+            function zoomOut() {
+                if (currentZoom > 0.6) {
+                    currentZoom -= 0.1;
+                    document.getElementById('seatsGrid').style.transform = `scale(${currentZoom})`;
+                }
+            }
+
+            document.getElementById('reservaForm').addEventListener('submit', function(e) {
+                if (selectedSeats.length === 0) {
+                    e.preventDefault();
+                    alert('Por favor, selecione pelo menos um lugar.');
+                    return false;
+                }
+                
+                // Validate payment details
+                const numeroCartao = document.getElementById('numeroCartao').value.replace(/\s/g, '');
+                const nomeCartao = document.getElementById('nomeCartao').value.trim();
+                const validadeCartao = document.getElementById('validadeCartao').value.trim();
+                const cvv = document.getElementById('cvv').value.trim();
+                
+                if (numeroCartao.length < 13 || nomeCartao.length < 3 || validadeCartao.length < 5 || cvv.length < 3) {
+                    e.preventDefault();
+                    alert('Por favor, preencha todos os dados do cartão corretamente.');
+                    return false;
+                }
+            });
         </script>
     }
 }

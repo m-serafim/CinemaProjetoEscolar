@@ -17,31 +17,58 @@ namespace CinemaGestao2223226.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.0");
 
-            modelBuilder.Entity("CinemaGestao.Models.Filme", b =>
+            modelBuilder.Entity("CinemaGestao2223226.Models.Filme", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("BannerUrl")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("CapaUrl")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClassificacaoEtaria")
+                        .HasMaxLength(10)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DataEstreia")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("DestaqueHome")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("DuracaoMinutos")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Elenco")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Genero")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Realizador")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TrailerUrl")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -49,23 +76,69 @@ namespace CinemaGestao2223226.Migrations
                     b.ToTable("Filmes");
                 });
 
-            modelBuilder.Entity("CinemaGestao.Models.Reserva", b =>
+            modelBuilder.Entity("CinemaGestao2223226.Models.Reserva", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("AvisoVisualizado")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CVV")
+                        .HasMaxLength(4)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("CanceladaPeloSistema")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("DataReembolso")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("DataReserva")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FilmeTitulo")
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LugaresSelecionados")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MotivoCancelamento")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NomeCartao")
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("NumeroBilhetes")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("SessaoId")
+                    b.Property<string>("NumeroCartao")
+                        .HasMaxLength(19)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Reembolsado")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("SessaoDataHora")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("SessaoId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UtilizadorId")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ValidadeCartao")
+                        .HasMaxLength(7)
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("ValorPago")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -75,14 +148,20 @@ namespace CinemaGestao2223226.Migrations
                     b.ToTable("Reservas");
                 });
 
-            modelBuilder.Entity("CinemaGestao.Models.Sessao", b =>
+            modelBuilder.Entity("CinemaGestao2223226.Models.Sessao", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ColunasSala")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("DataHora")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("FilasSala")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("FilmeId")
                         .HasColumnType("INTEGER");
@@ -303,20 +382,19 @@ namespace CinemaGestao2223226.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CinemaGestao.Models.Reserva", b =>
+            modelBuilder.Entity("CinemaGestao2223226.Models.Reserva", b =>
                 {
-                    b.HasOne("CinemaGestao.Models.Sessao", "Sessao")
+                    b.HasOne("CinemaGestao2223226.Models.Sessao", "Sessao")
                         .WithMany("Reservas")
                         .HasForeignKey("SessaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Sessao");
                 });
 
-            modelBuilder.Entity("CinemaGestao.Models.Sessao", b =>
+            modelBuilder.Entity("CinemaGestao2223226.Models.Sessao", b =>
                 {
-                    b.HasOne("CinemaGestao.Models.Filme", "Filme")
+                    b.HasOne("CinemaGestao2223226.Models.Filme", "Filme")
                         .WithMany()
                         .HasForeignKey("FilmeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -376,7 +454,7 @@ namespace CinemaGestao2223226.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CinemaGestao.Models.Sessao", b =>
+            modelBuilder.Entity("CinemaGestao2223226.Models.Sessao", b =>
                 {
                     b.Navigation("Reservas");
                 });

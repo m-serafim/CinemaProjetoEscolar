@@ -1,7 +1,7 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Registar";
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -25,33 +25,33 @@
                         
                         <div class="mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <label asp-for="Input.Password" class="form-label mb-0">Password</label>
+                                <label asp-for="Input.Password" class="form-label mb-0">Palavra-passe</label>
                                 <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleAllPasswords">
                                     <i class="bi bi-eye" id="toggleAllPasswordsIcon"></i>
-                                    <span id="toggleAllPasswordsText">Show Passwords</span>
+                                    <span id="toggleAllPasswordsText">Mostrar Palavras-passe</span>
                                 </button>
                             </div>
-                            <input asp-for="Input.Password" type="password" class="form-control password-field" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <input asp-for="Input.Password" type="password" class="form-control password-field" autocomplete="new-password" aria-required="true" placeholder="palavra-passe" />
                             <span asp-validation-for="Input.Password" class="text-danger"></span>
                         </div>
                         
                         <div class="mb-3">
-                            <label asp-for="Input.ConfirmPassword" class="form-label">Confirm Password</label>
-                            <input asp-for="Input.ConfirmPassword" type="password" class="form-control password-field" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.ConfirmPassword" class="form-label">Confirmar Palavra-passe</label>
+                            <input asp-for="Input.ConfirmPassword" type="password" class="form-control password-field" autocomplete="new-password" aria-required="true" placeholder="palavra-passe" />
                             <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                         </div>
                         
                         <div class="d-grid gap-2 mb-3">
                             <button id="registerSubmit" type="submit" class="btn btn-primary btn-lg">
-                                <i class="bi bi-check-circle"></i> Create Account
+                                <i class="bi bi-check-circle"></i> Criar Conta
                             </button>
                         </div>
 
                         <div class="text-center">
                             <p class="mb-0">
-                                Already have an account? 
+                                Já tem uma conta? 
                                 <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none">
-                                    <i class="bi bi-box-arrow-in-right"></i> Log in here
+                                    <i class="bi bi-box-arrow-in-right"></i> Inicie sessão aqui
                                 </a>
                             </p>
                         </div>
@@ -63,13 +63,13 @@
             {
                 <div class="card shadow-lg mt-3">
                     <div class="card-body">
-                        <h5 class="card-title">Use another service to register</h5>
+                        <h5 class="card-title">Utilizar outro serviço para registar</h5>
                         <hr />
                         <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                             <div class="d-grid gap-2">
                                 @foreach (var provider in Model.ExternalLogins!)
                                 {
-                                    <button type="submit" class="btn btn-outline-primary" name="provider" value="@provider.Name" title="Register using your account @provider.DisplayName">
+                                    <button type="submit" class="btn btn-outline-primary" name="provider" value="@provider.Name" title="Registar usando a sua conta @provider.DisplayName">
                                         <i class="bi bi-box-arrow-in-right"></i> @provider.DisplayName
                                     </button>
                                 }
@@ -85,29 +85,29 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        // Single button to toggle BOTH password fields visibility
+        // Botão único para alternar visibilidade de AMBOS os campos de palavra-passe
         document.getElementById('toggleAllPasswords').addEventListener('click', function () {
             const passwordFields = document.querySelectorAll('.password-field');
             const icon = document.getElementById('toggleAllPasswordsIcon');
             const text = document.getElementById('toggleAllPasswordsText');
             
-            // Check the current type of the first password field
+            // Verificar o tipo atual do primeiro campo de palavra-passe
             const isPassword = passwordFields[0].type === 'password';
             
-            // Toggle all password fields
+            // Alternar todos os campos de palavra-passe
             passwordFields.forEach(function(field) {
                 field.type = isPassword ? 'text' : 'password';
             });
             
-            // Update icon and text
+            // Atualizar ícone e texto
             if (isPassword) {
                 icon.classList.remove('bi-eye');
                 icon.classList.add('bi-eye-slash');
-                text.textContent = 'Hide Passwords';
+                text.textContent = 'Ocultar Palavras-passe';
             } else {
                 icon.classList.remove('bi-eye-slash');
                 icon.classList.add('bi-eye');
-                text.textContent = 'Show Passwords';
+                text.textContent = 'Mostrar Palavras-passe';
             }
         });
     </script>

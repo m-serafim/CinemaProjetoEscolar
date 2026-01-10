@@ -1,82 +1,503 @@
-﻿@model IEnumerable<CinemaGestao.Models.Sessao>
+﻿@model IEnumerable<CinemaGestao2223226.Models.Sessao>
 
 @{
-    ViewData["Title"] = "Manage Sessions";
+    ViewData["Title"] = "Gerir Sessões";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<div class="container-fluid fade-in-up">
-    <div class="d-flex justify-content-between align-items-center mb-4 fade-in-down">
-        <h1><i class="bi bi-calendar-event"></i> Manage Sessions</h1>
-        <a asp-controller="Sessoes" asp-action="Create" class="btn btn-success btn-lg btn-ripple hover-lift">
-            <i class="bi bi-plus-circle"></i> Create New Session
-        </a>
+<style>
+    .admin-page {
+        padding: 2rem 0;
+    }
+    
+    .admin-header {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(14, 165, 233, 0.05) 100%);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .admin-header h1 {
+        color: #fff;
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin: 0;
+    }
+    
+    .admin-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+    
+    .btn-admin {
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-admin:hover {
+        transform: translateY(-2px);
+    }
+    
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 1.25rem;
+        text-align: center;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--accent-cyan);
+    }
+    
+    .stat-label {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .sessions-grid {
+        display: grid;
+        gap: 1rem;
+    }
+    
+    .session-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .session-card:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(56, 189, 248, 0.3);
+        transform: translateX(5px);
+    }
+    
+    .session-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+    
+    .session-movie {
+        color: #fff;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 0;
+    }
+    
+    .session-datetime {
+        color: var(--accent-cyan);
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    .session-details {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+    
+    .session-detail {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .session-detail-label {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+    }
+    
+    .session-detail-value {
+        color: #fff;
+        font-weight: 500;
+    }
+    
+    .session-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .btn-action {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        transition: all 0.3s ease;
+    }
+    
+    .capacity-bar {
+        height: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 0.5rem;
+    }
+    
+    .capacity-fill {
+        height: 100%;
+        border-radius: 4px;
+        transition: width 0.3s ease;
+    }
+    
+    .capacity-fill.high {
+        background: linear-gradient(90deg, #22c55e, #16a34a);
+    }
+    
+    .capacity-fill.medium {
+        background: linear-gradient(90deg, #eab308, #ca8a04);
+    }
+    
+    .capacity-fill.low {
+        background: linear-gradient(90deg, #ef4444, #dc2626);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 16px;
+        border: 1px dashed rgba(255, 255, 255, 0.2);
+    }
+    
+    .empty-state i {
+        font-size: 4rem;
+        color: rgba(255, 255, 255, 0.3);
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state h3 {
+        color: #fff;
+        margin-bottom: 0.5rem;
+    }
+    
+    .empty-state p {
+        color: rgba(255, 255, 255, 0.6);
+    }
+</style>
+
+<div class="container admin-page">
+    <div class="admin-header">
+        <h1><i class="bi bi-calendar-event me-2"></i>Gerir Sessões</h1>
+        <div class="admin-actions">
+            <button type="button" class="btn btn-outline-danger btn-admin" data-bs-toggle="modal" data-bs-target="#resetAllModal">
+                <i class="bi bi-exclamation-triangle"></i> Reset Total
+            </button>
+            <button type="button" class="btn btn-danger btn-admin" id="btnDeleteSelected" style="display: none;">
+                <i class="bi bi-trash"></i> Eliminar Selecionadas (<span id="selectedCount">0</span>)
+            </button>
+            <button type="button" class="btn btn-secondary btn-admin" id="btnToggleSelect">
+                <i class="bi bi-check2-square"></i> Selecionar Várias
+            </button>
+            <a asp-action="AutoGenerate" class="btn btn-info btn-admin">
+                <i class="bi bi-magic"></i> Criar Automaticamente
+            </a>
+            <a asp-action="Create" class="btn btn-success btn-admin">
+                <i class="bi bi-plus-circle"></i> Nova Sessão
+            </a>
+        </div>
     </div>
 
     @if (!Model.Any())
     {
-        <div class="alert alert-warning alert-animated">
-            <i class="bi bi-exclamation-triangle"></i> No sessions registered in the system.
+        <div class="empty-state">
+            <i class="bi bi-calendar-x"></i>
+            <h3>Sem Sessões Registadas</h3>
+            <p>Não existem sessões no sistema. Comece por criar uma nova sessão.</p>
         </div>
     }
     else
     {
-        <div class="card shadow scale-in">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Movie</th>
-                                <th>Date & Time</th>
-                                <th>Room</th>
-                                <th>Price</th>
-                                <th>Total Seats</th>
-                                <th>Available</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.OrderBy(s => s.DataHora))
-                            {
-                                <tr class="table-row-animated">
-                                    <td><strong>@item.Filme.Titulo</strong></td>
-                                    <td>@item.DataHora.ToString("dd/MM/yyyy HH:mm")</td>
-                                    <td>
-                                        <span class="badge bg-info text-dark">@item.Sala</span>
-                                    </td>
-                                    <td>@item.Preco.ToString("C")</td>
-                                    <td>@item.LugaresTotais</td>
-                                    <td>
-                                        <span class="badge @(item.LugaresDisponiveis > 10 ? "bg-success" : item.LugaresDisponiveis > 0 ? "bg-warning text-dark" : "bg-danger")">
-                                            @item.LugaresDisponiveis
-                                        </span>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="btn-group" role="group">
-                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning hover-lift" title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info hover-lift" title="Details">
-                                                <i class="bi bi-eye"></i>
-                                            </a>
-                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger hover-lift" title="Delete">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="alert alert-info mt-3 fade-in-up stagger-delay-3">
-                    <strong>Total Sessions:</strong> @Model.Count()
-                </div>
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value">@Model.Count()</div>
+                <div class="stat-label">Total Sessões</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">@Model.Where(s => s.DataHora >= DateTime.Today).Count()</div>
+                <div class="stat-label">Sessões Futuras</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">@Model.Sum(s => s.LugaresTotais - s.LugaresDisponiveis)</div>
+                <div class="stat-label">Bilhetes Vendidos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">@Model.Sum(s => s.LugaresDisponiveis)</div>
+                <div class="stat-label">Lugares Disponíveis</div>
             </div>
         </div>
+
+        <form id="deleteMultipleForm" asp-action="DeleteMultiple" method="post">
+            @Html.AntiForgeryToken()
+            <div class="sessions-grid">
+                @foreach (var item in Model.OrderBy(s => s.DataHora))
+                {
+                    var capacityPercent = item.LugaresTotais > 0 ? ((item.LugaresTotais - item.LugaresDisponiveis) * 100.0 / item.LugaresTotais) : 0;
+                    var capacityClass = capacityPercent > 70 ? "high" : capacityPercent > 30 ? "medium" : "low";
+                    var isPast = item.DataHora < DateTime.Now;
+                    
+                    <div class="session-card @(isPast ? "opacity-50" : "")" data-session-id="@item.Id">
+                        <div class="session-checkbox" style="display: none;">
+                            <input type="checkbox" name="sessionIds" value="@item.Id" class="session-select-checkbox" id="session-@item.Id">
+                            <label for="session-@item.Id" class="checkbox-label"></label>
+                        </div>
+                        <div class="session-header">
+                            <div>
+                                <h3 class="session-movie">@item.Filme.Titulo</h3>
+                                @if (isPast)
+                                {
+                                    <span class="badge bg-secondary">Sessão Passada</span>
+                                }
+                            </div>
+                            <div class="session-datetime">
+                                <i class="bi bi-calendar3 me-1"></i>@item.DataHora.ToString("dd/MM/yyyy")
+                                <span class="ms-2"><i class="bi bi-clock me-1"></i>@item.DataHora.ToString("HH:mm")</span>
+                            </div>
+                        </div>
+                        
+                        <div class="session-details">
+                            <div class="session-detail">
+                                <span class="session-detail-label">Sala</span>
+                                <span class="session-detail-value"><i class="bi bi-building me-1"></i>@item.Sala</span>
+                            </div>
+                            <div class="session-detail">
+                                <span class="session-detail-label">Preço</span>
+                                <span class="session-detail-value">@item.Preco.ToString("C")</span>
+                            </div>
+                            <div class="session-detail">
+                                <span class="session-detail-label">Ocupação</span>
+                                <span class="session-detail-value">@(item.LugaresTotais - item.LugaresDisponiveis) / @item.LugaresTotais</span>
+                            </div>
+                            <div class="session-detail">
+                                <span class="session-detail-label">Disponíveis</span>
+                                <span class="session-detail-value @(item.LugaresDisponiveis == 0 ? "text-danger" : item.LugaresDisponiveis <= 10 ? "text-warning" : "text-success")">
+                                    @item.LugaresDisponiveis
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="capacity-bar">
+                            <div class="capacity-fill @capacityClass" style="width: @capacityPercent%"></div>
+                        </div>
+                        
+                        <div class="session-actions mt-3">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-action">
+                                <i class="bi bi-pencil"></i> Editar
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-action">
+                                <i class="bi bi-eye"></i> Detalhes
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-action">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </form>
     }
 </div>
+
+<!-- Modal Reset Total -->
+<div class="modal fade" id="resetAllModal" tabindex="-1" aria-labelledby="resetAllModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 2px solid #dc3545;">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-danger" id="resetAllModalLabel">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Reset Total do Sistema
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-white">
+                <div class="alert alert-danger">
+                    <strong><i class="bi bi-exclamation-octagon me-2"></i>ATENÇÃO!</strong>
+                    <p class="mb-0 mt-2">Esta ação irá eliminar permanentemente:</p>
+                    <ul class="mb-0 mt-2">
+                        <li>Todos os filmes</li>
+                        <li>Todas as sessões</li>
+                        <li>Todas as reservas</li>
+                    </ul>
+                </div>
+                <p class="text-muted">Esta ação é <strong>irreversível</strong>. Todos os dados serão apagados definitivamente.</p>
+                <div class="form-check mt-3">
+                    <input class="form-check-input" type="checkbox" id="confirmReset">
+                    <label class="form-check-label text-warning" for="confirmReset">
+                        Eu compreendo e quero proceder com o reset total
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form asp-action="ResetAll" method="post" id="resetAllForm">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger" id="btnConfirmReset" disabled>
+                        <i class="bi bi-trash"></i> Eliminar Tudo
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Confirmar Eliminação Múltipla -->
+<div class="modal fade" id="deleteMultipleModal" tabindex="-1" aria-labelledby="deleteMultipleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 2px solid #dc3545;">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-warning" id="deleteMultipleModalLabel">
+                    <i class="bi bi-trash me-2"></i>Eliminar Sessões Selecionadas
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-white">
+                <p>Tem a certeza que deseja eliminar <strong id="deleteCountModal">0</strong> sessões selecionadas?</p>
+                <p class="text-warning"><i class="bi bi-info-circle me-1"></i>As reservas associadas serão canceladas e os clientes serão notificados para reembolso.</p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDeleteMultiple">
+                    <i class="bi bi-trash"></i> Eliminar Selecionadas
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnToggleSelect = document.getElementById('btnToggleSelect');
+        const btnDeleteSelected = document.getElementById('btnDeleteSelected');
+        const selectedCountSpan = document.getElementById('selectedCount');
+        const checkboxes = document.querySelectorAll('.session-checkbox');
+        const sessionCards = document.querySelectorAll('.session-card');
+        let selectMode = false;
+
+        // Toggle select mode
+        btnToggleSelect.addEventListener('click', function() {
+            selectMode = !selectMode;
+            checkboxes.forEach(cb => {
+                cb.style.display = selectMode ? 'block' : 'none';
+            });
+            sessionCards.forEach(card => {
+                card.classList.toggle('select-mode', selectMode);
+            });
+            this.innerHTML = selectMode 
+                ? '<i class="bi bi-x-lg"></i> Cancelar Seleção'
+                : '<i class="bi bi-check2-square"></i> Selecionar Várias';
+            this.classList.toggle('btn-secondary', !selectMode);
+            this.classList.toggle('btn-warning', selectMode);
+            
+            if (!selectMode) {
+                document.querySelectorAll('.session-select-checkbox').forEach(cb => cb.checked = false);
+                updateSelectedCount();
+            }
+        });
+
+        // Update count when checkboxes change
+        document.querySelectorAll('.session-select-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedCount);
+        });
+
+        function updateSelectedCount() {
+            const count = document.querySelectorAll('.session-select-checkbox:checked').length;
+            selectedCountSpan.textContent = count;
+            btnDeleteSelected.style.display = count > 0 ? 'flex' : 'none';
+            document.getElementById('deleteCountModal').textContent = count;
+        }
+
+        // Show confirmation modal for multiple delete
+        btnDeleteSelected.addEventListener('click', function() {
+            const modal = new bootstrap.Modal(document.getElementById('deleteMultipleModal'));
+            modal.show();
+        });
+
+        // Confirm multiple delete
+        document.getElementById('btnConfirmDeleteMultiple').addEventListener('click', function() {
+            document.getElementById('deleteMultipleForm').submit();
+        });
+
+        // Enable/disable reset button based on checkbox
+        document.getElementById('confirmReset').addEventListener('change', function() {
+            document.getElementById('btnConfirmReset').disabled = !this.checked;
+        });
+
+        // Click on card to toggle checkbox in select mode
+        sessionCards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (selectMode && !e.target.closest('a') && !e.target.closest('input') && !e.target.closest('label')) {
+                    const checkbox = this.querySelector('.session-select-checkbox');
+                    if (checkbox) {
+                        checkbox.checked = !checkbox.checked;
+                        updateSelectedCount();
+                    }
+                }
+            });
+        });
+    });
+</script>
+<style>
+    .session-checkbox {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        z-index: 10;
+    }
+    
+    .session-card {
+        position: relative;
+    }
+    
+    .session-card.select-mode {
+        cursor: pointer;
+        padding-left: 3rem;
+    }
+    
+    .session-card.select-mode:hover {
+        border-color: rgba(56, 189, 248, 0.5);
+    }
+    
+    .session-select-checkbox {
+        width: 22px;
+        height: 22px;
+        cursor: pointer;
+        accent-color: #38bdf8;
+    }
+    
+    .session-select-checkbox:checked + .checkbox-label::before {
+        background: #38bdf8;
+    }
+</style>
+}

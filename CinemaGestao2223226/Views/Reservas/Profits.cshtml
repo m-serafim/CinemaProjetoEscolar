@@ -1,0 +1,428 @@
+@model CinemaGestao2223226.ViewModels.ProfitsViewModel
+
+@{
+    ViewData["Title"] = "Lucros e Estatísticas";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<style>
+    .admin-page {
+        padding: 2rem 0;
+    }
+    
+    .admin-header {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+    
+    .admin-header h1 {
+        color: #fff;
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin: 0;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(56, 189, 248, 0.3);
+    }
+    
+    .stat-card.highlight {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%);
+        border-color: rgba(34, 197, 94, 0.3);
+    }
+    
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 1.5rem;
+    }
+    
+    .stat-icon.revenue {
+        background: rgba(34, 197, 94, 0.15);
+        color: #22c55e;
+    }
+    
+    .stat-icon.tickets {
+        background: rgba(56, 189, 248, 0.15);
+        color: #38bdf8;
+    }
+    
+    .stat-icon.sessions {
+        background: rgba(168, 85, 247, 0.15);
+        color: #a855f7;
+    }
+    
+    .stat-icon.users {
+        background: rgba(234, 179, 8, 0.15);
+        color: #eab308;
+    }
+    
+    .stat-icon.refunds {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 0.25rem;
+    }
+    
+    .stat-value.money {
+        color: #22c55e;
+    }
+    
+    .stat-label {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .section-title {
+        color: #fff;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .card-custom {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        margin-bottom: 2rem;
+    }
+    
+    .card-custom .card-header {
+        background: linear-gradient(135deg, var(--accent-cyan) 0%, #0ea5e9 100%);
+        border-radius: 16px 16px 0 0;
+        padding: 1rem 1.5rem;
+        border-bottom: none;
+    }
+    
+    .card-custom .card-header h5 {
+        color: #000;
+        margin: 0;
+        font-weight: 600;
+    }
+    
+    .card-custom .card-body {
+        padding: 1.5rem;
+    }
+    
+    .transaction-item {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+    
+    .transaction-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(56, 189, 248, 0.2);
+    }
+    
+    .transaction-info h6 {
+        color: #fff;
+        margin: 0 0 0.25rem 0;
+        font-size: 0.95rem;
+    }
+    
+    .transaction-info p {
+        color: rgba(255, 255, 255, 0.5);
+        margin: 0;
+        font-size: 0.8rem;
+    }
+    
+    .transaction-amount {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #22c55e;
+    }
+    
+    .transaction-amount.refund {
+        color: #ef4444;
+    }
+    
+    .movie-stat {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .movie-stat .movie-name {
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+    
+    .movie-stat .movie-tickets {
+        color: var(--accent-cyan);
+        font-weight: 600;
+    }
+    
+    .empty-message {
+        text-align: center;
+        padding: 2rem;
+        color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .profit-summary {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(22, 163, 74, 0.1) 100%);
+        border: 2px solid rgba(34, 197, 94, 0.3);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .profit-summary h2 {
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .profit-value {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #22c55e;
+    }
+    
+    .profit-subtitle {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.875rem;
+    }
+</style>
+
+<div class="container admin-page">
+    <div class="admin-header">
+        <h1><i class="bi bi-graph-up-arrow me-2"></i>Lucros e Estatísticas</h1>
+    </div>
+
+    <div class="profit-summary">
+        <h2>Lucro Total</h2>
+        <div class="profit-value">@Model.TotalRevenue.ToString("C")</div>
+        <p class="profit-subtitle">
+            Receita total após reembolsos: @Model.NetRevenue.ToString("C")
+        </p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card highlight">
+            <div class="stat-icon revenue">
+                <i class="bi bi-currency-euro"></i>
+            </div>
+            <div class="stat-value money">@Model.TotalRevenue.ToString("C")</div>
+            <div class="stat-label">Receita Bruta</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon tickets">
+                <i class="bi bi-ticket-perforated"></i>
+            </div>
+            <div class="stat-value">@Model.TotalTicketsSold</div>
+            <div class="stat-label">Bilhetes Vendidos</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon sessions">
+                <i class="bi bi-calendar-event"></i>
+            </div>
+            <div class="stat-value">@Model.TotalSessions</div>
+            <div class="stat-label">Total Sessões</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon users">
+                <i class="bi bi-people"></i>
+            </div>
+            <div class="stat-value">@Model.TotalCustomers</div>
+            <div class="stat-label">Clientes</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon refunds">
+                <i class="bi bi-arrow-return-left"></i>
+            </div>
+            <div class="stat-value" style="color: #ef4444;">@Model.TotalRefunds.ToString("C")</div>
+            <div class="stat-label">Reembolsos</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card-custom">
+                <div class="card-header">
+                    <h5><i class="bi bi-film me-2"></i>Filmes Mais Populares</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.TopMovies != null && Model.TopMovies.Any())
+                    {
+                        @foreach (var movie in Model.TopMovies.Take(5))
+                        {
+                            <div class="movie-stat">
+                                <span class="movie-name">@movie.MovieName</span>
+                                <span class="movie-tickets">@movie.TicketsSold bilhetes</span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="empty-message">
+                            <i class="bi bi-film"></i>
+                            <p>Sem dados disponíveis</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="card-custom">
+                <div class="card-header">
+                    <h5><i class="bi bi-receipt me-2"></i>Últimas Transações</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.RecentTransactions != null && Model.RecentTransactions.Any())
+                    {
+                        @foreach (var transaction in Model.RecentTransactions.Take(5))
+                        {
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <h6>@transaction.MovieName</h6>
+                                    <p>@transaction.CustomerEmail • @transaction.Date.ToString("dd/MM/yyyy HH:mm")</p>
+                                </div>
+                                <div class="transaction-amount @(transaction.IsRefund ? "refund" : "")">
+                                    @(transaction.IsRefund ? "-" : "+")@transaction.Amount.ToString("C")
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="empty-message">
+                            <i class="bi bi-receipt"></i>
+                            <p>Sem transações recentes</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-custom">
+        <div class="card-header">
+            <h5><i class="bi bi-list-ul me-2"></i>Todas as Reservas</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.AllReservations != null && Model.AllReservations.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover" style="--bs-table-bg: transparent;">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Filme</th>
+                                <th>Sessão</th>
+                                <th>Bilhetes</th>
+                                <th>Valor</th>
+                                <th>Pagamento</th>
+                                <th>Estado</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var reserva in Model.AllReservations.OrderByDescending(r => r.DataReserva).Take(20))
+                            {
+                                <tr>
+                                    <td>#@reserva.Id</td>
+                                    <td>@(reserva.Sessao?.Filme?.Titulo ?? "N/A")</td>
+                                    <td>@(reserva.Sessao?.DataHora.ToString("dd/MM HH:mm") ?? "N/A")</td>
+                                    <td>@reserva.NumeroBilhetes</td>
+                                    <td class="@(reserva.Reembolsado ? "text-danger" : "text-success")">
+                                        @reserva.ValorPago.ToString("C")
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(reserva.NumeroCartao))
+                                        {
+                                            <span>**** @reserva.NumeroCartao.Replace(" ", "").Substring(Math.Max(0, reserva.NumeroCartao.Replace(" ", "").Length - 4))</span>
+                                        }
+                                        else
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (reserva.CanceladaPeloSistema)
+                                        {
+                                            <span class="badge bg-danger">Cancelada</span>
+                                        }
+                                        else if (reserva.Reembolsado)
+                                        {
+                                            <span class="badge bg-warning">Reembolsada</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Ativa</span>
+                                        }
+                                    </td>
+                                    <td>@reserva.DataReserva.ToString("dd/MM/yyyy")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="empty-message">
+                    <i class="bi bi-inbox"></i>
+                    <p>Sem reservas registadas</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

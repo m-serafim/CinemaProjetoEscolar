@@ -143,7 +143,7 @@
         return;
     }
 
-    console.log('🎬 Initializing movie rotation (instant switching - no animations)...');
+    console.log('Initializing movie rotation (instant switching - no animations)...');
     let movies = [];
     let currentIndex = 0;
     let rotationInterval;
@@ -151,33 +151,33 @@
     // Fetch movies
     fetch('/Home/GetRandomMovies')
         .then(response => {
-            console.log('📡 Fetch response:', response);
+            console.log('Fetch response:', response);
             return response.json();
         })
         .then(data => {
-            console.log('🎥 Movies data:', data);
+            console.log('Movies data:', data);
             movies = data.movies;
             if (movies && movies.length > 0) {
-                console.log(`✅ Found ${movies.length} movies, initializing slideshow...`);
+                console.log(`Found ${movies.length} movies, initializing slideshow...`);
                 initializeSlideshow();
                 startRotation();
             } else {
-                console.log('⚠️ No movies found');
-                rotatingContainer.innerHTML = '<div class="no-movies-message">No movies available</div>';
+                console.log('No movies found');
+                rotatingContainer.innerHTML = '<div class="no-movies-message">Sem filmes disponíveis</div>';
             }
         })
         .catch(error => {
-            console.error('❌ Error fetching movies:', error);
-            rotatingContainer.innerHTML = '<div class="no-movies-message">Unable to load movies</div>';
+            console.error('Error fetching movies:', error);
+            rotatingContainer.innerHTML = '<div class="no-movies-message">Não foi possível carregar os filmes</div>';
         });
 
     function initializeSlideshow() {
         if (!movies || movies.length === 0) {
-            console.log('⚠️ No movies to initialize');
+            console.log('No movies to initialize');
             return;
         }
 
-        console.log('🎨 Creating movie slides...');
+        console.log('Creating movie slides...');
         
         // Create all movie slides
         rotatingContainer.innerHTML = '';
@@ -194,18 +194,18 @@
                 </div>
             `;
             rotatingContainer.appendChild(slideDiv);
-            console.log(`✔️ Created slide ${index}: "${movie.title}"`);
+            console.log(`Created slide ${index}: "${movie.title}"`);
         });
-        console.log('🎉 All slides created!');
+        console.log('All slides created!');
     }
 
     function startRotation() {
         if (movies.length <= 1) {
-            console.log('⚠️ Only one or no movies, skipping rotation');
+            console.log('Only one or no movies, skipping rotation');
             return;
         }
         
-        console.log(`🔄 Starting instant rotation with ${movies.length} movies`);
+        console.log(`Starting instant rotation with ${movies.length} movies`);
         
         rotationInterval = setInterval(() => {
             const slides = rotatingContainer.querySelectorAll('.rotating-movie-slide');
@@ -213,14 +213,14 @@
             const nextIndex = (currentIndex + 1) % movies.length;
             const nextSlide = slides[nextIndex];
 
-            console.log(`➡️ Switching from "${movies[currentIndex].title}" to "${movies[nextIndex].title}"`);
+            console.log(`Switching from "${movies[currentIndex].title}" to "${movies[nextIndex].title}"`);
 
             // Instant switch - no animation
             currentSlide.classList.remove('active');
             nextSlide.classList.add('active');
             
             currentIndex = nextIndex;
-            console.log(`✅ Now showing: ${movies[nextIndex].title}`);
+            console.log(`Now showing: ${movies[nextIndex].title}`);
         }, 4500); // 4.5 seconds per movie
     }
 
@@ -230,7 +230,7 @@
         return div.innerHTML;
     }
 
-    console.log('✅ Movie rotation ready - instant switching enabled');
+    console.log('Movie rotation ready - instant switching enabled');
 })();
 
 // Fade-in sections on scroll

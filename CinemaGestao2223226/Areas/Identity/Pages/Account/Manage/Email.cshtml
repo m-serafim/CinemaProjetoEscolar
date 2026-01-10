@@ -1,0 +1,225 @@
+@page
+@model EmailModel
+@{
+    ViewData["Title"] = "Gerir Email";
+    ViewData["ActivePage"] = "Email";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<style>
+    .account-page {
+        padding: 2rem 0;
+    }
+    
+    .account-header {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(14, 165, 233, 0.05) 100%);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+    
+    .account-header h1 {
+        color: #fff;
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin: 0;
+    }
+    
+    .nav-account {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-account .nav-link {
+        color: #fff;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        margin-bottom: 0.25rem;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-account .nav-link:hover {
+        background: rgba(56, 189, 248, 0.1);
+        color: var(--accent-cyan);
+    }
+    
+    .nav-account .nav-link.active {
+        background: linear-gradient(135deg, var(--accent-cyan) 0%, #0ea5e9 100%);
+        color: #000;
+        font-weight: 600;
+    }
+    
+    .nav-account .nav-link i {
+        margin-right: 0.5rem;
+    }
+    
+    .card-account {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+    }
+    
+    .card-account .card-header {
+        background: linear-gradient(135deg, var(--accent-cyan) 0%, #0ea5e9 100%);
+        border-radius: 12px 12px 0 0;
+        padding: 1rem 1.5rem;
+    }
+    
+    .card-account .card-header h4 {
+        color: #000;
+        margin: 0;
+        font-weight: 600;
+    }
+    
+    .card-account .card-body {
+        padding: 1.5rem;
+    }
+    
+    .form-label {
+        color: #fff;
+        font-weight: 500;
+    }
+    
+    .form-control {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+    }
+    
+    .form-control:disabled {
+        background: rgba(255, 255, 255, 0.02);
+        color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .form-control:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--accent-cyan);
+        color: #fff;
+        box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25);
+    }
+    
+    .btn-save {
+        background: linear-gradient(135deg, var(--accent-cyan) 0%, #0ea5e9 100%);
+        border: none;
+        color: #000;
+        font-weight: 600;
+        padding: 0.875rem 2rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4);
+        color: #000;
+    }
+    
+    .input-group-text {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+    }
+    
+    .input-group-text.bg-success {
+        background: rgba(34, 197, 94, 0.2) !important;
+        border-color: rgba(34, 197, 94, 0.4);
+        color: #22c55e;
+    }
+    
+    .input-group-text.bg-warning {
+        background: rgba(234, 179, 8, 0.2) !important;
+        border-color: rgba(234, 179, 8, 0.4);
+        color: #eab308;
+    }
+</style>
+
+<div class="container account-page">
+    <div class="account-header">
+        <h1><i class="bi bi-person-circle me-2"></i>A Minha Conta</h1>
+    </div>
+
+    <partial name="_StatusMessage" for="StatusMessage" />
+
+    <div class="row">
+        <div class="col-md-3">
+            <nav class="nav-account">
+                <nav class="nav flex-column">
+                    <a class="nav-link" asp-page="./Index">
+                        <i class="bi bi-person"></i> Perfil
+                    </a>
+                    <a class="nav-link active" asp-page="./Email">
+                        <i class="bi bi-envelope"></i> Email
+                    </a>
+                    <a class="nav-link" asp-page="./ChangePassword">
+                        <i class="bi bi-key"></i> Palavra-passe
+                    </a>
+                    <a class="nav-link" asp-page="./PersonalData">
+                        <i class="bi bi-shield"></i> Dados
+                    </a>
+                    @if (!User.IsInRole("Administrador"))
+                    {
+                        <a class="nav-link" asp-page="./Transactions">
+                            <i class="bi bi-receipt"></i> Transações
+                        </a>
+                    }
+                </nav>
+            </nav>
+        </div>
+
+        <div class="col-md-9">
+            <div class="card card-account shadow">
+                <div class="card-header">
+                    <h4><i class="bi bi-envelope-at me-2"></i>Gerir Email</h4>
+                </div>
+                <div class="card-body">
+                    <form id="email-form" method="post">
+                        <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+                        
+                        <div class="mb-4">
+                            <label asp-for="Email" class="form-label">
+                                <i class="bi bi-envelope-check me-1"></i> Email Atual
+                            </label>
+                            <div class="input-group">
+                                <input asp-for="Email" class="form-control form-control-lg" disabled />
+                                @if (Model.IsEmailConfirmed)
+                                {
+                                    <span class="input-group-text bg-success">
+                                        <i class="bi bi-check-circle me-1"></i> Verificado
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="input-group-text bg-warning">
+                                        <i class="bi bi-exclamation-triangle me-1"></i> Não Verificado
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label asp-for="Input.NewEmail" class="form-label">
+                                <i class="bi bi-envelope-plus me-1"></i> Novo Email
+                            </label>
+                            <input asp-for="Input.NewEmail" class="form-control" placeholder="Introduza o novo email" />
+                            <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="btn btn-save btn-lg">
+                                <i class="bi bi-envelope-arrow-up me-2"></i>Alterar Email
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

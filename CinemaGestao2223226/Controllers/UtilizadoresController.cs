@@ -26,8 +26,13 @@ namespace CinemaGestao2223226.Controllers
             foreach (var user in users)
             {
                 var roles = await _userManager.GetRolesAsync(user);
-                var role = roles.FirstOrDefault() ?? "Sem Role";
-                userRoleList.Add((user, role));
+                var role = roles.FirstOrDefault();
+                
+                // Only include users that have a role (Administrador or Cliente)
+                if (!string.IsNullOrEmpty(role) && (role == "Administrador" || role == "Cliente"))
+                {
+                    userRoleList.Add((user, role));
+                }
             }
 
             return View(userRoleList);
@@ -51,7 +56,7 @@ namespace CinemaGestao2223226.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser.Id == id)
             {
-                TempData["ErrorMessage"] = "Não pode eliminar a sua própria conta de administrador!";
+                TempData["ErrorMessage"] = "Nï¿½o pode eliminar a sua prï¿½pria conta de administrador!";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -77,7 +82,7 @@ namespace CinemaGestao2223226.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser.Id == id)
             {
-                TempData["ErrorMessage"] = "Não pode eliminar a sua própria conta de administrador!";
+                TempData["ErrorMessage"] = "Nï¿½o pode eliminar a sua prï¿½pria conta de administrador!";
                 return RedirectToAction(nameof(Index));
             }
 

@@ -355,7 +355,7 @@
     // ========================================
     
     function init() {
-        console.log('🎬 Nexor Cinema - Loading Animations System Initialized');
+        console.log('Nexor Cinema - Loading Animations System Initialized');
         
         // Initialize components only if DOM is ready
         if (document.readyState === 'loading') {
@@ -379,7 +379,7 @@
         // Apply stagger animations to common elements
         applyCommonAnimations();
         
-        console.log('✨ All animation components loaded');
+        console.log('All animation components loaded');
     }
     
     function applyCommonAnimations() {

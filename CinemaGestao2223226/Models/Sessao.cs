@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 
-namespace CinemaGestao.Models
+namespace CinemaGestao2223226.Models
 {
     public class Sessao
     {
@@ -35,6 +35,12 @@ namespace CinemaGestao.Models
 
         [Display(Name = "Lugares Disponíveis")]
         public int LugaresDisponiveis { get; set; }
+
+        [Display(Name = "Filas da Sala")]
+        public int FilasSala { get; set; } = 10; // Default 10 rows
+
+        [Display(Name = "Colunas da Sala")]
+        public int ColunasSala { get; set; } = 15; // Default 15 columns
 
         [JsonIgnore]                  // optional
         [ValidateNever]               // <-- ADD THIS TOO

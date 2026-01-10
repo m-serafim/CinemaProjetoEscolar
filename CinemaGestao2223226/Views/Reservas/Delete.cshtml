@@ -1,14 +1,14 @@
-﻿@model CinemaGestao.Models.Reserva
+﻿@model CinemaGestao2223226.Models.Reserva
 
 @{
-    ViewData["Title"] = "Cancel Reservation";
+    ViewData["Title"] = "Cancelar Reserva";
 }
 
 <div class="container">
-    <h1 class="mb-4 text-danger">⚠️ Cancel Reservation</h1>
+    <h1 class="mb-4 text-danger"><i class="bi bi-exclamation-triangle"></i> Cancelar Reserva</h1>
 
     <div class="alert alert-danger">
-        <h5>Are you sure you want to cancel this reservation?</h5>
+        <h5>Tem a certeza que pretende cancelar esta reserva?</h5>
         <p>Esta ação não pode ser desfeita. Os lugares serão devolvidos à sessão.</p>
     </div>
 
@@ -45,7 +45,7 @@
         <input type="hidden" asp-for="Id" />
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-danger">
-                <i class="bi bi-trash"></i> Yes, Cancel Reservation
+                <i class="bi bi-trash"></i> Sim, Cancelar Reserva
             </button>
             <a asp-action="Index" class="btn btn-secondary">
                 <i class="bi bi-x-circle"></i> Não, Voltar

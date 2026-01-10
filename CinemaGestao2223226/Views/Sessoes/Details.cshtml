@@ -1,48 +1,48 @@
-﻿@model CinemaGestao.Models.Sessao
+﻿@model CinemaGestao2223226.Models.Sessao
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes da Sessão";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Detalhes</h1>
 
 <div>
-    <h4>Sessao</h4>
+    <h4>Sessão</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Filme)
+            Filme
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Filme.Descricao)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DataHora)
+            Data e Hora
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DataHora)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sala)
+            Sala
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Sala)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Preco)
+            Preço
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Preco)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LugaresTotais)
+            Lugares Totais
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.LugaresTotais)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LugaresDisponiveis)
+            Lugares Disponíveis
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.LugaresDisponiveis)
@@ -50,6 +50,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
+    <a asp-action="Index">Voltar à Lista</a>
 </div>

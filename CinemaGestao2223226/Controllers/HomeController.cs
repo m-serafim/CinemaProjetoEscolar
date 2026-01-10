@@ -17,12 +17,11 @@ namespace CinemaGestao2223226.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Fetch up to 6 recent movies to display in "Em Cartaz"
-            var filmesEmCartaz = await _context.Filmes
-                .Take(6)
+            // Fetch all movies to display in Home page
+            var todosFilmes = await _context.Filmes
                 .ToListAsync();
 
-            return View(filmesEmCartaz);
+            return View(todosFilmes);
         }
 
         public IActionResult Privacy()
@@ -45,9 +44,10 @@ namespace CinemaGestao2223226.Controllers
                 return Json(new { results = new List<object>() });
             }
 
+            var queryLower = query.ToLower();
             var movies = await _context.Filmes
-                .Where(f => f.Titulo.Contains(query))
-                .Take(3)
+                .Where(f => f.Titulo.ToLower().Contains(queryLower))
+                .Take(5)
                 .Select(f => new
                 {
                     id = f.Id,

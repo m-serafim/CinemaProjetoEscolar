@@ -1,46 +1,138 @@
-﻿@model CinemaGestao.Models.Reserva
+﻿@model CinemaGestao2223226.Models.Reserva
 @using CinemaGestao.Helpers
 
 
 @{
-    ViewData["Title"] = "Reservation Details";
+    ViewData["Title"] = "Detalhes da Reserva";
+    var lugaresReservados = Model.LugaresSelecionados?.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList() ?? new List<string>();
 }
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<style>
+    .seat-map-container {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-top: 2rem;
+    }
+    .screen-mini {
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.4) 0%, rgba(56, 189, 248, 0.1) 100%);
+        height: 25px;
+        width: 60%;
+        margin: 0 auto 1.5rem;
+        border-radius: 50% 50% 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .seats-mini-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+    .seat-mini-row {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+    }
+    .row-mini-label {
+        width: 20px;
+        text-align: center;
+        font-weight: 600;
+        color: #38bdf8;
+        font-size: 0.7rem;
+    }
+    .seat-mini {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px 4px 6px 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.5rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+        border: 1px solid #4b5563;
+        color: #6b7280;
+    }
+    .seat-mini.reserved {
+        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        border-color: #22c55e;
+        color: white;
+        box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+    }
+    .legend-mini {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .legend-mini-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        color: #94a3b8;
+    }
+    .legend-mini-seat {
+        width: 16px;
+        height: 16px;
+        border-radius: 3px 3px 5px 5px;
+    }
+    .legend-mini-seat.available {
+        background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+        border: 1px solid #4b5563;
+    }
+    .legend-mini-seat.reserved {
+        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        border: 1px solid #22c55e;
+    }
+</style>
+
 <div class="container">
-    <h1 class="mb-4">📄 Reservation Details</h1>
+    <h1 class="mb-4"><i class="bi bi-ticket-detailed"></i> Detalhes da Reserva</h1>
 
     <div class="card shadow">
         <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Reservation #@Model.Id</h5>
+            <h5 class="mb-0">Reserva #@Model.Id</h5>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <h6 class="text-muted">Movie Information</h6>
+                    <h6 class="text-muted">Informação do Filme</h6>
                     <dl class="row">
-                        <dt class="col-sm-4">Movie:</dt>
+                        <dt class="col-sm-4">Filme:</dt>
                         <dd class="col-sm-8">@Model.Sessao.Filme.Titulo</dd>
 
-                        <dt class="col-sm-4">Genre:</dt>
+                        <dt class="col-sm-4">Género:</dt>
                         <dd class="col-sm-8">
                             <span class="badge bg-primary">@Model.Sessao.Filme.Genero</span>
                         </dd>
 
-                        <dt class="col-sm-4">Duration:</dt>
+                        <dt class="col-sm-4">Duração:</dt>
                         <dd class="col-sm-8">@DurationHelper.FormatDuration(Model.Sessao.Filme.DuracaoMinutos)</dd>
                     </dl>
                 </div>
 
                 <div class="col-md-6">
-                    <h6 class="text-muted">Session Information</h6>
+                    <h6 class="text-muted">Informação da Sessão</h6>
                     <dl class="row">
-                        <dt class="col-sm-4">Date:</dt>
+                        <dt class="col-sm-4">Data:</dt>
                         <dd class="col-sm-8">@Model.Sessao.DataHora.ToString("dd/MM/yyyy")</dd>
 
-                        <dt class="col-sm-4">Time:</dt>
+                        <dt class="col-sm-4">Hora:</dt>
                         <dd class="col-sm-8">@Model.Sessao.DataHora.ToString("HH:mm")</dd>
 
-                        <dt class="col-sm-4">Room:</dt>
+                        <dt class="col-sm-4">Sala:</dt>
                         <dd class="col-sm-8">@Model.Sessao.Sala</dd>
                     </dl>
                 </div>
@@ -50,14 +142,14 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h6 class="text-muted">Reservation Information</h6>
+                    <h6 class="text-muted">Informação da Reserva</h6>
                     <dl class="row">
-                        <dt class="col-sm-3">Number of Tickets:</dt>
+                        <dt class="col-sm-3">Número de Bilhetes:</dt>
                         <dd class="col-sm-9">
                             <span class="badge bg-success fs-6">@Model.NumeroBilhetes</span>
                         </dd>
 
-                        <dt class="col-sm-3">Unit Price:</dt>
+                        <dt class="col-sm-3">Preço Unitário:</dt>
                         <dd class="col-sm-9">@Model.Sessao.Preco.ToString("C")</dd>
 
                         <dt class="col-sm-3">Total:</dt>
@@ -65,25 +157,109 @@
                             <strong class="text-success fs-5">@((Model.Sessao.Preco * Model.NumeroBilhetes).ToString("C"))</strong>
                         </dd>
 
-                        <dt class="col-sm-3">Reservation Date:</dt>
+                        <dt class="col-sm-3">Data da Reserva:</dt>
                         <dd class="col-sm-9">@Model.DataReserva.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        @if (!string.IsNullOrEmpty(Model.LugaresSelecionados))
+                        {
+                            <dt class="col-sm-3">Lugares Selecionados:</dt>
+                            <dd class="col-sm-9">
+                                @foreach (var lugar in lugaresReservados)
+                                {
+                                    <span class="badge bg-success me-1">@lugar</span>
+                                }
+                            </dd>
+                        }
 
                         @if (User.IsInRole("Administrador"))
                         {
-                            <dt class="col-sm-3">Client ID:</dt>
+                            <dt class="col-sm-3">ID do Cliente:</dt>
                             <dd class="col-sm-9">@Model.UtilizadorId</dd>
                         }
                     </dl>
                 </div>
             </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h6 class="text-muted"><i class="bi bi-credit-card me-2"></i>Informação de Pagamento</h6>
+                    <dl class="row">
+                        <dt class="col-sm-3">Valor Pago:</dt>
+                        <dd class="col-sm-9">
+                            <strong class="text-success fs-5">@Model.ValorPago.ToString("C")</strong>
+                        </dd>
+
+                        @if (!string.IsNullOrEmpty(Model.NumeroCartao))
+                        {
+                            <dt class="col-sm-3">Cartão Utilizado:</dt>
+                            <dd class="col-sm-9">
+                                <span class="badge bg-secondary fs-6">
+                                    <i class="bi bi-credit-card me-1"></i>
+                                    **** **** **** @Model.NumeroCartao.Replace(" ", "").Substring(Math.Max(0, Model.NumeroCartao.Replace(" ", "").Length - 4))
+                                </span>
+                            </dd>
+                        }
+
+                        @if (!string.IsNullOrEmpty(Model.NomeCartao))
+                        {
+                            <dt class="col-sm-3">Nome no Cartão:</dt>
+                            <dd class="col-sm-9">@Model.NomeCartao</dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+
+            @if (lugaresReservados.Any())
+            {
+                <div class="seat-map-container">
+                    <h6 class="text-center text-white mb-3"><i class="bi bi-grid-3x3"></i> Mapa da Sala - Os Seus Lugares</h6>
+                    <div class="screen-mini">Ecrã</div>
+                    <div class="seats-mini-grid">
+                        @{
+                            var rows = new[] { "A", "B", "C", "D", "E", "F", "G", "H" };
+                            var seatsPerRow = 12;
+                        }
+                        @foreach (var row in rows)
+                        {
+                            <div class="seat-mini-row">
+                                <span class="row-mini-label">@row</span>
+                                @for (int i = 1; i <= seatsPerRow; i++)
+                                {
+                                    var seatId = $"{row}{i}";
+                                    var isReserved = lugaresReservados.Contains(seatId);
+                                    <div class="seat-mini @(isReserved ? "reserved" : "")" title="@seatId">
+                                        @if (isReserved)
+                                        {
+                                            <i class="bi bi-check"></i>
+                                        }
+                                    </div>
+                                }
+                                <span class="row-mini-label">@row</span>
+                            </div>
+                        }
+                    </div>
+                    <div class="legend-mini">
+                        <div class="legend-mini-item">
+                            <div class="legend-mini-seat available"></div>
+                            <span>Outros lugares</span>
+                        </div>
+                        <div class="legend-mini-item">
+                            <div class="legend-mini-seat reserved"></div>
+                            <span>Os seus lugares</span>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
         <div class="card-footer">
             <div class="d-flex gap-2">
                 <a asp-action="Index" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i> Back
+                    <i class="bi bi-arrow-left"></i> Voltar
                 </a>
                 <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
-                    <i class="bi bi-trash"></i> Cancel Reservation
+                    <i class="bi bi-trash"></i> Cancelar Reserva
                 </a>
             </div>
         </div>
