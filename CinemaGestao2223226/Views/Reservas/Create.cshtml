@@ -139,9 +139,8 @@
     }
 
     .seat.occupied::after {
-        content: 'a';
-        font-size: 1rem;
-        color: #fca5a5;
+        content: '❌';
+        font-size: 0.8rem;
     }
 
     .seat.wheelchair {
@@ -150,7 +149,7 @@
     }
 
     .seat.wheelchair::before {
-        content: '?';
+        content: '♿';
         font-size: 0.8rem;
     }
 
@@ -381,11 +380,11 @@
                     <div class="session-detail-value">@sessao.Sala</div>
                 </div>
                 <div class="session-detail">
-                    <div class="session-detail-label">Preao/Bilhete</div>
+                    <div class="session-detail-label">Preço/Bilhete</div>
                     <div class="session-detail-value">@sessao.Preco.ToString("C")</div>
                 </div>
                 <div class="session-detail">
-                    <div class="session-detail-label">Disponaveis</div>
+                    <div class="session-detail-label">Disponíveis</div>
                     <div class="session-detail-value">@sessao.LugaresDisponiveis</div>
                 </div>
             </div>
@@ -402,7 +401,7 @@
                         <i class="bi bi-zoom-out"></i>
                     </button>
                 </div>
-                <div class="screen">Ecra</div>
+                <div class="screen">Ecrã</div>
             </div>
 
             <div class="seats-wrapper">
@@ -447,7 +446,7 @@
             <div class="legend-container">
                 <div class="legend-item">
                     <div class="legend-seat available"></div>
-                    <span>Disponavel</span>
+                    <span>Disponível</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-seat selected"></div>
@@ -493,7 +492,7 @@
                         </div>
                         
                         <div class="summary-row">
-                            <span class="summary-label">Preao por bilhete</span>
+                            <span class="summary-label">Preço por bilhete</span>
                             <span class="summary-value">@sessao.Preco.ToString("C")</span>
                         </div>
                         
@@ -505,15 +504,15 @@
                         <!-- Payment Card Details Section -->
                         <div class="payment-section" id="paymentSection" style="display: none;">
                             <h5 class="text-center mb-3" style="color: var(--text-heading); margin-top: 1.5rem;">
-                                <i class="bi bi-credit-card"></i> Dados do Cartao
+                                <i class="bi bi-credit-card"></i> Dados do Cartão
                             </h5>
                             <div class="secure-payment-notice">
                                 <i class="bi bi-shield-lock-fill"></i>
-                                <span>Pagamento Seguro - Os seus dados estao protegidos</span>
+                                <span>Pagamento Seguro - Os seus dados estão protegidos</span>
                             </div>
                             
                             <div class="card-input-group">
-                                <label for="numeroCartao">Namero do Cartao</label>
+                                <label for="numeroCartao">Número do Cartão</label>
                                 <div class="card-input-wrapper">
                                     <i class="bi bi-credit-card-2-front"></i>
                                     <input type="text" 
@@ -528,7 +527,7 @@
                             </div>
                             
                             <div class="card-input-group">
-                                <label for="nomeCartao">Nome no Cartao</label>
+                                <label for="nomeCartao">Nome no Cartão</label>
                                 <div class="card-input-wrapper">
                                     <i class="bi bi-person"></i>
                                     <input type="text" 
@@ -606,7 +605,7 @@
     else
     {
         <div class="alert alert-danger text-center">
-            <i class="bi bi-exclamation-triangle"></i> Sessao nao encontrada.
+            <i class="bi bi-exclamation-triangle"></i> Sessão não encontrada.
         </div>
     }
 </div>

@@ -293,8 +293,8 @@ namespace CinemaGestao2223226.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = $"Reset total concluído! {countFilmes} filmes, {countSessoes} sessões e {countReservas} reservas eliminados. As contas de utilizador foram mantidas.";
-            return RedirectToAction(nameof(Index));
+            TempData["SuccessMessage"] = $"Reset total concluído! Todos os dados foram eliminados: {countFilmes} filmes, {countSessoes} sessões e {countReservas} reservas (incluindo transações e histórico).";
+            return RedirectToAction(nameof(Index));;
         }
 
         // GET: Sessoes/AutoGenerate

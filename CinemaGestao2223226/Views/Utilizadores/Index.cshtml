@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<(Microsoft.AspNetCore.Identity.IdentityUser User, string Role)>
 
 @{
-    ViewData["Title"] = "Utilizadores";
+    ViewData["Title"] = "Users";
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -223,15 +223,15 @@
 
 <div class="container admin-page">
     <div class="admin-header">
-        <h1><i class="bi bi-people-fill me-2"></i>Gestão de Utilizadores</h1>
+        <h1><i class="bi bi-people-fill me-2"></i>Gestão de Users</h1>
     </div>
 
     @if (!Model.Any())
     {
         <div class="empty-state">
             <i class="bi bi-people"></i>
-            <h3>Sem Utilizadores</h3>
-            <p>Não existem utilizadores registados no sistema.</p>
+            <h3>Sem Users</h3>
+            <p>Não existem users registados no sistema.</p>
         </div>
     }
     else
@@ -239,7 +239,7 @@
         <div class="stats-row">
             <div class="stat-card">
                 <div class="stat-value">@Model.Count()</div>
-                <div class="stat-label">Total Utilizadores</div>
+                <div class="stat-label">Total Users</div>
             </div>
             <div class="stat-card admins">
                 <div class="stat-value">@Model.Count(u => u.Role == "Administrador")</div>

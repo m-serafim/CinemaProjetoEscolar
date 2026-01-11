@@ -39,7 +39,7 @@
                             <ul class="dropdown-menu" aria-labelledby="adminDropdown">
                                 <li><a class="dropdown-item @(currentController == "Filmes" ? "active" : "")" asp-controller="Filmes" asp-action="Index"><i class="bi bi-film"></i> Gerir Filmes</a></li>
                                 <li><a class="dropdown-item @(currentController == "Sessoes" ? "active" : "")" asp-controller="Sessoes" asp-action="Index"><i class="bi bi-calendar-event"></i> Gerir Sessões</a></li>
-                                <li><a class="dropdown-item @(currentController == "Utilizadores" ? "active" : "")" asp-controller="Utilizadores" asp-action="Index"><i class="bi bi-people"></i> Gerir Utilizadores</a></li>
+                                <li><a class="dropdown-item @(currentController == "Utilizadores" ? "active" : "")" asp-controller="Utilizadores" asp-action="Index"><i class="bi bi-people"></i> Gerir Users</a></li>
                                 <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.1);"></li>
                                 <li><a class="dropdown-item @(currentController == "Reservas" && currentAction == "Profits" ? "active" : "")" asp-controller="Reservas" asp-action="Profits"><i class="bi bi-graph-up-arrow"></i> Lucros e Estatísticas</a></li>
                                 <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.1);"></li>
@@ -120,7 +120,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @(currentController == "Utilizadores" ? "active" : "")" asp-controller="Utilizadores" asp-action="Index">
-                                <i class="bi bi-people"></i> Gerir Utilizadores
+                                <i class="bi bi-people"></i> Gerir Users
                             </a>
                         </li>
                         <li class="nav-item">
@@ -181,10 +181,6 @@
                             <li>Todas as sessões</li>
                             <li>Todas as reservas (incluindo transações, reembolsos e histórico)</li>
                             <li>Todos os lucros e estatísticas do administrador</li>
-                        </ul>
-                        <p class="mb-0 mt-2"><strong>Serão mantidas:</strong></p>
-                        <ul class="mb-0 mt-1">
-                            <li>As contas de utilizador (administradores e clientes)</li>
                         </ul>
                     </div>
                     <p class="text-muted">Esta ação é <strong>irreversível</strong>. Todos os dados serão apagados definitivamente e não podem ser recuperados.</p>

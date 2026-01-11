@@ -90,7 +90,7 @@ namespace CinemaGestao2223226.Controllers
             
             if (result.Succeeded)
             {
-                TempData["SuccessMessage"] = $"Utilizador '{user.Email}' foi eliminado com sucesso!";
+                TempData["SuccessMessage"] = $"User '{user.Email}' foi eliminado com sucesso!";
             }
             else
             {
