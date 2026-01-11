@@ -1382,6 +1382,12 @@ footer a:hover {
   opacity: 1 !important;
 }
 
+.site-footer .footer-content .footer-author {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 .footer-link {
   color: var(--accent-cyan);
   text-decoration: none;

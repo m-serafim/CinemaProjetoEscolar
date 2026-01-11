@@ -273,37 +273,27 @@ namespace CinemaGestao2223226.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetAll()
         {
-            // First, mark all reservations as cancelled and refunded
-            var todasReservas = await _context.Reservas
-                .Include(r => r.Sessao)
-                .ThenInclude(s => s.Filme)
-                .Where(r => !r.CanceladaPeloSistema)
-                .ToListAsync();
+            // Get all data to delete
+            var todasReservas = await _context.Reservas.ToListAsync();
+            var todasSessoes = await _context.Sessoes.ToListAsync();
+            var todosFilmes = await _context.Filmes.ToListAsync();
 
-            foreach (var reserva in todasReservas)
-            {
-                reserva.CanceladaPeloSistema = true;
-                reserva.MotivoCancelamento = "Reset total do sistema pelo administrador. Todas as sessões e filmes foram eliminados.";
-                reserva.Reembolsado = true;
-                reserva.DataReembolso = DateTime.Now;
-                reserva.AvisoVisualizado = false;
-                // Store snapshot of session/movie info before deletion
-                reserva.FilmeTitulo = reserva.Sessao?.Filme?.Titulo;
-                reserva.SessaoDataHora = reserva.Sessao?.DataHora;
-                _context.Update(reserva);
-            }
+            var countReservas = todasReservas.Count;
+            var countSessoes = todasSessoes.Count;
+            var countFilmes = todosFilmes.Count;
+
+            // Delete all reservations (including transactions, refunds, everything)
+            _context.Reservas.RemoveRange(todasReservas);
 
             // Delete all sessions
-            var todasSessoes = await _context.Sessoes.ToListAsync();
             _context.Sessoes.RemoveRange(todasSessoes);
 
             // Delete all movies
-            var todosFilmes = await _context.Filmes.ToListAsync();
             _context.Filmes.RemoveRange(todosFilmes);
 
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = $"Reset total concluído! {todosFilmes.Count} filmes, {todasSessoes.Count} sessões eliminados. {todasReservas.Count} reservas reembolsadas.";
+            TempData["SuccessMessage"] = $"Reset total concluído! {countFilmes} filmes, {countSessoes} sessões e {countReservas} reservas eliminados. As contas de utilizador foram mantidas.";
             return RedirectToAction(nameof(Index));
         }
 

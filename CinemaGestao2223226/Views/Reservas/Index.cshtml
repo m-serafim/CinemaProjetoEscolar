@@ -194,6 +194,29 @@
         box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4);
         color: #000;
     }
+    
+    .cancelled-reservation {
+        border-color: rgba(239, 68, 68, 0.3);
+        background: rgba(239, 68, 68, 0.05);
+        opacity: 0.8;
+    }
+    
+    .cancelled-badge {
+        background: rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        color: #fca5a5;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .cancelled-badge i {
+        color: #ef4444;
+    }
 </style>
 
 <div class="container reservations-page">
@@ -238,27 +261,34 @@
                 </div>
                 <div class="summary-item">
                     <span class="summary-label">Valor Total</span>
-                    <span class="summary-value">@Model.Sum(r => r.Sessao.Preco * r.NumeroBilhetes).ToString("C")</span>
+                    <span class="summary-value">@Model.Where(r => r.Sessao != null).Sum(r => r.Sessao.Preco * r.NumeroBilhetes).ToString("C")</span>
                 </div>
             </div>
         </div>
 
         @foreach (var reserva in Model.OrderByDescending(r => r.DataReserva))
         {
-            <div class="reservation-card">
+            <div class="reservation-card @(reserva.CanceladaPeloSistema ? "cancelled-reservation" : "")">
                 <div class="reservation-header">
-                    <h3 class="movie-title">@reserva.Sessao.Filme.Titulo</h3>
+                    <h3 class="movie-title">@(reserva.Sessao?.Filme?.Titulo ?? reserva.FilmeTitulo ?? "Filme Removido")</h3>
                     <span class="reservation-id">#@reserva.Id</span>
                 </div>
+                
+                @if (reserva.CanceladaPeloSistema)
+                {
+                    <div class="cancelled-badge">
+                        <i class="bi bi-exclamation-circle"></i> Reserva Cancelada - Reembolsado
+                    </div>
+                }
                 
                 <div class="reservation-details">
                     <div class="detail-item">
                         <span class="detail-label">Data da Sessão</span>
-                        <span class="detail-value">@reserva.Sessao.DataHora.ToString("dd MMM yyyy, HH:mm")</span>
+                        <span class="detail-value">@(reserva.Sessao?.DataHora.ToString("dd MMM yyyy, HH:mm") ?? reserva.SessaoDataHora?.ToString("dd MMM yyyy, HH:mm") ?? "N/A")</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Sala</span>
-                        <span class="detail-value">@reserva.Sessao.Sala</span>
+                        <span class="detail-value">@(reserva.Sessao?.Sala ?? "N/A")</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Bilhetes</span>
@@ -266,7 +296,7 @@
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Total</span>
-                        <span class="detail-value highlight">@((reserva.Sessao.Preco * reserva.NumeroBilhetes).ToString("C"))</span>
+                        <span class="detail-value highlight">@((reserva.Sessao != null ? reserva.Sessao.Preco * reserva.NumeroBilhetes : reserva.ValorPago).ToString("C"))</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Reservado em</span>

@@ -6,76 +6,450 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg mt-5">
-                <div class="card-header bg-primary text-white">
-                    <h2 class="mb-0"><i class="bi bi-person-plus"></i> @ViewData["Title"]</h2>
-                </div>
-                <div class="card-body">
-                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
-                        
-                        <div class="form-floating mb-3">
-                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="nome@exemplo.com" />
-                            <label asp-for="Input.Email">Email</label>
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <label asp-for="Input.Password" class="form-label mb-0">Palavra-passe</label>
-                                <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleAllPasswords">
-                                    <i class="bi bi-eye" id="toggleAllPasswordsIcon"></i>
-                                    <span id="toggleAllPasswordsText">Mostrar Palavras-passe</span>
-                                </button>
-                            </div>
-                            <input asp-for="Input.Password" type="password" class="form-control password-field" autocomplete="new-password" aria-required="true" placeholder="palavra-passe" />
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label asp-for="Input.ConfirmPassword" class="form-label">Confirmar Palavra-passe</label>
-                            <input asp-for="Input.ConfirmPassword" type="password" class="form-control password-field" autocomplete="new-password" aria-required="true" placeholder="palavra-passe" />
-                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                        </div>
-                        
-                        <div class="d-grid gap-2 mb-3">
-                            <button id="registerSubmit" type="submit" class="btn btn-primary btn-lg">
-                                <i class="bi bi-check-circle"></i> Criar Conta
-                            </button>
-                        </div>
+<style>
+    .register-page {
+        min-height: calc(100vh - 200px);
+        padding: 3rem 0;
+        background: linear-gradient(180deg, transparent 0%, rgba(56, 189, 248, 0.03) 100%);
+    }
 
-                        <div class="text-center">
-                            <p class="mb-0">
-                                Já tem uma conta? 
-                                <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none">
-                                    <i class="bi bi-box-arrow-in-right"></i> Inicie sessão aqui
-                                </a>
-                            </p>
-                        </div>
-                    </form>
+    .register-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        align-items: center;
+    }
+
+    .register-branding {
+        padding-right: 2rem;
+    }
+
+    .branding-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(22, 163, 74, 0.1) 100%);
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+        border: 2px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .branding-icon i {
+        font-size: 3rem;
+        color: #22c55e;
+    }
+
+    .branding-title {
+        color: #fff;
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+
+    .branding-title span {
+        color: #22c55e;
+    }
+
+    .branding-subtitle {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+
+    .branding-features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .branding-features li {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+    }
+
+    .branding-features li i {
+        color: #22c55e;
+        font-size: 1.1rem;
+    }
+
+    .register-form-section {
+        background: linear-gradient(135deg, rgba(26, 26, 46, 0.6) 0%, rgba(22, 33, 62, 0.4) 100%);
+        border: 1px solid rgba(34, 197, 94, 0.15);
+        border-radius: 24px;
+        padding: 2.5rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .form-header {
+        margin-bottom: 2rem;
+    }
+
+    .form-header h2 {
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-header p {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+        display: block;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-wrapper > i {
+        position: absolute;
+        left: 1rem;
+        color: rgba(34, 197, 94, 0.7);
+        font-size: 1.1rem;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .form-input {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        padding: 0.9rem 1rem 0.9rem 2.75rem;
+        color: #fff;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #22c55e;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+        background: rgba(0, 0, 0, 0.4);
+    }
+
+    .form-input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 1rem;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        padding: 0;
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+        z-index: 1;
+    }
+
+    .password-toggle:hover {
+        color: #22c55e;
+    }
+
+    .btn-register {
+        width: 100%;
+        min-height: 52px;
+        max-height: 52px;
+        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 1rem;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        box-sizing: border-box;
+        margin-top: 1.5rem;
+    }
+
+    .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
+    }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        margin: 1.5rem 0;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .divider span {
+        padding: 0 1rem;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.85rem;
+    }
+
+    .login-link {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.95rem;
+    }
+
+    .login-link a {
+        color: #22c55e;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .login-link a:hover {
+        color: #4ade80;
+        text-decoration: underline;
+    }
+
+    .alert-error {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        color: #fca5a5;
+        font-size: 0.9rem;
+    }
+
+    .validation-message {
+        color: #fca5a5;
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+    }
+
+    /* Password Strength Indicator */
+    .password-strength {
+        margin-top: 0.75rem;
+    }
+
+    .strength-bar-container {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 0.5rem;
+    }
+
+    .strength-bar {
+        flex: 1;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .strength-bar.active.very-weak { background: #ef4444; }
+    .strength-bar.active.weak { background: #f97316; }
+    .strength-bar.active.medium { background: #eab308; }
+    .strength-bar.active.strong { background: #22c55e; }
+    .strength-bar.active.very-strong { background: #10b981; }
+
+    .strength-text {
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .strength-text.very-weak { color: #ef4444; }
+    .strength-text.weak { color: #f97316; }
+    .strength-text.medium { color: #eab308; }
+    .strength-text.strong { color: #22c55e; }
+    .strength-text.very-strong { color: #10b981; }
+
+    .strength-tips {
+        margin-top: 0.5rem;
+        padding: 0.75rem;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .strength-tips ul {
+        margin: 0.5rem 0 0 1rem;
+        padding: 0;
+    }
+
+    .strength-tips li {
+        margin-bottom: 0.25rem;
+    }
+
+    .strength-tips li.met {
+        color: #22c55e;
+    }
+
+    @@media (max-width: 900px) {
+        .register-wrapper {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .register-branding {
+            padding-right: 0;
+            text-align: center;
+        }
+
+        .branding-icon {
+            margin: 0 auto 2rem;
+        }
+
+        .branding-features {
+            display: inline-block;
+            text-align: left;
+        }
+    }
+</style>
+
+<div class="register-page">
+    <div class="register-wrapper">
+        <!-- Left Side - Branding -->
+        <div class="register-branding">
+            <div class="branding-icon">
+                <i class="bi bi-person-plus"></i>
+            </div>
+            <h1 class="branding-title">
+                Junte-se ao <span>Nexor Cinema</span>
+            </h1>
+            <p class="branding-subtitle">
+                Crie a sua conta gratuita e comece a desfrutar das melhores experiências de cinema. Reserve bilhetes, escolha os seus lugares favoritos e muito mais.
+            </p>
+            <ul class="branding-features">
+                <li><i class="bi bi-check-circle-fill"></i> Registo rápido e simples</li>
+                <li><i class="bi bi-check-circle-fill"></i> Acesso a todas as sessões</li>
+                <li><i class="bi bi-check-circle-fill"></i> Histórico de reservas</li>
+                <li><i class="bi bi-check-circle-fill"></i> Notificações de reembolso</li>
+            </ul>
+        </div>
+
+        <!-- Right Side - Register Form -->
+        <div class="register-form-section">
+            <div class="form-header">
+                <h2><i class="bi bi-person-plus"></i> Criar Conta</h2>
+                <p>Preencha os dados para criar a sua conta</p>
+            </div>
+
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert-error" role="alert"></div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Email" class="form-label">Email</label>
+                    <div class="input-wrapper">
+                        <i class="bi bi-envelope"></i>
+                        <input asp-for="Input.Email" class="form-input" autocomplete="username" placeholder="seu@email.com" />
+                    </div>
+                    <span asp-validation-for="Input.Email" class="validation-message"></span>
                 </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Password" class="form-label">Palavra-passe</label>
+                    <div class="input-wrapper">
+                        <i class="bi bi-lock"></i>
+                        <input asp-for="Input.Password" type="password" class="form-input password-field" id="passwordInput" autocomplete="new-password" placeholder="Crie uma palavra-passe" />
+                        <button type="button" class="password-toggle" onclick="togglePasswords()">
+                            <i class="bi bi-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Input.Password" class="validation-message"></span>
+                    
+                    <!-- Password Strength Indicator -->
+                    <div class="password-strength" id="passwordStrength" style="display: none;">
+                        <div class="strength-bar-container">
+                            <div class="strength-bar" id="bar1"></div>
+                            <div class="strength-bar" id="bar2"></div>
+                            <div class="strength-bar" id="bar3"></div>
+                            <div class="strength-bar" id="bar4"></div>
+                            <div class="strength-bar" id="bar5"></div>
+                        </div>
+                        <div class="strength-text" id="strengthText">
+                            <i class="bi bi-shield"></i>
+                            <span id="strengthLabel">Força da palavra-passe</span>
+                        </div>
+                        <div class="strength-tips" id="strengthTips">
+                            <strong>Dicas para uma palavra-passe forte:</strong>
+                            <ul>
+                                <li id="tipLength">Mínimo 8 caracteres</li>
+                                <li id="tipUpper">Pelo menos uma letra maiúscula</li>
+                                <li id="tipLower">Pelo menos uma letra minúscula</li>
+                                <li id="tipNumber">Pelo menos um número</li>
+                                <li id="tipSpecial">Pelo menos um caractere especial (!@@#$%...)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.ConfirmPassword" class="form-label">Confirmar Palavra-passe</label>
+                    <div class="input-wrapper">
+                        <i class="bi bi-lock-fill"></i>
+                        <input asp-for="Input.ConfirmPassword" type="password" class="form-input password-field" autocomplete="new-password" placeholder="Repita a palavra-passe" />
+                    </div>
+                    <span asp-validation-for="Input.ConfirmPassword" class="validation-message"></span>
+                </div>
+
+                <button id="registerSubmit" type="submit" class="btn-register">
+                    <i class="bi bi-check-circle"></i> Criar Conta
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>ou</span>
+            </div>
+
+            <div class="login-link">
+                Já tem uma conta? <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Model.ReturnUrl">Inicie sessão aqui</a>
             </div>
 
             @if ((Model.ExternalLogins?.Count ?? 0) > 0)
             {
-                <div class="card shadow-lg mt-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Utilizar outro serviço para registar</h5>
-                        <hr />
-                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                            <div class="d-grid gap-2">
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-outline-primary" name="provider" value="@provider.Name" title="Registar usando a sua conta @provider.DisplayName">
-                                        <i class="bi bi-box-arrow-in-right"></i> @provider.DisplayName
-                                    </button>
-                                }
-                            </div>
-                        </form>
-                    </div>
+                <div style="margin-top: 1.5rem;">
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        @foreach (var provider in Model.ExternalLogins!)
+                        {
+                            <button type="submit" class="btn-register" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); margin-bottom: 0.5rem;" name="provider" value="@provider.Name">
+                                <i class="bi bi-box-arrow-in-right"></i> Registar com @provider.DisplayName
+                            </button>
+                        }
+                    </form>
                 </div>
             }
         </div>
@@ -85,30 +459,106 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        // Botão único para alternar visibilidade de AMBOS os campos de palavra-passe
-        document.getElementById('toggleAllPasswords').addEventListener('click', function () {
+        function togglePasswords() {
             const passwordFields = document.querySelectorAll('.password-field');
-            const icon = document.getElementById('toggleAllPasswordsIcon');
-            const text = document.getElementById('toggleAllPasswordsText');
-            
-            // Verificar o tipo atual do primeiro campo de palavra-passe
+            const toggleIcon = document.getElementById('toggleIcon');
             const isPassword = passwordFields[0].type === 'password';
             
-            // Alternar todos os campos de palavra-passe
-            passwordFields.forEach(function(field) {
+            passwordFields.forEach(field => {
                 field.type = isPassword ? 'text' : 'password';
             });
             
-            // Atualizar ícone e texto
             if (isPassword) {
-                icon.classList.remove('bi-eye');
-                icon.classList.add('bi-eye-slash');
-                text.textContent = 'Ocultar Palavras-passe';
+                toggleIcon.classList.remove('bi-eye');
+                toggleIcon.classList.add('bi-eye-slash');
             } else {
-                icon.classList.remove('bi-eye-slash');
-                icon.classList.add('bi-eye');
-                text.textContent = 'Mostrar Palavras-passe';
+                toggleIcon.classList.remove('bi-eye-slash');
+                toggleIcon.classList.add('bi-eye');
             }
+        }
+
+        // Password Strength Checker
+        document.getElementById('passwordInput').addEventListener('input', function(e) {
+            const password = e.target.value;
+            const strengthDiv = document.getElementById('passwordStrength');
+            const strengthText = document.getElementById('strengthText');
+            const strengthLabel = document.getElementById('strengthLabel');
+            const bars = [
+                document.getElementById('bar1'),
+                document.getElementById('bar2'),
+                document.getElementById('bar3'),
+                document.getElementById('bar4'),
+                document.getElementById('bar5')
+            ];
+
+            if (password.length === 0) {
+                strengthDiv.style.display = 'none';
+                return;
+            }
+
+            strengthDiv.style.display = 'block';
+
+            // Calculate strength
+            let score = 0;
+            const hasLength = password.length >= 8;
+            const hasUpper = /[A-Z]/.test(password);
+            const hasLower = /[a-z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            const hasSpecial = /[^A-Za-z0-9]/.test(password);
+
+            if (hasLength) score++;
+            if (hasUpper) score++;
+            if (hasLower) score++;
+            if (hasNumber) score++;
+            if (hasSpecial) score++;
+
+            // Update tips
+            document.getElementById('tipLength').className = hasLength ? 'met' : '';
+            document.getElementById('tipUpper').className = hasUpper ? 'met' : '';
+            document.getElementById('tipLower').className = hasLower ? 'met' : '';
+            document.getElementById('tipNumber').className = hasNumber ? 'met' : '';
+            document.getElementById('tipSpecial').className = hasSpecial ? 'met' : '';
+
+            // Reset bars
+            bars.forEach(bar => {
+                bar.className = 'strength-bar';
+            });
+
+            // Determine strength level
+            let strengthClass = '';
+            let label = '';
+            let icon = 'bi-shield';
+
+            if (score <= 1) {
+                strengthClass = 'very-weak';
+                label = 'Muito Fraca';
+                icon = 'bi-shield-x';
+            } else if (score === 2) {
+                strengthClass = 'weak';
+                label = 'Fraca';
+                icon = 'bi-shield-exclamation';
+            } else if (score === 3) {
+                strengthClass = 'medium';
+                label = 'Média';
+                icon = 'bi-shield';
+            } else if (score === 4) {
+                strengthClass = 'strong';
+                label = 'Forte';
+                icon = 'bi-shield-check';
+            } else {
+                strengthClass = 'very-strong';
+                label = 'Muito Forte';
+                icon = 'bi-shield-fill-check';
+            }
+
+            // Update bars
+            for (let i = 0; i < score; i++) {
+                bars[i].classList.add('active', strengthClass);
+            }
+
+            // Update text
+            strengthText.className = 'strength-text ' + strengthClass;
+            strengthText.innerHTML = `<i class="bi ${icon}"></i><span>${label}</span>`;
         });
     </script>
 }

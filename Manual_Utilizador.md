@@ -61,12 +61,10 @@ Para criar uma conta no Nexor Cinema, siga os seguintes passos:
 
 ### Passo 2: Preencher o Formulário de Registo
 1. **Email**: Introduza um endereço de email válido (será usado para login)
-2. **Palavra-passe**: Crie uma palavra-passe segura com:
-   - Mínimo de 6 caracteres
-   - Pelo menos uma letra maiúscula
-   - Pelo menos uma letra minúscula
-   - Pelo menos um número
-   - Pelo menos um caractere especial
+2. **Palavra-passe**: Crie uma palavra-passe
+   - Um indicador de força aparece enquanto escreve
+   - O indicador mostra se a palavra-passe é: Muito Fraca, Fraca, Média, Forte ou Muito Forte
+   - Dicas são fornecidas para criar uma palavra-passe mais segura
 3. **Confirmar Palavra-passe**: Repita a palavra-passe
 
 ### Passo 3: Concluir o Registo
@@ -326,7 +324,7 @@ Os utilizadores com papel de **Administrador** têm acesso ao painel de administ
 2. Leia atentamente o aviso sobre o que será eliminado
 3. Marque a checkbox de confirmação
 4. Clique em **"Eliminar Tudo"**
-> **ATENÇÃO**: Esta ação elimina permanentemente TODOS os filmes, sessões e reservas. É irreversível.
+> **ATENÇÃO**: Esta ação elimina permanentemente TODOS os filmes, sessões, reservas (incluindo transações, reembolsos e histórico) e todos os lucros e estatísticas. Apenas as contas de utilizador são mantidas. É irreversível.
 
 ### 6.3 Gerir Reservas
 
@@ -391,7 +389,7 @@ O Nexor Cinema dispõe de uma funcionalidade de pesquisa rápida:
 | CRUD de filmes (apenas administradores) | Sim |
 | CRUD de sessões (apenas administradores) | Sim |
 | Eliminação múltipla de sessões | Sim |
-| Reset total do sistema (filmes, sessões, reservas) | Sim |
+| Reset total do sistema (elimina filmes, sessões, reservas, transações, lucros - mantém utilizadores) | Sim |
 | Gestão de reservas (administradores) | Sim |
 | Visualização de catálogo de filmes (clientes) | Sim |
 | Consulta de sessões disponíveis (clientes) | Sim |

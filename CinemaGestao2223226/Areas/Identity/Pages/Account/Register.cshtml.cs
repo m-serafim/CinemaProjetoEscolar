@@ -53,7 +53,6 @@ namespace CinemaGestao2223226.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required(ErrorMessage = "A password é obrigatória")]
-            [StringLength(100, ErrorMessage = "A {0} deve ter pelo menos {2} e no máximo {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }

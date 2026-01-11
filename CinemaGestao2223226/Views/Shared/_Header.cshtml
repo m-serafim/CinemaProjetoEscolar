@@ -42,6 +42,8 @@
                                 <li><a class="dropdown-item @(currentController == "Utilizadores" ? "active" : "")" asp-controller="Utilizadores" asp-action="Index"><i class="bi bi-people"></i> Gerir Utilizadores</a></li>
                                 <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.1);"></li>
                                 <li><a class="dropdown-item @(currentController == "Reservas" && currentAction == "Profits" ? "active" : "")" asp-controller="Reservas" asp-action="Profits"><i class="bi bi-graph-up-arrow"></i> Lucros e Estatísticas</a></li>
+                                <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.1);"></li>
+                                <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#resetAllModalHeader"><i class="bi bi-exclamation-triangle"></i> Reset Total</a></li>
                             </ul>
                         </li>
                     }
@@ -158,3 +160,63 @@
     </nav>
 </header>
 
+<!-- Modal Reset Total (Global - Disponível no Header) -->
+@if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
+{
+    <div class="modal fade" id="resetAllModalHeader" tabindex="-1" aria-labelledby="resetAllModalHeaderLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 2px solid #dc3545;">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="resetAllModalHeaderLabel">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>Reset Total do Sistema
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-white">
+                    <div class="alert alert-danger">
+                        <strong><i class="bi bi-exclamation-octagon me-2"></i>ATENÇÃO!</strong>
+                        <p class="mb-0 mt-2">Esta ação irá eliminar permanentemente:</p>
+                        <ul class="mb-0 mt-2">
+                            <li>Todos os filmes</li>
+                            <li>Todas as sessões</li>
+                            <li>Todas as reservas (incluindo transações, reembolsos e histórico)</li>
+                            <li>Todos os lucros e estatísticas do administrador</li>
+                        </ul>
+                        <p class="mb-0 mt-2"><strong>Serão mantidas:</strong></p>
+                        <ul class="mb-0 mt-1">
+                            <li>As contas de utilizador (administradores e clientes)</li>
+                        </ul>
+                    </div>
+                    <p class="text-muted">Esta ação é <strong>irreversível</strong>. Todos os dados serão apagados definitivamente e não podem ser recuperados.</p>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="confirmResetHeader">
+                        <label class="form-check-label text-warning" for="confirmResetHeader">
+                            Eu compreendo e quero proceder com o reset total
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <form asp-controller="Sessoes" asp-action="ResetAll" method="post" id="resetAllFormHeader">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger" id="btnConfirmResetHeader" disabled>
+                            <i class="bi bi-trash"></i> Eliminar Tudo
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var confirmCheckbox = document.getElementById('confirmResetHeader');
+            var confirmBtn = document.getElementById('btnConfirmResetHeader');
+            if (confirmCheckbox && confirmBtn) {
+                confirmCheckbox.addEventListener('change', function() {
+                    confirmBtn.disabled = !this.checked;
+                });
+            }
+        });
+    </script>
+}

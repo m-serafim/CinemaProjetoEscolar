@@ -139,7 +139,7 @@
     }
 
     .seat.occupied::after {
-        content: '×';
+        content: 'a';
         font-size: 1rem;
         color: #fca5a5;
     }
@@ -150,7 +150,7 @@
     }
 
     .seat.wheelchair::before {
-        content: '♿';
+        content: '?';
         font-size: 0.8rem;
     }
 
@@ -381,11 +381,11 @@
                     <div class="session-detail-value">@sessao.Sala</div>
                 </div>
                 <div class="session-detail">
-                    <div class="session-detail-label">Preço/Bilhete</div>
+                    <div class="session-detail-label">Preao/Bilhete</div>
                     <div class="session-detail-value">@sessao.Preco.ToString("C")</div>
                 </div>
                 <div class="session-detail">
-                    <div class="session-detail-label">Disponíveis</div>
+                    <div class="session-detail-label">Disponaveis</div>
                     <div class="session-detail-value">@sessao.LugaresDisponiveis</div>
                 </div>
             </div>
@@ -402,7 +402,7 @@
                         <i class="bi bi-zoom-out"></i>
                     </button>
                 </div>
-                <div class="screen">Ecrã</div>
+                <div class="screen">Ecra</div>
             </div>
 
             <div class="seats-wrapper">
@@ -447,7 +447,7 @@
             <div class="legend-container">
                 <div class="legend-item">
                     <div class="legend-seat available"></div>
-                    <span>Disponível</span>
+                    <span>Disponavel</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-seat selected"></div>
@@ -493,27 +493,27 @@
                         </div>
                         
                         <div class="summary-row">
-                            <span class="summary-label">Preço por bilhete</span>
+                            <span class="summary-label">Preao por bilhete</span>
                             <span class="summary-value">@sessao.Preco.ToString("C")</span>
                         </div>
                         
                         <div class="summary-row">
                             <span class="summary-label"><strong>Total a Pagar</strong></span>
-                            <span class="summary-value summary-total" id="totalPrice">€0,00</span>
+                            <span class="summary-value summary-total" id="totalPrice">a0,00</span>
                         </div>
 
                         <!-- Payment Card Details Section -->
                         <div class="payment-section" id="paymentSection" style="display: none;">
                             <h5 class="text-center mb-3" style="color: var(--text-heading); margin-top: 1.5rem;">
-                                <i class="bi bi-credit-card"></i> Dados do Cartão
+                                <i class="bi bi-credit-card"></i> Dados do Cartao
                             </h5>
                             <div class="secure-payment-notice">
                                 <i class="bi bi-shield-lock-fill"></i>
-                                <span>Pagamento Seguro - Os seus dados estão protegidos</span>
+                                <span>Pagamento Seguro - Os seus dados estao protegidos</span>
                             </div>
                             
                             <div class="card-input-group">
-                                <label for="numeroCartao">Número do Cartão</label>
+                                <label for="numeroCartao">Namero do Cartao</label>
                                 <div class="card-input-wrapper">
                                     <i class="bi bi-credit-card-2-front"></i>
                                     <input type="text" 
@@ -528,7 +528,7 @@
                             </div>
                             
                             <div class="card-input-group">
-                                <label for="nomeCartao">Nome no Cartão</label>
+                                <label for="nomeCartao">Nome no Cartao</label>
                                 <div class="card-input-wrapper">
                                     <i class="bi bi-person"></i>
                                     <input type="text" 
@@ -566,7 +566,7 @@
                                                id="cvv" 
                                                class="card-input" 
                                                placeholder="123"
-                                               maxlength="4"
+                                               maxlength="3"
                                                autocomplete="off"
                                                required />
                                     </div>
@@ -577,6 +577,16 @@
                                 <img src="https://img.icons8.com/color/48/visa.png" alt="Visa" />
                                 <img src="https://img.icons8.com/color/48/mastercard.png" alt="Mastercard" />
                                 <img src="https://img.icons8.com/color/48/amex.png" alt="American Express" />
+                            </div>
+                            
+                            <div class="save-card-option">
+                                <label class="save-card-label">
+                                    <input type="checkbox" id="saveCardData" class="save-card-checkbox" />
+                                    <span class="save-card-text">
+                                        <i class="bi bi-shield-check"></i>
+                                        Guardar dados do cartão para compras futuras
+                                    </span>
+                                </label>
                             </div>
                         </div>
 
@@ -596,7 +606,7 @@
     else
     {
         <div class="alert alert-danger text-center">
-            <i class="bi bi-exclamation-triangle"></i> Sessão não encontrada.
+            <i class="bi bi-exclamation-triangle"></i> Sessao nao encontrada.
         </div>
     }
 </div>
@@ -686,6 +696,90 @@
         width: 40px;
         height: auto;
     }
+    
+    .save-card-option {
+        margin-top: 1.25rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .save-card-label {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        cursor: pointer;
+        padding: 0.75rem;
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .save-card-label:hover {
+        background: rgba(56, 189, 248, 0.15);
+        border-color: rgba(56, 189, 248, 0.4);
+    }
+    
+    .save-card-checkbox {
+        width: 20px;
+        height: 20px;
+        accent-color: #38bdf8;
+        cursor: pointer;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+    
+    .save-card-text {
+        color: var(--text-body);
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .save-card-text i {
+        color: var(--accent-cyan);
+        font-size: 1.1rem;
+    }
+    
+    .saved-card-notice {
+        background: rgba(34, 197, 94, 0.15);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+    
+    .saved-card-info {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #22c55e;
+        font-size: 0.9rem;
+    }
+    
+    .saved-card-info i {
+        font-size: 1.2rem;
+    }
+    
+    .btn-use-saved {
+        background: rgba(34, 197, 94, 0.2);
+        border: 1px solid rgba(34, 197, 94, 0.4);
+        color: #22c55e;
+        padding: 0.4rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-use-saved:hover {
+        background: rgba(34, 197, 94, 0.3);
+    }
 </style>
 
 @section Scripts {
@@ -707,7 +801,7 @@
                     selectedSeats = selectedSeats.filter(s => s !== seatId);
                 } else {
                     if (selectedSeats.length >= 20) {
-                        alert('Máximo de 20 lugares por reserva.');
+                        alert('Maximo de 20 lugares por reserva.');
                         return;
                     }
                     seatElement.classList.add('selected');
@@ -821,6 +915,52 @@
                 }
             }
 
+
+            // Funaaes para guardar/carregar dados do cartão
+            function getSavedCardData() {
+                try {
+                    const saved = localStorage.getItem('nexorCinemaCard');
+                    return saved ? JSON.parse(saved) : null;
+                } catch (e) { return null; }
+            }
+            function saveCardData() {
+                const data = {
+                    numeroCartao: document.getElementById('numeroCartao').value,
+                    nomeCartao: document.getElementById('nomeCartao').value,
+                    validadeCartao: document.getElementById('validadeCartao').value,
+                    cvv: document.getElementById('cvv').value
+                };
+                localStorage.setItem('nexorCinemaCard', JSON.stringify(data));
+            }
+            function loadSavedCardData() {
+                const savedData = getSavedCardData();
+                if (savedData) {
+                    document.getElementById('numeroCartao').value = savedData.numeroCartao || '';
+                    document.getElementById('nomeCartao').value = savedData.nomeCartao || '';
+                    document.getElementById('validadeCartao').value = savedData.validadeCartao || '';
+                    document.getElementById('cvv').value = savedData.cvv || '';
+                    validatePaymentForm();
+                }
+            }
+            (function checkSavedCard() {
+                const savedData = getSavedCardData();
+                if (savedData && savedData.numeroCartao) {
+                    const observer = new MutationObserver(function(mutations) {
+                        const paymentSection = document.getElementById('paymentSection');
+                        if (paymentSection && paymentSection.style.display === 'block' && !document.getElementById('savedCardNotice')) {
+                            const savedNotice = document.createElement('div');
+                            savedNotice.className = 'saved-card-notice';
+                            savedNotice.id = 'savedCardNotice';
+                            const lastFour = savedData.numeroCartao.replace(/\s/g, '').slice(-4);
+                            savedNotice.innerHTML = '<div class="saved-card-info"><i class="bi bi-credit-card-2-front-fill"></i><span>Cartao guardado: **** ' + lastFour + '</span></div><button type="button" class="btn-use-saved" onclick="loadSavedCardData()">Usar</button>';
+                            const secureNotice = paymentSection.querySelector('.secure-payment-notice');
+                            if (secureNotice) secureNotice.after(savedNotice);
+                        }
+                    });
+                    const paymentSection = document.getElementById('paymentSection');
+                    if (paymentSection) observer.observe(paymentSection, { attributes: true });
+                }
+            })();
             document.getElementById('reservaForm').addEventListener('submit', function(e) {
                 if (selectedSeats.length === 0) {
                     e.preventDefault();
@@ -839,6 +979,11 @@
                     alert('Por favor, preencha todos os dados do cartão corretamente.');
                     return false;
                 }
+                
+                // Guardar dados do cartão se opção selecionada
+                const saveCardCheckbox = document.getElementById('saveCardData');
+                if (saveCardCheckbox && saveCardCheckbox.checked) { saveCardData(); }
+
             });
         </script>
     }

@@ -5,51 +5,328 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Detalhes</h1>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<div>
-    <h4>Sessão</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Filme
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Filme.Descricao)
-        </dd>
-        <dt class = "col-sm-2">
-            Data e Hora
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DataHora)
-        </dd>
-        <dt class = "col-sm-2">
-            Sala
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sala)
-        </dd>
-        <dt class = "col-sm-2">
-            Preço
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Preco)
-        </dd>
-        <dt class = "col-sm-2">
-            Lugares Totais
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LugaresTotais)
-        </dd>
-        <dt class = "col-sm-2">
-            Lugares Disponíveis
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LugaresDisponiveis)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
-    <a asp-action="Index">Voltar à Lista</a>
+<style>
+    .session-details-page {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+        color: #fff;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .page-header p {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .session-card {
+        background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .session-header {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(14, 165, 233, 0.05) 100%);
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .session-header-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .session-header-icon i {
+        font-size: 1.8rem;
+        color: #000;
+    }
+
+    .session-header-info h2 {
+        color: #fff;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin: 0 0 0.25rem 0;
+    }
+
+    .session-header-info p {
+        color: rgba(255, 255, 255, 0.6);
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .session-body {
+        padding: 2rem;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .info-item {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 16px;
+        padding: 1.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+        border-color: rgba(56, 189, 248, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .info-item-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .info-item-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(14, 165, 233, 0.1) 100%);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .info-item-icon i {
+        font-size: 1.1rem;
+        color: #38bdf8;
+    }
+
+    .info-item-label {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-item-value {
+        color: #fff;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-top: 0.25rem;
+    }
+
+    .info-item-value.price {
+        color: #22c55e;
+    }
+
+    .info-item-value.film-title {
+        color: #38bdf8;
+    }
+
+    .availability-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .availability-badge.available {
+        background: rgba(34, 197, 94, 0.15);
+        border: 1px solid rgba(34, 197, 94, 0.4);
+        color: #22c55e;
+    }
+
+    .availability-badge.limited {
+        background: rgba(234, 179, 8, 0.15);
+        border: 1px solid rgba(234, 179, 8, 0.4);
+        color: #eab308;
+    }
+
+    .availability-badge.full {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        color: #ef4444;
+    }
+
+    .session-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-action {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary-action {
+        background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+        color: #000;
+        border: none;
+    }
+
+    .btn-primary-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
+        color: #000;
+    }
+
+    .btn-secondary-action {
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-secondary-action:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+        color: #fff;
+    }
+</style>
+
+<div class="session-details-page">
+    <div class="page-header">
+        <h1><i class="bi bi-calendar2-event"></i> Detalhes da Sessão</h1>
+        <p>Informações completas sobre esta sessão de cinema</p>
+    </div>
+
+    <div class="session-card">
+        <div class="session-header">
+            <div class="session-header-icon">
+                <i class="bi bi-film"></i>
+            </div>
+            <div class="session-header-info">
+                <h2>@Model.Filme?.Descricao</h2>
+                <p>Sessão #@Model.Id</p>
+            </div>
+        </div>
+
+        <div class="session-body">
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-item-header">
+                        <div class="info-item-icon">
+                            <i class="bi bi-film"></i>
+                        </div>
+                        <span class="info-item-label">Filme</span>
+                    </div>
+                    <div class="info-item-value film-title">@Model.Filme?.Descricao</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-item-header">
+                        <div class="info-item-icon">
+                            <i class="bi bi-calendar3"></i>
+                        </div>
+                        <span class="info-item-label">Data</span>
+                    </div>
+                    <div class="info-item-value">@Model.DataHora.ToString("dd/MM/yyyy")</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-item-header">
+                        <div class="info-item-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <span class="info-item-label">Hora</span>
+                    </div>
+                    <div class="info-item-value">@Model.DataHora.ToString("HH:mm")</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-item-header">
+                        <div class="info-item-icon">
+                            <i class="bi bi-door-open"></i>
+                        </div>
+                        <span class="info-item-label">Sala</span>
+                    </div>
+                    <div class="info-item-value">Sala @Model.Sala</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-item-header">
+                        <div class="info-item-icon">
+                            <i class="bi bi-currency-euro"></i>
+                        </div>
+                        <span class="info-item-label">Preço</span>
+                    </div>
+                    <div class="info-item-value price">@Model.Preco.ToString("C")</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-item-header">
+                        <div class="info-item-icon">
+                            <i class="bi bi-person-standing"></i>
+                        </div>
+                        <span class="info-item-label">Capacidade Total</span>
+                    </div>
+                    <div class="info-item-value">@Model.LugaresTotais lugares</div>
+                </div>
+
+                <div class="info-item" style="grid-column: span 2;">
+                    <div class="info-item-header">
+                        <div class="info-item-icon">
+                            <i class="bi bi-ticket-perforated"></i>
+                        </div>
+                        <span class="info-item-label">Disponibilidade</span>
+                    </div>
+                    @{
+                        var percentageAvailable = Model.LugaresTotais > 0 
+                            ? (double)Model.LugaresDisponiveis / Model.LugaresTotais * 100 
+                            : 0;
+                        var badgeClass = percentageAvailable > 50 ? "available" : (percentageAvailable > 20 ? "limited" : "full");
+                        var badgeIcon = percentageAvailable > 50 ? "bi-check-circle" : (percentageAvailable > 20 ? "bi-exclamation-circle" : "bi-x-circle");
+                    }
+                    <div class="info-item-value">
+                        <span class="availability-badge @badgeClass">
+                            <i class="bi @badgeIcon"></i>
+                            @Model.LugaresDisponiveis / @Model.LugaresTotais lugares disponíveis
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="session-actions">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn-action btn-primary-action">
+                    <i class="bi bi-pencil"></i> Editar Sessão
+                </a>
+                <a asp-action="Index" class="btn-action btn-secondary-action">
+                    <i class="bi bi-arrow-left"></i> Voltar à Lista
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

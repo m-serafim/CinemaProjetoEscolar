@@ -212,9 +212,6 @@
     <div class="admin-header">
         <h1><i class="bi bi-calendar-event me-2"></i>Gerir Sessões</h1>
         <div class="admin-actions">
-            <button type="button" class="btn btn-outline-danger btn-admin" data-bs-toggle="modal" data-bs-target="#resetAllModal">
-                <i class="bi bi-exclamation-triangle"></i> Reset Total
-            </button>
             <button type="button" class="btn btn-danger btn-admin" id="btnDeleteSelected" style="display: none;">
                 <i class="bi bi-trash"></i> Eliminar Selecionadas (<span id="selectedCount">0</span>)
             </button>
@@ -347,10 +344,15 @@
                     <ul class="mb-0 mt-2">
                         <li>Todos os filmes</li>
                         <li>Todas as sessões</li>
-                        <li>Todas as reservas</li>
+                        <li>Todas as reservas (incluindo transações, reembolsos e histórico)</li>
+                        <li>Todos os lucros e estatísticas do administrador</li>
+                    </ul>
+                    <p class="mb-0 mt-2"><strong>Serão mantidas:</strong></p>
+                    <ul class="mb-0 mt-1">
+                        <li>As contas de utilizador (administradores e clientes)</li>
                     </ul>
                 </div>
-                <p class="text-muted">Esta ação é <strong>irreversível</strong>. Todos os dados serão apagados definitivamente.</p>
+                <p class="text-muted">Esta ação é <strong>irreversível</strong>. Todos os dados serão apagados definitivamente e não podem ser recuperados.</p>
                 <div class="form-check mt-3">
                     <input class="form-check-input" type="checkbox" id="confirmReset">
                     <label class="form-check-label text-warning" for="confirmReset">
